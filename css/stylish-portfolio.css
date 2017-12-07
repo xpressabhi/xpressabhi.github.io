@@ -205,7 +205,7 @@ h6 {
     bottom: 0;
     z-index: 1; }
     .portfolio-item .caption .caption-content {
-      color: #fff;
+      color: rgba(9, 14, 31, 0.8);
       margin: auto 2rem 2rem; }
       .portfolio-item .caption .caption-content h2 {
         font-size: 0.8rem;
