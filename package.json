@@ -1,31 +1,17 @@
 {
-  "title": "Stylish Portfolio",
-  "name": "startbootstrap-stylish-portfolio",
-  "version": "4.0.0-beta.2",
-  "description": "A stylish portfolio HTML template built with Bootstrap",
-  "keywords": [
-    "css",
-    "sass",
-    "html",
-    "responsive",
-    "theme",
-    "template"
-  ],
-  "homepage": "https://startbootstrap.com/template-overviews/stylish-portfolio",
-  "bugs": {
-    "url": "https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/issues",
-    "email": "feedback@startbootstrap.com"
-  },
-  "license": "MIT",
-  "author": "Start Bootstrap",
-  "contributors": [
-    "David Miller (http://davidmiller.io/)"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio.git"
+  "name": "nextjs-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "next": "15.4.6",
     "bootstrap": "^5.0.0",
     "font-awesome": "4.7.0",
     "jquery": "^3.2.1",
@@ -33,12 +19,15 @@
     "simple-line-icons": "^2.4.1"
   },
   "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "15.4.6",
+    "@eslint/eslintrc": "^3",
     "browser-sync": "2.18.13",
     "gulp": "^3.9.1",
     "gulp-clean-css": "3.9.0",
     "gulp-header": "1.8.9",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
+    "gulp-dart-sass": "^1.1.0",
     "gulp-uglify": "3.0.0"
   }
 }
