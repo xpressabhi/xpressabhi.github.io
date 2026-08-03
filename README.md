@@ -29,10 +29,11 @@ Push to `master` — GitHub Pages serves the repo root directly (`.nojekyll` is 
 ## Sections
 
 - **Core Skills** — architecture, frontend/platform, reliability & quality
-- **Projects** — swechhafarms.com, covid19open.in, uberpro.in, selftest.app + Vercel/Gemini API apps
+- **Projects** — live apps: uberpro.in, selftest.in, lifetimetax, airoadtripplanner, faang-cv (Vercel/Gemini API)
 - **Work Experience** — ServiceNow, Rippling, Reputation, Worktech, Eze Software, Oracle
 - **Patent** — US20150046358 (assigned to Oracle Corp.)
 - **Education** — NIT Trichy (MCA), BHU Varanasi (BSc Hons Mathematics)
+- **Discontinued Apps** — swechhafarms.com, covid19open.in, selftest.app (offline, shown for reference)
 
 ## Contributing
 
