@@ -4,15 +4,20 @@ Guidance for AI agents working in this repository.
 
 ## What this repo is
 
-A static GitHub Pages portfolio — the entire site lives in **`index.html`** (single self-contained file).
+The single hub for Abhishek's public presence: portfolio (GitHub Pages), CV
+view with PDF download, GitHub profile README sync, and career-ops/career-os CV
+sync. Everything is generated from one file.
 
-- Bootstrap 5, Font Awesome 5, and Source Sans Pro load from CDNs.
-- Custom CSS and the image lazy-loading script are inlined in `index.html`.
-- Content is deployed by pushing to `master`; `.nojekyll` disables Jekyll processing.
+## Rules
 
-## Conventions
-
-- Do not add build tooling, package managers, or separate asset folders unless asked — keep the single-file setup.
-- Style: Bootstrap 5 utility classes, Font Awesome 5 icons.
-- Personal info (email, phone, URLs) comes from the CV at `~/Documents/GitHub/bragging-rights/abhishek_maurya_2026.pdf` — keep consistent.
-- No build/test/lint steps exist; verify by opening `index.html` in a browser (or serving the repo root).
+- **`data/profile.json` is the ONLY hand-edited file.** Never hand-edit
+  generated outputs (`index.html`, `cv/index.html`, `cv/abhishek-maurya-cv.pdf`,
+  `../xpressabhi/README.md`, `../career-ops/cv.md`,
+  `../career-os/data/files/abhishek_maurya_2026.md`) — the build overwrites them.
+- Regenerate with `npm run build` (add `--pdf` for the PDF; needs Playwright).
+- Facts must come from `data/profile.json` or the user's explicit statements.
+  Never invent metrics or authorship claims.
+- To keep everything in sync from session learnings, use the `profile-sync`
+  skill (`~/.agents/skills/profile-sync/`).
+- Deploy by pushing `master`; `.nojekyll` disables Jekyll processing.
+- `output/` is throwaway verification output (gitignored).

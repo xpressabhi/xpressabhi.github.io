@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{basics.name}} · CV</title>
+<meta name="description" content="Curriculum vitae of {{basics.name}} — {{basics.headline}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #141a17;
+    --ink-muted: #4a5550;
+    --accent: #0f7a52;
+    --line: #d8deda;
+    --paper: #ffffff;
+    --font-sans: "Inter", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #e9ecea;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 10.5pt;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+
+  .toolbar {
+    position: sticky; top: 0; z-index: 20;
+    background: #141a17; color: #fff;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 12px 24px;
+  }
+  .toolbar .t-title { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #9fb8ab; }
+  .toolbar .t-actions { display: flex; gap: 10px; }
+  .t-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 8px;
+    color: #fff; font-size: 13px; font-weight: 600;
+    padding: 9px 18px; background: rgba(255,255,255,0.06);
+    transition: background 0.2s ease;
+  }
+  .t-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+  .t-btn.primary { background: #3ecf8e; border-color: #3ecf8e; color: #06231a; }
+  .t-btn.primary:hover { background: #55dca2; }
+  .t-btn:active { transform: scale(0.98); }
+
+  .sheet {
+    max-width: 820px;
+    margin: 28px auto 56px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 48px 52px;
+    box-shadow: 0 10px 30px rgba(20, 26, 23, 0.08);
+  }
+
+  .cv-head { padding-bottom: 18px; border-bottom: 2px solid var(--ink); margin-bottom: 20px; }
+  .cv-name { font-size: 26pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .cv-role { font-size: 11.5pt; color: var(--accent); font-weight: 600; margin-top: 4px; }
+  .cv-contact {
+    display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px;
+    font-size: 9.5pt; color: var(--ink-muted);
+  }
+  .cv-contact .mono { font-size: 9pt; }
+
+  .cv-section { margin-top: 20px; }
+  .cv-section-title {
+    font-family: var(--font-mono); font-size: 9.5pt; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); border-bottom: 1px solid var(--line);
+    padding-bottom: 5px; margin-bottom: 10px;
+  }
+  .cv-summary { color: var(--ink-muted); font-size: 10pt; }
+
+  .job { margin-bottom: 14px; page-break-inside: avoid; }
+  .job:last-child { margin-bottom: 0; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .job-title { font-size: 11pt; font-weight: 700; }
+  .job-title .org { color: var(--ink-muted); font-weight: 600; }
+  .job-period { font-family: var(--font-mono); font-size: 8.5pt; color: var(--ink-muted); white-space: nowrap; }
+  .job-stack { font-size: 8.5pt; color: var(--accent); margin: 2px 0 4px; }
+  .job ul { list-style: none; }
+  .job li {
+    position: relative; padding-left: 14px; margin-bottom: 3px;
+    color: var(--ink-muted); font-size: 9.8pt;
+  }
+  .job li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
+
+  .flagship-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
+  .f-card { page-break-inside: avoid; }
+  .f-card h3 { font-size: 10pt; font-weight: 700; }
+  .f-card p { font-size: 9.3pt; color: var(--ink-muted); margin-top: 2px; }
+  .f-metrics { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 5px; }
+  .f-chip { font-family: var(--font-mono); font-size: 7.8pt; color: var(--accent); border: 1px solid #bfdccd; border-radius: 5px; padding: 2px 7px; }
+
+  .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; }
+  .skill-group { page-break-inside: avoid; }
+  .skill-group h3 {
+    font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 3px;
+  }
+  .skill-group p { font-size: 9.3pt; color: var(--ink-muted); }
+
+  .proj-line { font-size: 9.8pt; color: var(--ink-muted); margin-bottom: 3px; }
+  .proj-line .pname { font-weight: 700; color: var(--ink); }
+  .proj-line .pstatus { font-family: var(--font-mono); font-size: 8pt; color: #8a7d6e; }
+
+  .edu-line { font-size: 9.8pt; color: var(--ink-muted); margin-bottom: 3px; }
+  .edu-line .ename { font-weight: 700; color: var(--ink); }
+
+  .patent { font-size: 9.8pt; color: var(--ink-muted); }
+  .patent .pnum { font-family: var(--font-mono); color: var(--accent); }
+
+  .cv-foot {
+    margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    font-size: 8.5pt; color: #8a938d;
+  }
+
+  @media (max-width: 768px) {
+    .sheet { margin: 12px; padding: 28px 22px; }
+    .flagship-grid, .skill-grid { grid-template-columns: 1fr; }
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .toolbar .t-actions { justify-content: stretch; }
+    .t-btn { justify-content: center; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .sheet { margin: 0; border: none; border-radius: 0; box-shadow: none; padding: 0; max-width: none; }
+    .cv-section { page-break-inside: avoid; }
+    @page { size: A4; margin: 14mm 15mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="t-title">{{basics.name}} · CV</span>
+  <div class="t-actions">
+    <a class="t-btn primary" href="abhishek-maurya-cv.pdf" download>Download PDF</a>
+    <a class="t-btn" href="javascript:window.print()">Print</a>
+    <a class="t-btn" href="../">← Back to portfolio</a>
+  </div>
+</div>
+
+<div class="sheet">
+  <div class="cv-head">
+    <div class="cv-name">{{basics.name}}</div>
+    <div class="cv-role">{{basics.headline}}</div>
+    <div class="cv-contact">
+      <span>{{basics.location}}</span>
+      <span>{{basics.phone}}</span>
+      <span><a href="mailto:{{basics.email}}">{{basics.email}}</a></span>
+      <span><a href="{{basics.github}}" target="_blank" rel="noopener">GitHub</a></span>
+      <span><a href="{{basics.linkedin}}" target="_blank" rel="noopener">LinkedIn</a></span>
+      <span class="mono">{{basics.yearsExperience}} years experience</span>
+    </div>
+  </div>
+
+  <div class="cv-section">
+    <div class="cv-section-title">Summary</div>
+    <p class="cv-summary">{{summary}}</p>
+  </div>
+
+  <div class="cv-section">
+    <div class="cv-section-title">Key achievements</div>
+    <div class="flagship-grid">
+      {{#each flagship}}
+      <div class="f-card">
+        <h3>{{title}}</h3>
+        <p>{{summary}}</p>
+        <div class="f-metrics">
+          {{#each metrics}}<span class="f-chip">{{this}}</span>{{/each}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="cv-section">
+    <div class="cv-section-title">Work experience</div>
+    {{#each experience}}
+    <div class="job">
+      <div class="job-head">
+        <span class="job-title">{{role}} · <span class="org">{{company}}, {{location}}</span></span>
+        <span class="job-period">{{start}} – {{end}}</span>
+      </div>
+      <div class="job-stack">{{join stack ", "}}</div>
+      <ul>
+        {{#each highlights}}<li>{{this}}</li>{{/each}}
+      </ul>
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="cv-section">
+    <div class="cv-section-title">Skills</div>
+    <div class="skill-grid">
+      {{#each skills}}
+      <div class="skill-group">
+        <h3>{{@key}}</h3>
+        <p>{{join this ", "}}</p>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="cv-section">
+    <div class="cv-section-title">Projects</div>
+    {{#each projects}}
+    <div class="proj-line">
+      {{#if url}}<a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a>{{else}}<span class="pname">{{name}}</span>{{/if}}
+      <span class="pstatus">({{status}})</span> — {{description}}
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="cv-section">
+    <div class="cv-section-title">Education</div>
+    {{#each education}}
+    <div class="edu-line"><span class="ename">{{school}}</span> — {{degree}} · <span class="mono">{{period}}</span></div>
+    {{/each}}
+  </div>
+
+  <div class="cv-section">
+    <div class="cv-section-title">Patent</div>
+    <p class="patent"><span class="pnum">{{basics.patent.number}}</span> — "{{basics.patent.title}}" · assigned to {{basics.patent.assignedTo}} · status: {{basics.patent.status}}</p>
+  </div>
+
+  <div class="cv-foot">
+    <span>{{basics.name}} · {{basics.location}}</span>
+    <span>Generated from data/profile.json · opencode profile-sync</span>
+  </div>
+</div>
+
+</body>
+</html>

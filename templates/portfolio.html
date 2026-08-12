@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Abhishek Kumar Maurya · Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</title>
-<meta name="description" content="16+ years of building web applications, agentic AI workflows, and developer platforms">
+<title>{{basics.name}} · {{basics.headline}}</title>
+<meta name="description" content="{{basics.tagline}}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -311,7 +311,7 @@
 <header>
   <nav>
     <a href="#top" class="mark" aria-label="Back to top">
-      <span class="mark-sq">A</span> Abhishek Kumar Maurya
+      <span class="mark-sq">A</span> {{basics.name}}
     </a>
     <div class="nav-links">
       <a href="#capabilities">Capabilities</a>
@@ -328,15 +328,15 @@
   <div class="hero">
     <div class="hero-grid-bg" aria-hidden="true"></div>
     <div>
-      <span class="hero-kicker mono"><span class="pulse"></span>Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</span>
-      <h1>16+ years of building web applications, agentic AI workflows, and developer platforms</h1>
-      <p class="hero-sub">16+ years across agentic AI, frontend, and platform architecture. Systems adopted by 20+ teams at ServiceNow.</p>
+      <span class="hero-kicker mono"><span class="pulse"></span>{{basics.headline}}</span>
+      <h1>{{basics.tagline}}</h1>
+      <p class="hero-sub">{{basics.shortSummary}}</p>
       <div class="hero-ctas">
         <a class="btn btn-primary" href="#work">See the work</a>
         <a class="btn btn-ghost" href="cv/">View CV</a>
       </div>
       <div class="hero-facts">
-        <div class="hero-fact"><span class="num">16+</span><span>years of experience</span></div>
+        <div class="hero-fact"><span class="num">{{basics.yearsExperience}}</span><span>years of experience</span></div>
         <div class="hero-fact"><span class="num">20+</span><span>teams on MCP workflows</span></div>
         <div class="hero-fact"><span class="num">4 wks</span><span>ADP: idea to production</span></div>
       </div>
@@ -378,55 +378,15 @@
       <h2>Six capabilities, one thread: shipping real systems at scale.</h2>
     </div>
     <div class="bento">
-      
-      <div class="cell wide reveal ">
-        <h3><span class="idx">00</span>Agentic AI & MCP</h3>
-        <p>Designed and shipped MCP-driven agentic workflows integrated into the engineering lifecycle, adopted by 20+ teams with roughly 95% less research and debugging effort.</p>
+      {{#each capabilityCards}}
+      <div class="cell {{#if wide}}wide{{/if}} reveal {{#if @odd}}d1{{/if}}">
+        <h3><span class="idx">0{{@index}}</span>{{title}}</h3>
+        <p>{{blurb}}</p>
         <div class="tags">
-          <span class="tag">MCP</span><span class="tag">Claude Code</span><span class="tag">Build Agent</span><span class="tag">Tool orchestration</span><span class="tag">Self-healing loops</span>
+          {{#each tags}}<span class="tag">{{this}}</span>{{/each}}
         </div>
       </div>
-      
-      <div class="cell  reveal d1">
-        <h3><span class="idx">01</span>Developer platforms</h3>
-        <p>Founded the Agentic Developer Platform: multi-tenant bootstrap and governance infrastructure for agents, skills, and MCP servers.</p>
-        <div class="tags">
-          <span class="tag">Multi-tenant</span><span class="tag">Governance</span><span class="tag">Telemetry</span>
-        </div>
-      </div>
-      
-      <div class="cell  reveal ">
-        <h3><span class="idx">02</span>Frontend architecture</h3>
-        <p>Architected scalable React and TypeScript systems powering low-code tools like Table Builder and Workspace Builder.</p>
-        <div class="tags">
-          <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Low-code</span>
-        </div>
-      </div>
-      
-      <div class="cell  reveal d1">
-        <h3><span class="idx">03</span>System design</h3>
-        <p>Metadata-aware, multi-model architectures and design patterns built to hold up across teams, tenants, and releases.</p>
-        <div class="tags">
-          <span class="tag">Scalable systems</span><span class="tag">Design patterns</span>
-        </div>
-      </div>
-      
-      <div class="cell wide reveal ">
-        <h3><span class="idx">04</span>Quality & reliability</h3>
-        <p>Enterprise testing strategy with Jest, React Testing Library, and Playwright; performance optimization and WCAG/ARIA accessibility. Lifted legacy coverage from 20% to 90%.</p>
-        <div class="tags">
-          <span class="tag">Jest</span><span class="tag">RTL</span><span class="tag">Playwright</span><span class="tag">WCAG/ARIA</span><span class="tag">Performance</span>
-        </div>
-      </div>
-      
-      <div class="cell  reveal d1">
-        <h3><span class="idx">05</span>Technical leadership</h3>
-        <p>Lead technical hiring, run high-bar architectural reviews, and mentor engineers in AI-first development practices.</p>
-        <div class="tags">
-          <span class="tag">Hiring</span><span class="tag">Mentoring</span><span class="tag">Reviews</span>
-        </div>
-      </div>
-      
+      {{/each}}
     </div>
   </div>
 </section>
@@ -438,37 +398,12 @@
       <h2>Numbers from shipped work, not projections.</h2>
     </div>
     <div class="impact-grid">
-      
+      {{#each impactMetrics}}
       <div class="metric reveal">
-        <span class="num">95%</span>
-        <p>less research and debugging effort for 20+ teams on MCP workflows</p>
+        <span class="num">{{value}}</span>
+        <p>{{label}}</p>
       </div>
-      
-      <div class="metric reveal">
-        <span class="num">90%</span>
-        <p>faster case task resolution on the Agentic Developer Platform</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">20% → 90%</span>
-        <p>legacy test coverage lift on ADP pilot squads</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">90%</span>
-        <p>fewer external defects, now single-digit org-wide</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">4 wks</span>
-        <p>from concept to production for a multi-tenant AI platform</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">80%</span>
-        <p>faster test-to-production HRMS setup, Oracle Benefit Plan Copy</p>
-      </div>
-      
+      {{/each}}
     </div>
   </div>
 </section>
@@ -479,55 +414,19 @@
       <span class="mono">03 · Flagship work</span>
       <h2>Four systems that moved real org-level metrics.</h2>
     </div>
-    
+    {{#each flagship}}
     <div class="work-row reveal">
-      <div class="work-num">01</div>
+      <div class="work-num">{{id}}</div>
       <div class="work-body">
-        <h3>Agentic Developer Platform (ADP)</h3>
-        <div class="meta">ServiceNow · Founder</div>
-        <p>Multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</p>
+        <h3>{{title}}</h3>
+        <div class="meta">{{org}} · {{role}}</div>
+        <p>{{summary}}</p>
         <div class="work-chips">
-          <span class="chip">−90% task resolution time</span><span class="chip">20% → 90% legacy coverage</span><span class="chip">−90% external defects</span><span class="chip">Days → hours</span>
+          {{#each metrics}}<span class="chip">{{this}}</span>{{/each}}
         </div>
       </div>
     </div>
-    
-    <div class="work-row reveal">
-      <div class="work-num">02</div>
-      <div class="work-body">
-        <h3>MCP-driven engineering workflows</h3>
-        <div class="meta">ServiceNow · 20+ teams</div>
-        <p>Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</p>
-        <div class="work-chips">
-          <span class="chip">−95% research & debugging</span><span class="chip">20+ teams</span><span class="chip">Higher accuracy</span>
-        </div>
-      </div>
-    </div>
-    
-    <div class="work-row reveal">
-      <div class="work-num">03</div>
-      <div class="work-body">
-        <h3>Build Agent, ServiceNow Studio</h3>
-        <div class="meta">ServiceNow · App Engine</div>
-        <p>Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration. Led the metadata-aware, multi-model (Now LLM + Claude on Bedrock) self-healing architecture.</p>
-        <div class="work-chips">
-          <span class="chip">Multi-model</span><span class="chip">Self-healing</span><span class="chip">Metadata-aware</span>
-        </div>
-      </div>
-    </div>
-    
-    <div class="work-row reveal">
-      <div class="work-num">04</div>
-      <div class="work-body">
-        <h3>Release lifecycle & app summary agents</h3>
-        <div class="meta">ServiceNow · Now Assist for Creator</div>
-        <p>Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests. Documentation time went from hours to a single click.</p>
-        <div class="work-chips">
-          <span class="chip">Hours → one click</span><span class="chip">CAB-ready manifests</span><span class="chip">Delta analysis</span>
-        </div>
-      </div>
-    </div>
-    
+    {{/each}}
   </div>
 </section>
 
@@ -538,79 +437,19 @@
       <h2>From Oracle to agentic AI, one thread of building.</h2>
     </div>
     <div class="journey">
-      
+      {{#each experience}}
       <div class="j-item reveal">
         <div class="j-top">
-          <h3>ServiceNow</h3>
-          <span class="mono">Oct 2023 · Present</span>
+          <h3>{{company}}</h3>
+          <span class="mono">{{start}} · {{end}}</span>
         </div>
-        <div class="role">Staff Software Engineer · Hyderabad</div>
-        <div class="jstack">AI Agents, MCP, Harness, JavaScript, Java, React, Node.js, Python</div>
+        <div class="role">{{role}} · {{location}}</div>
+        <div class="jstack">{{join stack ", "}}</div>
         <ul>
-          <li>Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.</li><li>Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration; led its metadata-aware, multi-model (Now LLM + Claude on Bedrock), self-healing agentic architecture.</li><li>Founded the Agentic Developer Platform (ADP), a multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.</li><li>ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.</li><li>Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click.</li><li>Built scalable platform infrastructure supporting agentic application development; architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; core contributor to the App Template Framework (ATFr).</li><li>Drive performance optimization and accessibility compliance using WCAG/ARIA practices; established enterprise testing strategy with Jest, React Testing Library, and Playwright.</li><li>Lead technical hiring, high-bar architectural reviews, and mentoring of engineers in AI-first development practices.</li>
+          {{#each highlights}}<li>{{this}}</li>{{/each}}
         </ul>
       </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Rippling</h3>
-          <span class="mono">Oct 2022 · Aug 2023</span>
-        </div>
-        <div class="role">Senior Software Engineer · Bengaluru</div>
-        <div class="jstack">JavaScript, React, TypeScript, Node.js, Python, Playwright, Sentry, LogRocket</div>
-        <ul>
-          <li>Identified frontend codebase problem areas and developed improvement proposals.</li><li>Contributed to frontend infrastructure and global engineering initiatives.</li><li>Conducted interviews, reviewed pull requests, mentored junior developers, and shared technical learnings.</li>
-        </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Reputation</h3>
-          <span class="mono">Sep 2020 · Sep 2022</span>
-        </div>
-        <div class="role">Lead Engineer · Hyderabad</div>
-        <div class="jstack">JavaScript, Node.js, React, Python, RTK Query, Sumo Logic</div>
-        <ul>
-          <li>Led frontend development on the Actions Team, planning and delivering web-based tools.</li><li>Improved performance through advanced optimization techniques and ensured accessibility for a broad user base.</li><li>Built maintainable, scalable, and testable features using engineering best practices; mentored junior developers and reviewed code.</li>
-        </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Worktech Software</h3>
-          <span class="mono">Jul 2017 · Aug 2020</span>
-        </div>
-        <div class="role">Co-Founder / Lead Developer · Hyderabad</div>
-        <div class="jstack">JavaScript, Node.js, MongoDB, Meteor, REST APIs</div>
-        <ul>
-          <li>Built products and services using JavaScript, Node.js, MongoDB, Meteor, and REST APIs.</li><li>flexzone.in (2018–2020): aggregator of cafés into coworking spaces.</li><li>hospeto.in (2017–2018): video consultation platform for doctors, with health record and billing management.</li>
-        </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Eze Software Group</h3>
-          <span class="mono">Jun 2016 · Jun 2017</span>
-        </div>
-        <div class="role">Senior Developer · Hyderabad</div>
-        <div class="jstack">C#, .NET, REST APIs, MS SQL</div>
-        <ul>
-          <li>Developed and improved an order-management system for real-time trading related to short selling.</li><li>Maintained EzeLocate and DataFeed for locating short inventory and real-time stock-data processing.</li>
-        </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Oracle</h3>
-          <span class="mono">Jun 2010 · May 2016</span>
-        </div>
-        <div class="role">Project Leader · Hyderabad</div>
-        <div class="jstack">Java, Oracle Database, Oracle ODI, SQL/PLSQL</div>
-        <ul>
-          <li>Developed and improved Plan Copy and Benefits Relationships systems using Java, Oracle Database, Oracle ODI, and SQL/PLSQL.</li><li>Completed the Benefit Plan Copy project, reducing test-to-production HRMS data setup time by 80%.</li>
-        </ul>
-      </div>
-      
+      {{/each}}
     </div>
   </div>
 </section>
@@ -622,55 +461,13 @@
       <h2>Things I have shipped on the side.</h2>
     </div>
     <div class="proj-grid">
-      
+      {{#each projects}}
       <div class="proj-card reveal">
-        <h3>selftest.in<span class="status live">live</span></h3>
-        <p>Self-testing and government job preparation app powered by the Gemini API</p>
-        <a class="visit" href="https://selftest.in" target="_blank" rel="noopener">Visit app →</a>
+        <h3>{{name}}<span class="status {{#if status}}{{status}}{{/if}}">{{status}}</span></h3>
+        <p>{{description}}</p>
+        {{#if url}}<a class="visit" href="{{url}}" target="_blank" rel="noopener">Visit app →</a>{{/if}}
       </div>
-      
-      <div class="proj-card reveal">
-        <h3>lifetimetax.vercel.app<span class="status live">live</span></h3>
-        <p>Lifetime tax liability calculator</p>
-        <a class="visit" href="https://lifetimetax.vercel.app" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>airoadtripplanner.vercel.app<span class="status live">live</span></h3>
-        <p>AI-powered road trip planner</p>
-        <a class="visit" href="https://airoadtripplanner.vercel.app" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>faang-cv.vercel.app<span class="status live">live</span></h3>
-        <p>CV builder tuned for FAANG-style applications</p>
-        <a class="visit" href="https://faang-cv.vercel.app" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>uberpro.in<span class="status live">live</span></h3>
-        <p>Order management app for businesses</p>
-        <a class="visit" href="https://uberpro.in" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>swechhafarms.com<span class="status discontinued">discontinued</span></h3>
-        <p>Earlier project, no longer available — kept for reference</p>
-        
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>covid19open.in<span class="status discontinued">discontinued</span></h3>
-        <p>Earlier project, no longer available — kept for reference</p>
-        
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>selftest.app<span class="status discontinued">discontinued</span></h3>
-        <p>Earlier version of the self-testing app, no longer available — kept for reference</p>
-        
-      </div>
-      
+      {{/each}}
     </div>
   </div>
 </section>
@@ -682,72 +479,29 @@
       <h2>The stack behind the systems.</h2>
     </div>
     <div class="stack-grid">
-      
+      {{#each skills}}
       <div class="stack-cell reveal">
-        <h3>Architecture</h3>
+        <h3>{{@key}}</h3>
         <ul>
-          <li><span class="tag">System design</span></li><li><span class="tag">Scalable frontend architecture</span></li><li><span class="tag">Design patterns</span></li><li><span class="tag">Developer productivity</span></li><li><span class="tag">Metadata-driven development</span></li>
+          {{#each this}}<li><span class="tag">{{this}}</span></li>{{/each}}
         </ul>
       </div>
-      
-      <div class="stack-cell reveal">
-        <h3>AI & Agentic Engineering</h3>
-        <ul>
-          <li><span class="tag">AI agents</span></li><li><span class="tag">MCP workflows</span></li><li><span class="tag">Claude Code</span></li><li><span class="tag">Harness</span></li><li><span class="tag">Prompt engineering</span></li><li><span class="tag">Agent workflows</span></li><li><span class="tag">Tool orchestration</span></li><li><span class="tag">Multi-model systems</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Frontend & Platform</h3>
-        <ul>
-          <li><span class="tag">JavaScript (ES6+)</span></li><li><span class="tag">TypeScript</span></li><li><span class="tag">React</span></li><li><span class="tag">Next.js</span></li><li><span class="tag">Redux Toolkit</span></li><li><span class="tag">RTK Query</span></li><li><span class="tag">Node.js</span></li><li><span class="tag">Webpack</span></li><li><span class="tag">Vite</span></li><li><span class="tag">PWA</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Reliability & Quality</h3>
-        <ul>
-          <li><span class="tag">Jest</span></li><li><span class="tag">React Testing Library</span></li><li><span class="tag">Playwright</span></li><li><span class="tag">Performance optimization</span></li><li><span class="tag">WCAG / ARIA accessibility</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Backend & Data</h3>
-        <ul>
-          <li><span class="tag">Python</span></li><li><span class="tag">Java</span></li><li><span class="tag">C# / .NET</span></li><li><span class="tag">REST APIs</span></li><li><span class="tag">MongoDB</span></li><li><span class="tag">Meteor</span></li><li><span class="tag">Oracle Database</span></li><li><span class="tag">Oracle ODI</span></li><li><span class="tag">SQL / PLSQL</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Observability</h3>
-        <ul>
-          <li><span class="tag">Sentry</span></li><li><span class="tag">LogRocket</span></li><li><span class="tag">Datadog</span></li><li><span class="tag">Sumo Logic</span></li>
-        </ul>
-      </div>
-      
+      {{/each}}
     </div>
     <div class="edu" style="margin-top:14px">
-      
+      {{#each education}}
       <div class="edu-card reveal">
         <div>
-          <h3>National Institute of Technology (NIT), Tiruchirappalli</h3>
-          <p>Master of Computer Applications (MCA)</p>
+          <h3>{{school}}</h3>
+          <p>{{degree}}</p>
         </div>
-        <span class="mono">2007–2010</span>
+        <span class="mono">{{period}}</span>
       </div>
-      
-      <div class="edu-card reveal">
-        <div>
-          <h3>Banaras Hindu University (BHU), Varanasi</h3>
-          <p>BSc (Hons), Mathematics</p>
-        </div>
-        <span class="mono">2003–2006</span>
-      </div>
-      
+      {{/each}}
     </div>
     <div class="patent-note reveal">
-      Patent · <span class="num">US20150046358</span> "Importing tested objects into benefits programs deployed on production systems", assigned to Oracle Corp. · Abandoned
-      · <a href="https://patents.google.com/patent/US20150046358" target="_blank" rel="noopener">Google Patents</a>
+      Patent · <span class="num">{{basics.patent.number}}</span> "{{basics.patent.title}}", assigned to {{basics.patent.assignedTo}} · {{basics.patent.status}}
+      · <a href="{{basics.patent.url}}" target="_blank" rel="noopener">Google Patents</a>
     </div>
   </div>
 </section>
@@ -759,21 +513,9 @@
       <h2>Technical writeups of the ServiceNow systems.</h2>
     </div>
     <div class="dive-list">
-      
-      <a class="dive-link reveal" href="deep-dives/build-agent.md">ServiceNow Build Agent — autonomous AI developer companion</a>
-      
-      <a class="dive-link reveal" href="deep-dives/writeup-intuit.md">ServiceNow projects — technical writeup (Intuit application)</a>
-      
-      <a class="dive-link reveal" href="deep-dives/generic.md">Generic ServiceNow impact points</a>
-      
-      <a class="dive-link reveal" href="deep-dives/table-builder.md">Table Builder</a>
-      
-      <a class="dive-link reveal" href="deep-dives/workspace-builder.md">Workspace Builder</a>
-      
-      <a class="dive-link reveal" href="deep-dives/ala-app-summary-agent.md">App Summary Agent (ALA)</a>
-      
-      <a class="dive-link reveal" href="deep-dives/sn-claude-skills.md">Claude skills on ServiceNow</a>
-      
+      {{#each deepDives}}
+      <a class="dive-link reveal" href="{{file}}">{{title}}</a>
+      {{/each}}
     </div>
   </div>
 </section>
@@ -785,26 +527,26 @@
       <div class="footer-contact">
         <div class="f-line">
           <span class="mono">Email</span>
-          <a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a>
+          <a href="mailto:{{basics.email}}">{{basics.email}}</a>
         </div>
         <div class="f-line">
           <span class="mono">Phone</span>
-          <a href="tel:+917842740174">+917842740174</a>
+          <a href="tel:{{basics.phone}}">{{basics.phone}}</a>
         </div>
         <div class="f-line">
           <span class="mono">Location</span>
-          <span>Hyderabad, India · Immediately available; open to in-office, hybrid, or remote roles from Hyderabad</span>
+          <span>{{basics.location}} · {{basics.availability}}</span>
         </div>
         <div class="f-line">
           <span class="mono">Online</span>
-          <a href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://github.com/xpressabhi" target="_blank" rel="noopener">GitHub</a>
+          <a href="{{basics.linkedin}}" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="{{basics.github}}" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>Abhishek Kumar Maurya · Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</span>
-      <span class="num">16+ years · AI agents · MCP · platforms</span>
+      <span>{{basics.name}} · {{basics.headline}}</span>
+      <span class="num">{{basics.yearsExperience}} years · AI agents · MCP · platforms</span>
     </div>
   </div>
 </footer>

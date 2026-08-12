@@ -1,48 +1,43 @@
-# xpressabhi.github.io — Abhishek Kumar Maurya's Portfolio
+# xpressabhi.github.io — Portfolio, CV & Sync Hub
 
-Personal portfolio website of [Abhishek Kumar Maurya](https://github.com/xpressabhi) — Staff Software Engineer at ServiceNow (AI Agents & Harness Engineering) with 16+ years of experience building web applications, agentic AI workflows, and developer platforms.
+Personal site of **Abhishek Kumar Maurya** — Staff Software Engineer (AI Agents, MCP, Platforms). Live at **https://xpressabhi.github.io**.
 
-Live at **https://xpressabhi.github.io**
-
-## What's here
-
-The site is intentionally a **single self-contained HTML file**: `index.html`.
-
-- Bootstrap 5, Font Awesome 5, and the Source Sans Pro font load from CDNs.
-- The custom theme CSS and image lazy-loading script are inlined.
-- Images are served from Cloudinary.
-
-Nothing to install, build, or compile. The `.github` Pages config is not needed — commit to `master` and GitHub Pages serves `index.html` as-is.
-
-## Structure
+This repo is the **single hub** for every public fact about me. Everything is generated from **one file**:
 
 ```
-index.html        # the entire site (single file)
-favicon.ico       # browser tab icon
-LICENSE           # MIT
+data/profile.json        ← the ONLY place you edit personal facts
+templates/portfolio.html ← portfolio layout
+templates/cv.html        ← CV layout (print/PDF-ready)
+scripts/build.mjs        ← generates everything below
+deep-dives/              ← long-form technical writeups (markdown)
 ```
+
+## What `npm run build` generates
+
+| Output | Where | Purpose |
+|---|---|---|
+| Portfolio | `index.html` | Single-page portfolio (GitHub Pages root) |
+| CV page | `cv/index.html` | CV view with Download PDF / Print |
+| CV PDF | `cv/abhishek-maurya-cv.pdf` | Print-ready PDF (needs `--pdf`, uses Playwright) |
+| GitHub profile README | `../xpressabhi/README.md` | The `xpressabhi` repo's only file |
+| career-ops CV | `../career-ops/cv.md` | Job-search pipeline source CV |
+| career-os resume | `../career-os/data/files/abhishek_maurya_2026.md` | Resume used by the remote-job-finder skill |
+
+## Workflow
+
+1. Edit `data/profile.json` (the only place facts live).
+2. Run `npm run build` (add `--pdf` to also regenerate the PDF).
+3. Commit + push **this repo** (`xpressabhi.github.io`) and the generated `xpressabhi/README.md` separately.
+4. Tip: the `profile-sync` skill automates steps 1–3 from session learnings — just ask it to run.
+
+## Retired repos
+
+`cv` and `bragging-rights` are retired — see [ARCHIVE.md](ARCHIVE.md). Their unique content lives in `deep-dives/` and `data/profile.json`.
 
 ## Deploying
 
-Push to `master` — GitHub Pages serves the repo root directly (`.nojekyll` is present, so no Jekyll processing).
-
-## Sections
-
-- **Core Skills** — architecture, frontend/platform, reliability & quality
-- **Projects** — live apps: uberpro.in, selftest.in, lifetimetax, airoadtripplanner, faang-cv (Vercel/Gemini API)
-- **Work Experience** — ServiceNow, Rippling, Reputation, Worktech, Eze Software, Oracle
-- **Patent** — US20150046358 (assigned to Oracle Corp.)
-- **Education** — NIT Trichy (MCA), BHU Varanasi (BSc Hons Mathematics)
-- **Discontinued Apps** — swechhafarms.com, covid19open.in, selftest.app (offline, shown for reference)
-
-## Contributing
-
-This is a personal portfolio — but feel free to open an issue or PR for suggestions. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Security
-
-Found a vulnerability? See [SECURITY.md](SECURITY.md).
+Push to `master` — GitHub Pages serves the repo root directly (`.nojekyll` present).
 
 ## License
 
-[MIT](LICENSE) © Abhishek Kumar Maurya
+MIT © Abhishek Kumar Maurya
