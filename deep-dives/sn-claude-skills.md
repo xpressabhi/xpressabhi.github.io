@@ -1,7 +1,7 @@
 
 # Technical Specification: Agentic Developer Platform (ADP)
 
-The **Agentic Developer Platform (ADP)** is a unified, multi-tenant automation framework designed to bootstrap, govern, and scale AI-assisted engineering workflows across the enterprise. Built and scaled within a rapid **4-week timeline**, the platform standardizes the deployment of advanced LLM tooling (Claude Code, Model Context Protocol (MCP) servers, custom agents, and specialized skills). 
+The **Agentic Developer Platform (ADP)** is a unified, multi-team automation framework designed to bootstrap, govern, and scale AI-assisted engineering workflows across the enterprise. Built and scaled within a rapid **4-week timeline**, the platform standardizes the deployment of advanced LLM tooling (Claude Code, Model Context Protocol (MCP) servers, custom agents, and specialized skills). 
 
 The platform bridges the gap between raw LLM capabilities and isolated team workflows, enabling development squads to inherit deep metadata footprints with zero manual configuration. It currently supports **20+ Global Skills**, **20+ Autonomous Agents**, and **20+ Active Teams**, with initial onboarding executed across **7 pilot engineering squads** in partnership with management.
 
@@ -72,7 +72,7 @@ The platform features an automated configuration script that validates environme
 * **Symlink Engine:** Automatically links centralized skills, agents, and rules inside the repository, ensuring zero configuration drift.
 
 ### 2. Multi-Tenant Team Subsystems & Context Injection
-The core differentiator of the platform is its multi-tenant architecture, recognizing that engineering squads work on isolated feature branches, code repositories, or specific assignment groups.
+The core differentiator of the platform is its multi-team architecture, recognizing that engineering squads work on isolated feature branches, code repositories, or specific assignment groups.
 * **The Team Setup Skill:** An orchestrator skill that aggregates team boundaries via automated MCP inquiries or guided terminal prompts.
 * **Dual-File Storage:** Stores metadata under specialized team directories:
     * `config.json`: Structured properties built for programmatic lookup.

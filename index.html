@@ -137,8 +137,11 @@
   .edu-degree { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
   .patent-note { margin-top: 8px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); max-width: 72ch; }
 
-  .dive-row a { color: var(--muted); font-size: 15px; transition: color 160ms ease; }
-  .dive-row a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .dive-link { margin-top: 14px; font-size: 14px; }
+  .dive-link a { color: var(--muted); font-weight: 500; }
+  .dive-link a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  a.pill.dive-link { color: var(--muted); font-weight: 500; }
+  a.pill.dive-link:hover { color: var(--ink); border-color: var(--dim); text-decoration: none; }
 
   /* ---------- footer ---------- */
   footer { border-top: 1px solid var(--line); padding: 40px 0 48px; }
@@ -215,10 +218,11 @@
       <div>
         <h3>Agentic Developer Platform (ADP)</h3>
         <div class="role">Founder</div>
-        <p style="color:var(--muted);font-size:15px;max-width:72ch">Multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</p>
+        <p style="color:var(--muted);font-size:15px;max-width:72ch">Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</p>
         <div class="metrics">
           <span class="metric-pill">−90% task resolution time</span><span class="metric-pill">20% → 90% legacy coverage</span><span class="metric-pill">−90% external defects</span><span class="metric-pill">Days → hours</span>
         </div>
+        <div class="dive-link"><a href="deep-dives/?file=writeup-intuit.md">Read the deep dive →</a></div>
       </div>
     </div>
     
@@ -231,6 +235,7 @@
         <div class="metrics">
           <span class="metric-pill">−95% research & debugging</span><span class="metric-pill">20+ teams</span><span class="metric-pill">Higher accuracy</span>
         </div>
+        <div class="dive-link"><a href="deep-dives/?file=sn-claude-skills.md">Read the deep dive →</a></div>
       </div>
     </div>
     
@@ -239,10 +244,11 @@
       <div>
         <h3>Build Agent, ServiceNow Studio</h3>
         <div class="role">App Engine</div>
-        <p style="color:var(--muted);font-size:15px;max-width:72ch">Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration. Led the metadata-aware, multi-model (Now LLM + Claude on Bedrock) self-healing architecture.</p>
+        <p style="color:var(--muted);font-size:15px;max-width:72ch">Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Led the metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.</p>
         <div class="metrics">
-          <span class="metric-pill">Multi-model</span><span class="metric-pill">Self-healing</span><span class="metric-pill">Metadata-aware</span>
+          <span class="metric-pill">35+ metadata types · 11 domains</span><span class="metric-pill">Multi-model</span><span class="metric-pill">Self-healing</span><span class="metric-pill">Metadata-aware</span>
         </div>
+        <div class="dive-link"><a href="deep-dives/?file=build-agent.md">Read the deep dive →</a></div>
       </div>
     </div>
     
@@ -251,10 +257,19 @@
       <div>
         <h3>Release lifecycle & app summary agents</h3>
         <div class="role">Now Assist for Creator</div>
-        <p style="color:var(--muted);font-size:15px;max-width:72ch">Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests. Documentation time went from hours to a single click.</p>
+        <p style="color:var(--muted);font-size:15px;max-width:72ch">Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click. Ships as the Release lifecycle documentation agent in Now Assist for Creator.</p>
         <div class="metrics">
           <span class="metric-pill">Hours → one click</span><span class="metric-pill">CAB-ready manifests</span><span class="metric-pill">Delta analysis</span>
         </div>
+        <div class="dive-link"><a href="deep-dives/?file=ala-app-summary-agent.md">Read the deep dive →</a></div>
+      </div>
+    </div>
+    
+    
+    <div class="row reveal">
+      <div class="row-meta">More writeups</div>
+      <div class="tags" style="margin-top:0">
+        <a class="pill dive-link" href="deep-dives/?file=generic.md">Generic ServiceNow impact points</a><a class="pill dive-link" href="deep-dives/?file=table-builder.md">Table Builder</a><a class="pill dive-link" href="deep-dives/?file=workspace-builder.md">Workspace Builder</a>
       </div>
     </div>
     
@@ -273,7 +288,7 @@
         <h3>ServiceNow</h3>
         <div class="role">Staff Software Engineer · Hyderabad</div>
         <ul>
-          <li>Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.</li><li>Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration; led its metadata-aware, multi-model (Now LLM + Claude on Bedrock), self-healing agentic architecture.</li><li>Founded the Agentic Developer Platform (ADP), a multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.</li><li>ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.</li><li>Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click.</li><li>Built scalable platform infrastructure supporting agentic application development; architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; core contributor to the App Template Framework (ATFr).</li><li>Drive performance optimization and accessibility compliance using WCAG/ARIA practices; established enterprise testing strategy with Jest, React Testing Library, and Playwright.</li><li>Lead technical hiring, high-bar architectural reviews, and mentoring of engineers in AI-first development practices.</li>
+          <li>Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.</li><li>Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains; led its metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.</li><li>Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.</li><li>ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.</li><li>Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.</li><li>Built scalable platform infrastructure supporting agentic application development; architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; API and template contributions to the App Template Framework (ATFr).</li><li>Drive performance optimization and accessibility compliance using WCAG/ARIA practices; established enterprise testing strategy with Jest, React Testing Library, and Playwright.</li><li>Lead technical hiring, high-bar architectural reviews, and mentoring of engineers in AI-first development practices.</li>
         </ul>
         <div class="tags">
           <span class="pill mono-pill">AI Agents</span><span class="pill mono-pill">MCP</span><span class="pill mono-pill">Harness</span><span class="pill mono-pill">JavaScript</span><span class="pill mono-pill">Java</span><span class="pill mono-pill">React</span><span class="pill mono-pill">Node.js</span><span class="pill mono-pill">Python</span>
@@ -332,7 +347,7 @@
           <li>Developed and improved an order-management system for real-time trading related to short selling.</li><li>Maintained EzeLocate and DataFeed for locating short inventory and real-time stock-data processing.</li>
         </ul>
         <div class="tags">
-          <span class="pill mono-pill">C#</span><span class="pill mono-pill">.NET</span><span class="pill mono-pill">REST APIs</span><span class="pill mono-pill">MS SQL</span>
+          <span class="pill mono-pill">REST APIs</span><span class="pill mono-pill">MS SQL</span>
         </div>
       </div>
     </div>
@@ -472,7 +487,7 @@
     <div class="row reveal">
       <div class="row-meta" style="font-family:var(--font-display);font-size:14px;color:var(--ink);font-weight:500">Backend & Data</div>
       <div class="tags" style="margin-top:0">
-        <span class="pill">Python</span><span class="pill">Java</span><span class="pill">C# / .NET</span><span class="pill">REST APIs</span><span class="pill">MongoDB</span><span class="pill">Meteor</span><span class="pill">Oracle Database</span><span class="pill">Oracle ODI</span><span class="pill">SQL / PLSQL</span>
+        <span class="pill">Python</span><span class="pill">Java</span><span class="pill">REST APIs</span><span class="pill">MongoDB</span><span class="pill">Meteor</span><span class="pill">Oracle Database</span><span class="pill">Oracle ODI</span><span class="pill">SQL / PLSQL</span>
       </div>
     </div>
     
@@ -512,50 +527,6 @@
       Patent <span class="num" style="font-size:13px">US20150046358</span> — “Importing tested objects into benefits programs deployed on production systems”, assigned to Oracle Corp. · Abandoned ·
       <a class="link" href="https://patents.google.com/patent/US20150046358" target="_blank" rel="noopener">Google Patents</a>
     </div>
-  </div>
-</section>
-
-<section id="deep-dives">
-  <div class="wrap">
-    <div class="sec-head rise">
-      <span class="num">06</span><h2>Deep dives</h2>
-    </div>
-    
-    <div class="row dive-row reveal">
-      <div class="row-meta">0</div>
-      <div><a href="deep-dives/build-agent.md">ServiceNow Build Agent — autonomous AI developer companion</a></div>
-    </div>
-    
-    <div class="row dive-row reveal">
-      <div class="row-meta">1</div>
-      <div><a href="deep-dives/writeup-intuit.md">ServiceNow projects — technical writeup (Intuit application)</a></div>
-    </div>
-    
-    <div class="row dive-row reveal">
-      <div class="row-meta">2</div>
-      <div><a href="deep-dives/generic.md">Generic ServiceNow impact points</a></div>
-    </div>
-    
-    <div class="row dive-row reveal">
-      <div class="row-meta">3</div>
-      <div><a href="deep-dives/table-builder.md">Table Builder</a></div>
-    </div>
-    
-    <div class="row dive-row reveal">
-      <div class="row-meta">4</div>
-      <div><a href="deep-dives/workspace-builder.md">Workspace Builder</a></div>
-    </div>
-    
-    <div class="row dive-row reveal">
-      <div class="row-meta">5</div>
-      <div><a href="deep-dives/ala-app-summary-agent.md">App Summary Agent (ALA)</a></div>
-    </div>
-    
-    <div class="row dive-row reveal">
-      <div class="row-meta">6</div>
-      <div><a href="deep-dives/sn-claude-skills.md">Claude skills on ServiceNow</a></div>
-    </div>
-    
   </div>
 </section>
 

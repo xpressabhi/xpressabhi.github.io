@@ -11,7 +11,7 @@
 Over my tenure at ServiceNow, I have architected and delivered **six major platform capabilities** spanning **AI-assisted development, low-code/no-code tooling, and internal developer productivity infrastructure**. These projects collectively impact **thousands of enterprise developers** building on the ServiceNow platform and demonstrate deep expertise in:
 
 - **LLM-powered developer tooling** (Build Agent, App Summary Agent, ALA Release Documentation Agent)
-- **Platform architecture & multi-tenant systems** (Agentic Developer Platform — 20+ skills, 20+ agents, 20+ teams)
+- **Platform architecture & multi-team systems** (Agentic Developer Platform — 20+ skills, 20+ agents, 20+ teams)
 - **Low-code/no-code product design** (Table Builder, Workspace Builder)
 - **Measurable productivity outcomes** (90% reduction in task resolution, days→hours automation)
 
@@ -187,7 +187,7 @@ Business analysts needed to customize agent workspaces (homepages, lists, record
 Teams adopting Claude Code / MCP tooling faced: fragmented configs, no team context injection, manual setup drift, zero visibility into adoption/metrics.
 
 ### Solution
-**ADP** — Multi-tenant, zero-friction bootstrap platform for AI-assisted engineering.
+**ADP** — Multi-team, zero-friction bootstrap platform for AI-assisted engineering.
 
 ### Architecture
 ```
