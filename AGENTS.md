@@ -11,7 +11,7 @@ sync. Everything is generated from one file.
 ## Rules
 
 - **`data/profile.json` is the ONLY hand-edited file.** Never hand-edit
-  generated outputs (`index.html`, `cv/index.html`, `cv/abhishek-maurya-cv.pdf`,
+  generated outputs (`index.html`, `resume/index.html`, `resume/abhishek-maurya-cv.pdf`,
   `../xpressabhi/README.md`, `../career-ops/cv.md`,
   `../career-os/data/files/abhishek_maurya_2026.md`) — the build overwrites them.
 - Regenerate with `npm run build` (add `--pdf` for the PDF; needs Playwright).

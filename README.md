@@ -17,8 +17,8 @@ deep-dives/              ← long-form technical writeups (markdown)
 | Output | Where | Purpose |
 |---|---|---|
 | Portfolio | `index.html` | Single-page portfolio (GitHub Pages root) |
-| CV page | `cv/index.html` | CV view with Download PDF / Print |
-| CV PDF | `cv/abhishek-maurya-cv.pdf` | Print-ready PDF (needs `--pdf`, uses Playwright) |
+| CV page | `resume/index.html` | CV view with Download PDF / Print |
+| CV PDF | `resume/abhishek-maurya-cv.pdf` | Print-ready PDF (needs `--pdf`, uses Playwright) |
 | GitHub profile README | `../xpressabhi/README.md` | The `xpressabhi` repo's only file |
 | career-ops CV | `../career-ops/cv.md` | Job-search pipeline source CV |
 | career-os resume | `../career-os/data/files/abhishek_maurya_2026.md` | Resume used by the remote-job-finder skill |

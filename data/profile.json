@@ -1,5 +1,5 @@
 {
-  "$comment": "SINGLE SOURCE OF TRUTH. Edit only this file. Run `npm run build` in this repo to regenerate portfolio (index.html), CV (cv/index.html + cv/abhishek-maurya-cv.pdf), GitHub profile README (../xpressabhi/README.md), and career-ops CV (../career-ops/cv.md).",
+  "$comment": "SINGLE SOURCE OF TRUTH. Edit only this file. Run `npm run build` in this repo to regenerate portfolio (index.html), CV (resume/index.html + resume/abhishek-maurya-cv.pdf), GitHub profile README (../xpressabhi/README.md), and career-ops CV (../career-ops/cv.md).",
   "basics": {
     "name": "Abhishek Kumar Maurya",
     "headline": "Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms",

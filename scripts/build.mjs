@@ -4,8 +4,8 @@
  *
  * Reads data/profile.json (single source of truth) and generates:
  *   - index.html                  portfolio (from templates/portfolio.html)
- *   - cv/index.html               CV view (from templates/cv.html)
- *   - cv/abhishek-maurya-cv.pdf   print-ready PDF (Playwright, optional)
+ *   - resume/index.html               CV view (from templates/cv.html)
+ *   - resume/abhishek-maurya-cv.pdf   print-ready PDF (Playwright, optional)
  *   - ../xpressabhi/README.md     GitHub profile README
  *   - ../career-ops/cv.md         career-ops pipeline CV
  *
@@ -182,7 +182,7 @@ Staff Software Engineer at **ServiceNow**, focused on **AI Agents, MCP & Harness
 ## Portfolio & CV
 
 - 🌐 Portfolio: https://xpressabhi.github.io
-- 📄 CV (with PDF download): https://xpressabhi.github.io/cv/
+- 📄 CV (with PDF download): https://xpressabhi.github.io/resume/
 
 ## Connect with me
 
@@ -346,10 +346,10 @@ async function renderPdf(cvHtml) {
   const page = await browser.newPage();
   await page.setContent(cvHtml, { waitUntil: "networkidle" });
   await page.emulateMedia({ media: "print" });
-  mkdirSync(P("cv"), { recursive: true });
-  await page.pdf({ path: P("cv/abhishek-maurya-cv.pdf"), preferCSSPageSize: true });
+  mkdirSync(P("resume"), { recursive: true });
+  await page.pdf({ path: P("resume/abhishek-maurya-cv.pdf"), preferCSSPageSize: true });
   await browser.close();
-  console.log("✓ cv/abhishek-maurya-cv.pdf");
+  console.log("✓ resume/abhishek-maurya-cv.pdf");
   return true;
 }
 
@@ -361,7 +361,7 @@ const wantPdf = process.argv.includes("--pdf");
 const verifyOnly = process.argv.includes("--verify");
 const jobs = [
   ["index.html", buildPortfolio()],
-  ["cv/index.html", buildCvPage()],
+  ["resume/index.html", buildCvPage()],
 ];
 
 if (verifyOnly) {
@@ -371,7 +371,7 @@ if (verifyOnly) {
     writeFileSync(OUT(rel), html);
   }
   const leftover = (readFileSync(OUT("index.html"), "utf8").match(/\{\{[#/]?[\w.@\s"|]+?\}\}/g) || [])
-    .concat(readFileSync(OUT("cv/index.html"), "utf8").match(/\{\{[#/]?[\w.@\s"|]+?\}\}/g) || []);
+    .concat(readFileSync(OUT("resume/index.html"), "utf8").match(/\{\{[#/]?[\w.@\s"|]+?\}\}/g) || []);
   const pdf = await renderPdf(buildCvPage());
   console.log("unresolved tokens:", [...new Set(leftover)]);
   console.log("PDF rendered:", pdf);
@@ -385,8 +385,8 @@ for (const [rel, html] of jobs) {
   console.log(`✓ ${rel}`);
 }
 
-if (!existsSync(P("cv/abhishek-maurya-cv.pdf"))) {
-  console.warn("⚠ cv/abhishek-maurya-cv.pdf not found — the CV page embeds this file and will show a blank viewer. Run `npm run build:pdf`.");
+if (!existsSync(P("resume/abhishek-maurya-cv.pdf"))) {
+  console.warn("⚠ resume/abhishek-maurya-cv.pdf not found — the CV page embeds this file and will show a blank viewer. Run `npm run build:pdf`.");
 }
 
 writeFileSync("/Users/amaurya/Documents/GitHub/xpressabhi/README.md", buildProfileReadme());
