@@ -7,301 +7,165 @@
 <meta name="description" content="16+ years of building web applications, agentic AI workflows, and developer platforms">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0b0e0d;
-    --bg-raised: #101412;
-    --bg-sunken: #080a09;
-    --line: rgba(232, 240, 236, 0.09);
-    --line-strong: rgba(232, 240, 236, 0.16);
-    --text: #e9efec;
-    --text-muted: #9aa69f;
-    --text-dim: #75837c;
-    --accent: #3ecf8e;
-    --accent-dim: rgba(62, 207, 142, 0.12);
-    --accent-line: rgba(62, 207, 142, 0.35);
-    --radius: 10px;
-    --font-display: "Space Grotesk", system-ui, sans-serif;
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+    }
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
-    background: var(--bg); color: var(--text);
-    font-family: var(--font-body); font-size: 16px; line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   }
-  ::selection { background: var(--accent); color: #06231a; }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-  .mono { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
-  .num { font-family: var(--font-mono); color: var(--accent); font-variant-numeric: tabular-nums; }
-  a { color: var(--text); text-decoration: none; }
-  a:hover { color: var(--accent); }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+  .mono { font-family: var(--font-mono); }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .link { color: var(--muted); transition: color 160ms ease; }
+  .link:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
+  /* ---------- nav ---------- */
   header {
     position: sticky; top: 0; z-index: 10;
-    background: rgba(11, 14, 13, 0.82); backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
   }
   nav {
-    max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 64px;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    max-width: 1200px; margin: 0 auto; padding: 0 48px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
   }
-  .mark { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 15px; }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
   .mark-sq {
-    width: 26px; height: 26px; border: 1px solid var(--accent-line); background: var(--accent-dim);
-    border-radius: 6px; display: grid; place-items: center;
-    font-family: var(--font-mono); font-size: 11px; color: var(--accent);
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
   }
-  .nav-links { display: flex; align-items: center; gap: 28px; font-size: 14px; }
-  .nav-links a { color: var(--text-muted); }
-  .nav-links a:hover { color: var(--text); }
-  .nav-cta {
-    border: 1px solid var(--accent-line); background: var(--accent-dim); color: var(--accent) !important;
-    border-radius: var(--radius); padding: 7px 16px;
-    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-    transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+  .nav-links { display: flex; align-items: center; gap: 26px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-pill {
+    background: var(--ink); color: var(--bg) !important; border-radius: 999px;
+    padding: 6px 16px; font-size: 13px; font-weight: 500;
+    transition: opacity 160ms ease;
   }
-  .nav-cta:hover { background: rgba(62, 207, 142, 0.2); transform: translateY(-1px); }
-  .nav-cta:active { transform: translateY(0) scale(0.98); }
+  .nav-pill:hover { opacity: 0.85; color: var(--bg) !important; text-decoration: none; }
 
-  .hero {
-    min-height: 100dvh;
-    display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center;
-    gap: 40px; padding: 44px 0 56px; position: relative;
+  /* ---------- hero ---------- */
+  .hero { padding: 64px 0 24px; }
+  .hero-avatar {
+    width: 88px; height: 88px; border-radius: 22px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 32px; font-weight: 500;
+    letter-spacing: -0.01em; margin-bottom: 28px;
   }
-  .hero-grid-bg {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 90% 70% at 70% 30%, rgba(0,0,0,0.9), transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 70% 30%, rgba(0,0,0,0.9), transparent 70%);
+  .hero h1 {
+    font-size: clamp(44px, 6.5vw, 76px); font-weight: 600; line-height: 1; letter-spacing: -0.03em;
+    max-width: 12ch;
   }
-  .hero-kicker { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
-  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2.4s var(--ease) infinite; }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(62, 207, 142, 0.45); }
-    70% { box-shadow: 0 0 0 9px rgba(62, 207, 142, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(62, 207, 142, 0); }
+  .hero-sub {
+    margin-top: 24px; font-size: clamp(18px, 2.3vw, 24px); line-height: 1.4;
+    color: var(--muted); max-width: 760px;
   }
-  h1 {
-    font-family: var(--font-display); font-weight: 600;
-    font-size: clamp(30px, 3.8vw, 46px); line-height: 1.08; letter-spacing: -0.03em;
-    margin-bottom: 16px; max-width: 26ch;
+  .hero-contact {
+    margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;
+    font-size: 14px; color: var(--dim);
   }
-  h1 em { font-style: normal; color: var(--accent); }
-  .hero-sub { color: var(--text-muted); font-size: 16.5px; max-width: 46ch; margin-bottom: 26px; }
-  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius);
-    padding: 13px 22px; font-size: 14px; font-weight: 600;
-    transition: transform 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease);
-  }
-  .btn:active { transform: scale(0.98); }
-  .btn-primary { background: var(--accent); color: #06231a; }
-  .btn-primary:hover { background: #55dca2; color: #06231a; transform: translateY(-1px); }
-  .btn-ghost { border: 1px solid var(--line-strong); color: var(--text); }
-  .btn-ghost:hover { border-color: var(--accent-line); color: var(--accent); transform: translateY(-1px); }
-  .hero-facts { display: flex; gap: 26px; margin-top: 30px; flex-wrap: wrap; }
-  .hero-fact .num { font-size: 22px; font-weight: 600; display: block; }
-  .hero-fact span { font-size: 12.5px; color: var(--text-dim); }
+  .hero-contact .dot { color: var(--faint); }
+  .hero-contact a:hover { color: var(--ink); }
 
-  .mesh-card {
-    border: 1px solid var(--line-strong); border-radius: var(--radius);
-    background: linear-gradient(180deg, rgba(62, 207, 142, 0.05), rgba(16, 20, 18, 0.6));
-    padding: 18px;
+  /* ---------- sections ---------- */
+  section { padding: 64px 0 40px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 20px; }
+  .sec-head .num { font-size: 13px; color: var(--faint); letter-spacing: 0.5px; }
+  .sec-head h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 600; letter-spacing: -0.02em; }
+  .row {
+    display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 32px;
+    padding: 28px 0;
   }
-  .mesh-card-head {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 14px;
+  .row + .row { border-top: 1px solid var(--line); }
+  .row-meta { font-family: var(--font-mono); font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .row h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 2px; }
+  .row .role { color: var(--muted); font-size: 15px; margin-bottom: 12px; }
+  .row ul { list-style: none; }
+  .row li {
+    position: relative; padding-left: 16px; font-size: 15px; line-height: 1.65;
+    color: var(--muted); max-width: 72ch; margin-bottom: 8px;
   }
-  .mesh-card-head .mono { font-size: 10.5px; letter-spacing: 0.16em; }
-  .mesh-node {
-    font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
-    display: flex; align-items: center; gap: 8px; padding: 6px 10px;
-    border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised); white-space: nowrap;
+  .row li::before { content: ""; position: absolute; left: 2px; top: 11px; width: 4px; height: 4px; border-radius: 50%; background: var(--faint); }
+  .row li:last-child { margin-bottom: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .pill {
+    display: inline-flex; align-items: center; padding: 4px 13px; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+    font-size: 13px; letter-spacing: 0.1px;
   }
-  .mesh-node .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-dim); flex: none; }
-  .mesh-node.hot .dot { background: var(--accent); }
-  .mesh-node.hot { border-color: var(--accent-line); }
-  .mesh-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 4px; }
-  .mesh-edge { height: 1px; background: linear-gradient(90deg, var(--accent-line), var(--line)); position: relative; }
-  .mesh-edge::after {
-    content: ""; position: absolute; top: -2px; right: 0;
-    width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
-  }
-  .mesh-foot {
-    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between;
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim);
+  .pill.mono-pill { font-family: var(--font-mono); font-size: 12px; }
+
+  .metrics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .metric-pill {
+    font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px;
   }
 
-  section { padding: 96px 0; }
-  .sec-head { margin-bottom: 48px; }
-  .sec-head .mono { margin-bottom: 12px; display: block; }
-  .sec-head h2 {
-    font-family: var(--font-display); font-weight: 600;
-    font-size: clamp(28px, 3.6vw, 40px); letter-spacing: -0.02em; line-height: 1.1; max-width: 20ch;
-  }
+  .proj-desc { color: var(--muted); font-size: 14.5px; margin-top: 4px; max-width: 60ch; }
+  .proj-link { display: inline-block; margin-top: 8px; font-size: 14px; font-weight: 500; }
+  .proj-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .proj-status { font-family: var(--font-mono); font-size: 11.5px; color: var(--dim); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; display: block; }
 
-  .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .cell {
-    border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised);
-    padding: 26px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden;
-  }
-  .cell::before {
-    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, var(--accent-line), transparent 60%); opacity: 0;
-    transition: opacity 0.3s var(--ease);
-  }
-  .cell:hover::before { opacity: 1; }
-  .cell.wide { grid-column: span 2; }
-  .cell h3 { font-family: var(--font-display); font-size: 19px; font-weight: 600; display: flex; align-items: baseline; gap: 10px; }
-  .cell h3 .idx { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
-  .cell p { color: var(--text-muted); font-size: 14.5px; max-width: 52ch; }
-  .cell .tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--text-muted);
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 9px; background: var(--bg);
-  }
+  .edu-degree { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+  .patent-note { margin-top: 8px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); max-width: 72ch; }
 
-  .impact { background: var(--bg-sunken); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .impact-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; }
-  .metric .num { display: block; font-size: clamp(26px, 3vw, 38px); font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
-  .metric .num small { font-size: 0.55em; color: var(--text-muted); }
-  .metric p { font-size: 13px; color: var(--text-dim); max-width: 18ch; }
+  .dive-row a { color: var(--muted); font-size: 15px; transition: color 160ms ease; }
+  .dive-row a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 
-  .work-row { display: grid; grid-template-columns: 96px 1fr; gap: 32px; padding: 34px 0; border-top: 1px solid var(--line); }
-  .work-row:last-of-type { border-bottom: 1px solid var(--line); }
-  .work-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); padding-top: 6px; }
-  .work-body h3 { font-family: var(--font-display); font-size: 22px; font-weight: 600; margin-bottom: 8px; }
-  .work-body .meta {
-    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text-dim); margin-bottom: 12px;
-  }
-  .work-body p { color: var(--text-muted); font-size: 15px; max-width: 66ch; margin-bottom: 14px; }
-  .work-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    font-family: var(--font-mono); font-size: 11.5px; color: var(--accent);
-    border: 1px solid var(--accent-line); background: var(--accent-dim);
-    border-radius: var(--radius); padding: 5px 11px;
-  }
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); padding: 40px 0 48px; }
+  .footer-row { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+  .footer-links a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .footer-note { margin-top: 12px; font-size: 13.5px; color: var(--faint); max-width: 64ch; }
 
-  .journey { position: relative; }
-  .journey::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: var(--line-strong); }
-  .j-item { position: relative; padding-left: 36px; padding-bottom: 34px; }
-  .j-item:last-child { padding-bottom: 0; }
-  .j-item::before {
-    content: ""; position: absolute; left: 0; top: 8px; width: 15px; height: 15px; border-radius: 50%;
-    border: 1px solid var(--accent-line); background: var(--bg);
-  }
-  .j-item:hover::before { background: var(--accent); }
-  .j-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
-  .j-top h3 { font-family: var(--font-display); font-size: 18px; font-weight: 600; }
-  .j-top .mono { font-size: 11px; }
-  .j-item .role { color: var(--accent); font-size: 14px; margin-bottom: 6px; }
-  .j-item .jstack { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-bottom: 8px; }
-  .j-item ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-  .j-item li { color: var(--text-muted); font-size: 14.5px; max-width: 68ch; padding-left: 18px; position: relative; }
-  .j-item li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
-
-  .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .proj-card {
-    border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised);
-    padding: 22px 24px; display: flex; flex-direction: column; gap: 8px;
-    transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
-  }
-  .proj-card:hover { border-color: var(--accent-line); transform: translateY(-2px); }
-  .proj-card h3 { font-family: var(--font-display); font-size: 17px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-  .proj-card p { color: var(--text-muted); font-size: 14px; }
-  .proj-card .status { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
-  .proj-card .status.off { color: #8a7d6e; }
-  .proj-card .visit { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
-
-  .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .stack-cell { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; background: var(--bg-raised); }
-  .stack-cell h3 {
-    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 14px;
-  }
-  .stack-cell ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
-
-  .edu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .edu-card {
-    border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px;
-    display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
-  }
-  .edu-card h3 { font-family: var(--font-display); font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .edu-card p { color: var(--text-muted); font-size: 13.5px; }
-  .edu-card .mono { font-size: 11px; white-space: nowrap; }
-  .patent-note {
-    margin-top: 14px; border: 1px dashed var(--line-strong); border-radius: var(--radius);
-    padding: 18px 22px; font-size: 14px; color: var(--text-muted);
-  }
-  .patent-note .num { font-size: 13px; }
-
-  .dive-list { display: flex; flex-wrap: wrap; gap: 10px; }
-  .dive-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised);
-    padding: 10px 16px; font-size: 13.5px; color: var(--text-muted);
-    transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
-  }
-  .dive-link:hover { border-color: var(--accent-line); color: var(--accent); }
-
-  footer { border-top: 1px solid var(--line); background: var(--bg-sunken); padding: 80px 0 40px; }
-  .footer-main { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 56px; }
-  .footer-main h2 {
-    font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px); font-weight: 600;
-    letter-spacing: -0.02em; line-height: 1.05; max-width: 16ch;
-  }
-  .footer-main h2 em { font-style: normal; color: var(--accent); }
-  .footer-contact { display: flex; flex-direction: column; gap: 14px; }
-  .f-line { display: flex; align-items: center; gap: 12px; font-size: 15px; }
-  .f-line .mono { font-size: 11px; width: 88px; flex: none; }
-  .f-line a { color: var(--text); }
-  .f-line a:hover { color: var(--accent); }
-  .footer-bottom {
-    border-top: 1px solid var(--line); padding-top: 24px;
-    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-    color: var(--text-dim); font-size: 13px;
-  }
-
-  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+  /* ---------- motion ---------- */
+  .rise { opacity: 0; animation: rise 720ms var(--ease) forwards; animation-delay: var(--d, 0ms); }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .reveal { opacity: 0; transform: translateY(10px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
   .reveal.in { opacity: 1; transform: none; }
-  .reveal.d1 { transition-delay: 0.08s; }
-  .reveal.d2 { transition-delay: 0.16s; }
-  .reveal.d3 { transition-delay: 0.24s; }
 
-  @media (max-width: 1024px) {
-    .impact-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .hero { grid-template-columns: 1fr; padding-top: 56px; }
-    .mesh-card { max-width: 520px; }
-    .bento { grid-template-columns: 1fr 1fr; }
-    .cell.wide { grid-column: span 2; }
-  }
   @media (max-width: 768px) {
-    section { padding: 72px 0; }
-    .nav-links a { display: none; }
-    .bento, .stack-grid, .edu, .proj-grid { grid-template-columns: 1fr; }
-    .cell.wide { grid-column: span 1; }
-    .impact-grid { grid-template-columns: repeat(2, 1fr); }
-    .work-row { grid-template-columns: 1fr; gap: 10px; }
-    .j-top { flex-direction: column; gap: 4px; }
-    .hero-facts { gap: 20px; }
-    .mesh-flow { grid-template-columns: 1fr; }
-    .mesh-edge { display: none; }
-    .mesh-node { justify-content: center; }
+    .wrap, nav { padding: 0 24px; }
+    .nav-links a:not(.nav-pill) { display: none; }
+    .hero { padding-top: 40px; }
+    .hero-avatar { width: 64px; height: 64px; border-radius: 16px; font-size: 24px; margin-bottom: 20px; }
+    section { padding: 48px 0 24px; }
+    .row { grid-template-columns: 1fr; gap: 10px; padding: 24px 0; }
+    .row-meta { order: -1; }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .rise { opacity: 1; animation: none; }
     .reveal { opacity: 1; transform: none; transition: none; }
-    .pulse, .mesh-edge::after { animation: none; box-shadow: none; }
     * { transition-duration: 0.01ms !important; }
   }
 </style>
@@ -311,219 +175,85 @@
 <header>
   <nav>
     <a href="#top" class="mark" aria-label="Back to top">
-      <span class="mark-sq">A</span> Abhishek Kumar Maurya
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
     </a>
     <div class="nav-links">
-      <a href="#capabilities">Capabilities</a>
-      <a href="#impact">Impact</a>
       <a href="#work">Work</a>
-      <a href="#journey">Journey</a>
+      <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
-      <a href="cv/" class="nav-cta">CV</a>
+      <a href="#skills">Skills</a>
+      <a href="cv/" class="nav-pill">CV</a>
     </div>
   </nav>
 </header>
 
 <div class="wrap" id="top">
   <div class="hero">
-    <div class="hero-grid-bg" aria-hidden="true"></div>
-    <div>
-      <span class="hero-kicker mono"><span class="pulse"></span>Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</span>
-      <h1>16+ years of building web applications, agentic AI workflows, and developer platforms</h1>
-      <p class="hero-sub">16+ years across agentic AI, frontend, and platform architecture. Systems adopted by 20+ teams at ServiceNow.</p>
-      <div class="hero-ctas">
-        <a class="btn btn-primary" href="#work">See the work</a>
-        <a class="btn btn-ghost" href="cv/">View CV</a>
-      </div>
-      <div class="hero-facts">
-        <div class="hero-fact"><span class="num">16+</span><span>years of experience</span></div>
-        <div class="hero-fact"><span class="num">20+</span><span>teams on MCP workflows</span></div>
-        <div class="hero-fact"><span class="num">4 wks</span><span>ADP: idea to production</span></div>
-      </div>
-    </div>
-
-    <div class="hero-visual reveal" aria-label="Agent platform architecture diagram">
-      <div class="mesh-card">
-        <div class="mesh-card-head">
-          <span class="mono">Agentic developer platform</span>
-          <span class="mono num">running</span>
-        </div>
-        <div class="mesh-flow">
-          <div class="mesh-node hot"><span class="dot"></span>Agents · 20+</div>
-          <div class="mesh-edge"></div>
-          <div class="mesh-node hot"><span class="dot"></span>MCP servers</div>
-          <div class="mesh-edge"></div>
-          <div class="mesh-node hot"><span class="dot"></span>Skills · 20+</div>
-        </div>
-        <div class="mesh-flow">
-          <div class="mesh-node"><span class="dot"></span>Telemetry</div>
-          <div class="mesh-edge"></div>
-          <div class="mesh-node hot"><span class="dot"></span>Multi-model</div>
-          <div class="mesh-edge"></div>
-          <div class="mesh-node"><span class="dot"></span>Governance</div>
-        </div>
-        <div class="mesh-foot">
-          <span>7 pilot squads</span>
-          <span>20+ teams</span>
-        </div>
-      </div>
+    <div class="hero-avatar rise" aria-hidden="true">AM</div>
+    <h1 class="rise" style="--d:80ms">Abhishek Kumar Maurya</h1>
+    <p class="hero-sub rise" style="--d:140ms">Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</p>
+    <div class="hero-contact rise" style="--d:200ms">
+      <span>Hyderabad, India</span>
+      <span class="dot">·</span>
+      <a class="link" href="https://xpressabhi.github.io/" target="_blank" rel="noopener">xpressabhi.github.io</a>
+      <span class="dot">·</span>
+      <a class="link" href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">LinkedIn</a>
+      <span class="dot">·</span>
+      <a class="link" href="https://github.com/xpressabhi" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 </div>
 
-<section id="capabilities">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="mono">01 · What I bring</span>
-      <h2>Six capabilities, one thread: shipping real systems at scale.</h2>
-    </div>
-    <div class="bento">
-      
-      <div class="cell wide reveal ">
-        <h3><span class="idx">00</span>Agentic AI & MCP</h3>
-        <p>Designed and shipped MCP-driven agentic workflows integrated into the engineering lifecycle, adopted by 20+ teams with roughly 95% less research and debugging effort.</p>
-        <div class="tags">
-          <span class="tag">MCP</span><span class="tag">Claude Code</span><span class="tag">Build Agent</span><span class="tag">Tool orchestration</span><span class="tag">Self-healing loops</span>
-        </div>
-      </div>
-      
-      <div class="cell  reveal d1">
-        <h3><span class="idx">01</span>Developer platforms</h3>
-        <p>Founded the Agentic Developer Platform: multi-tenant bootstrap and governance infrastructure for agents, skills, and MCP servers.</p>
-        <div class="tags">
-          <span class="tag">Multi-tenant</span><span class="tag">Governance</span><span class="tag">Telemetry</span>
-        </div>
-      </div>
-      
-      <div class="cell  reveal ">
-        <h3><span class="idx">02</span>Frontend architecture</h3>
-        <p>Architected scalable React and TypeScript systems powering low-code tools like Table Builder and Workspace Builder.</p>
-        <div class="tags">
-          <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Low-code</span>
-        </div>
-      </div>
-      
-      <div class="cell  reveal d1">
-        <h3><span class="idx">03</span>System design</h3>
-        <p>Metadata-aware, multi-model architectures and design patterns built to hold up across teams, tenants, and releases.</p>
-        <div class="tags">
-          <span class="tag">Scalable systems</span><span class="tag">Design patterns</span>
-        </div>
-      </div>
-      
-      <div class="cell wide reveal ">
-        <h3><span class="idx">04</span>Quality & reliability</h3>
-        <p>Enterprise testing strategy with Jest, React Testing Library, and Playwright; performance optimization and WCAG/ARIA accessibility. Lifted legacy coverage from 20% to 90%.</p>
-        <div class="tags">
-          <span class="tag">Jest</span><span class="tag">RTL</span><span class="tag">Playwright</span><span class="tag">WCAG/ARIA</span><span class="tag">Performance</span>
-        </div>
-      </div>
-      
-      <div class="cell  reveal d1">
-        <h3><span class="idx">05</span>Technical leadership</h3>
-        <p>Lead technical hiring, run high-bar architectural reviews, and mentor engineers in AI-first development practices.</p>
-        <div class="tags">
-          <span class="tag">Hiring</span><span class="tag">Mentoring</span><span class="tag">Reviews</span>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-</section>
-
-<section class="impact" id="impact">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="mono">02 · Measured outcomes</span>
-      <h2>Numbers from shipped work, not projections.</h2>
-    </div>
-    <div class="impact-grid">
-      
-      <div class="metric reveal">
-        <span class="num">95%</span>
-        <p>less research and debugging effort for 20+ teams on MCP workflows</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">90%</span>
-        <p>faster case task resolution on the Agentic Developer Platform</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">20% → 90%</span>
-        <p>legacy test coverage lift on ADP pilot squads</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">90%</span>
-        <p>fewer external defects, now single-digit org-wide</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">4 wks</span>
-        <p>from concept to production for a multi-tenant AI platform</p>
-      </div>
-      
-      <div class="metric reveal">
-        <span class="num">80%</span>
-        <p>faster test-to-production HRMS setup, Oracle Benefit Plan Copy</p>
-      </div>
-      
-    </div>
-  </div>
-</section>
-
 <section id="work">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="mono">03 · Flagship work</span>
-      <h2>Four systems that moved real org-level metrics.</h2>
+    <div class="sec-head rise">
+      <span class="num">01</span><h2>Work</h2>
     </div>
     
-    <div class="work-row reveal">
-      <div class="work-num">01</div>
-      <div class="work-body">
+    <div class="row reveal">
+      <div class="row-meta">01 · ServiceNow</div>
+      <div>
         <h3>Agentic Developer Platform (ADP)</h3>
-        <div class="meta">ServiceNow · Founder</div>
-        <p>Multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</p>
-        <div class="work-chips">
-          <span class="chip">−90% task resolution time</span><span class="chip">20% → 90% legacy coverage</span><span class="chip">−90% external defects</span><span class="chip">Days → hours</span>
+        <div class="role">Founder</div>
+        <p style="color:var(--muted);font-size:15px;max-width:72ch">Multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</p>
+        <div class="metrics">
+          <span class="metric-pill">−90% task resolution time</span><span class="metric-pill">20% → 90% legacy coverage</span><span class="metric-pill">−90% external defects</span><span class="metric-pill">Days → hours</span>
         </div>
       </div>
     </div>
     
-    <div class="work-row reveal">
-      <div class="work-num">02</div>
-      <div class="work-body">
+    <div class="row reveal">
+      <div class="row-meta">02 · ServiceNow</div>
+      <div>
         <h3>MCP-driven engineering workflows</h3>
-        <div class="meta">ServiceNow · 20+ teams</div>
-        <p>Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</p>
-        <div class="work-chips">
-          <span class="chip">−95% research & debugging</span><span class="chip">20+ teams</span><span class="chip">Higher accuracy</span>
+        <div class="role">20+ teams</div>
+        <p style="color:var(--muted);font-size:15px;max-width:72ch">Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</p>
+        <div class="metrics">
+          <span class="metric-pill">−95% research & debugging</span><span class="metric-pill">20+ teams</span><span class="metric-pill">Higher accuracy</span>
         </div>
       </div>
     </div>
     
-    <div class="work-row reveal">
-      <div class="work-num">03</div>
-      <div class="work-body">
+    <div class="row reveal">
+      <div class="row-meta">03 · ServiceNow</div>
+      <div>
         <h3>Build Agent, ServiceNow Studio</h3>
-        <div class="meta">ServiceNow · App Engine</div>
-        <p>Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration. Led the metadata-aware, multi-model (Now LLM + Claude on Bedrock) self-healing architecture.</p>
-        <div class="work-chips">
-          <span class="chip">Multi-model</span><span class="chip">Self-healing</span><span class="chip">Metadata-aware</span>
+        <div class="role">App Engine</div>
+        <p style="color:var(--muted);font-size:15px;max-width:72ch">Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration. Led the metadata-aware, multi-model (Now LLM + Claude on Bedrock) self-healing architecture.</p>
+        <div class="metrics">
+          <span class="metric-pill">Multi-model</span><span class="metric-pill">Self-healing</span><span class="metric-pill">Metadata-aware</span>
         </div>
       </div>
     </div>
     
-    <div class="work-row reveal">
-      <div class="work-num">04</div>
-      <div class="work-body">
+    <div class="row reveal">
+      <div class="row-meta">04 · ServiceNow</div>
+      <div>
         <h3>Release lifecycle & app summary agents</h3>
-        <div class="meta">ServiceNow · Now Assist for Creator</div>
-        <p>Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests. Documentation time went from hours to a single click.</p>
-        <div class="work-chips">
-          <span class="chip">Hours → one click</span><span class="chip">CAB-ready manifests</span><span class="chip">Delta analysis</span>
+        <div class="role">Now Assist for Creator</div>
+        <p style="color:var(--muted);font-size:15px;max-width:72ch">Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests. Documentation time went from hours to a single click.</p>
+        <div class="metrics">
+          <span class="metric-pill">Hours → one click</span><span class="metric-pill">CAB-ready manifests</span><span class="metric-pill">Delta analysis</span>
         </div>
       </div>
     </div>
@@ -531,281 +261,316 @@
   </div>
 </section>
 
-<section id="journey">
+<section id="experience">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="mono">04 · Where I have worked</span>
-      <h2>From Oracle to agentic AI, one thread of building.</h2>
+    <div class="sec-head rise">
+      <span class="num">02</span><h2>Experience</h2>
     </div>
-    <div class="journey">
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>ServiceNow</h3>
-          <span class="mono">Oct 2023 · Present</span>
-        </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">Oct 2023 – Present</div>
+      <div>
+        <h3>ServiceNow</h3>
         <div class="role">Staff Software Engineer · Hyderabad</div>
-        <div class="jstack">AI Agents, MCP, Harness, JavaScript, Java, React, Node.js, Python</div>
         <ul>
           <li>Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.</li><li>Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration; led its metadata-aware, multi-model (Now LLM + Claude on Bedrock), self-healing agentic architecture.</li><li>Founded the Agentic Developer Platform (ADP), a multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.</li><li>ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.</li><li>Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click.</li><li>Built scalable platform infrastructure supporting agentic application development; architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; core contributor to the App Template Framework (ATFr).</li><li>Drive performance optimization and accessibility compliance using WCAG/ARIA practices; established enterprise testing strategy with Jest, React Testing Library, and Playwright.</li><li>Lead technical hiring, high-bar architectural reviews, and mentoring of engineers in AI-first development practices.</li>
         </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Rippling</h3>
-          <span class="mono">Oct 2022 · Aug 2023</span>
+        <div class="tags">
+          <span class="pill mono-pill">AI Agents</span><span class="pill mono-pill">MCP</span><span class="pill mono-pill">Harness</span><span class="pill mono-pill">JavaScript</span><span class="pill mono-pill">Java</span><span class="pill mono-pill">React</span><span class="pill mono-pill">Node.js</span><span class="pill mono-pill">Python</span>
         </div>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">Oct 2022 – Aug 2023</div>
+      <div>
+        <h3>Rippling</h3>
         <div class="role">Senior Software Engineer · Bengaluru</div>
-        <div class="jstack">JavaScript, React, TypeScript, Node.js, Python, Playwright, Sentry, LogRocket</div>
         <ul>
           <li>Identified frontend codebase problem areas and developed improvement proposals.</li><li>Contributed to frontend infrastructure and global engineering initiatives.</li><li>Conducted interviews, reviewed pull requests, mentored junior developers, and shared technical learnings.</li>
         </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Reputation</h3>
-          <span class="mono">Sep 2020 · Sep 2022</span>
+        <div class="tags">
+          <span class="pill mono-pill">JavaScript</span><span class="pill mono-pill">React</span><span class="pill mono-pill">TypeScript</span><span class="pill mono-pill">Node.js</span><span class="pill mono-pill">Python</span><span class="pill mono-pill">Playwright</span><span class="pill mono-pill">Sentry</span><span class="pill mono-pill">LogRocket</span>
         </div>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">Sep 2020 – Sep 2022</div>
+      <div>
+        <h3>Reputation</h3>
         <div class="role">Lead Engineer · Hyderabad</div>
-        <div class="jstack">JavaScript, Node.js, React, Python, RTK Query, Sumo Logic</div>
         <ul>
           <li>Led frontend development on the Actions Team, planning and delivering web-based tools.</li><li>Improved performance through advanced optimization techniques and ensured accessibility for a broad user base.</li><li>Built maintainable, scalable, and testable features using engineering best practices; mentored junior developers and reviewed code.</li>
         </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Worktech Software</h3>
-          <span class="mono">Jul 2017 · Aug 2020</span>
+        <div class="tags">
+          <span class="pill mono-pill">JavaScript</span><span class="pill mono-pill">Node.js</span><span class="pill mono-pill">React</span><span class="pill mono-pill">Python</span><span class="pill mono-pill">RTK Query</span><span class="pill mono-pill">Sumo Logic</span>
         </div>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">Jul 2017 – Aug 2020</div>
+      <div>
+        <h3>Worktech Software</h3>
         <div class="role">Co-Founder / Lead Developer · Hyderabad</div>
-        <div class="jstack">JavaScript, Node.js, MongoDB, Meteor, REST APIs</div>
         <ul>
           <li>Built products and services using JavaScript, Node.js, MongoDB, Meteor, and REST APIs.</li><li>flexzone.in (2018–2020): aggregator of cafés into coworking spaces.</li><li>hospeto.in (2017–2018): video consultation platform for doctors, with health record and billing management.</li>
         </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Eze Software Group</h3>
-          <span class="mono">Jun 2016 · Jun 2017</span>
+        <div class="tags">
+          <span class="pill mono-pill">JavaScript</span><span class="pill mono-pill">Node.js</span><span class="pill mono-pill">MongoDB</span><span class="pill mono-pill">Meteor</span><span class="pill mono-pill">REST APIs</span>
         </div>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">Jun 2016 – Jun 2017</div>
+      <div>
+        <h3>Eze Software Group</h3>
         <div class="role">Senior Developer · Hyderabad</div>
-        <div class="jstack">C#, .NET, REST APIs, MS SQL</div>
         <ul>
           <li>Developed and improved an order-management system for real-time trading related to short selling.</li><li>Maintained EzeLocate and DataFeed for locating short inventory and real-time stock-data processing.</li>
         </ul>
-      </div>
-      
-      <div class="j-item reveal">
-        <div class="j-top">
-          <h3>Oracle</h3>
-          <span class="mono">Jun 2010 · May 2016</span>
+        <div class="tags">
+          <span class="pill mono-pill">C#</span><span class="pill mono-pill">.NET</span><span class="pill mono-pill">REST APIs</span><span class="pill mono-pill">MS SQL</span>
         </div>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">Jun 2010 – May 2016</div>
+      <div>
+        <h3>Oracle</h3>
         <div class="role">Project Leader · Hyderabad</div>
-        <div class="jstack">Java, Oracle Database, Oracle ODI, SQL/PLSQL</div>
         <ul>
           <li>Developed and improved Plan Copy and Benefits Relationships systems using Java, Oracle Database, Oracle ODI, and SQL/PLSQL.</li><li>Completed the Benefit Plan Copy project, reducing test-to-production HRMS data setup time by 80%.</li>
         </ul>
+        <div class="tags">
+          <span class="pill mono-pill">Java</span><span class="pill mono-pill">Oracle Database</span><span class="pill mono-pill">Oracle ODI</span><span class="pill mono-pill">SQL/PLSQL</span>
+        </div>
       </div>
-      
     </div>
+    
   </div>
 </section>
 
 <section id="projects">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="mono">05 · Projects</span>
-      <h2>Things I have shipped on the side.</h2>
+    <div class="sec-head rise">
+      <span class="num">03</span><h2>Projects</h2>
     </div>
-    <div class="proj-grid">
-      
-      <div class="proj-card reveal">
-        <h3>selftest.in<span class="status live">live</span></h3>
-        <p>Self-testing and government job preparation app powered by the Gemini API</p>
-        <a class="visit" href="https://selftest.in" target="_blank" rel="noopener">Visit app →</a>
+    
+    <div class="row reveal">
+      <div class="row-meta">live</div>
+      <div>
+        <h3>selftest.in</h3>
+        <p class="proj-desc">Self-testing and government job preparation app powered by the Gemini API</p>
+        <a class="proj-link" href="https://selftest.in" target="_blank" rel="noopener">Visit selftest.in →</a>
       </div>
-      
-      <div class="proj-card reveal">
-        <h3>lifetimetax.vercel.app<span class="status live">live</span></h3>
-        <p>Lifetime tax liability calculator</p>
-        <a class="visit" href="https://lifetimetax.vercel.app" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>airoadtripplanner.vercel.app<span class="status live">live</span></h3>
-        <p>AI-powered road trip planner</p>
-        <a class="visit" href="https://airoadtripplanner.vercel.app" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>faang-cv.vercel.app<span class="status live">live</span></h3>
-        <p>CV builder tuned for FAANG-style applications</p>
-        <a class="visit" href="https://faang-cv.vercel.app" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>uberpro.in<span class="status live">live</span></h3>
-        <p>Order management app for businesses</p>
-        <a class="visit" href="https://uberpro.in" target="_blank" rel="noopener">Visit app →</a>
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>swechhafarms.com<span class="status discontinued">discontinued</span></h3>
-        <p>Earlier project, no longer available — kept for reference</p>
-        
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>covid19open.in<span class="status discontinued">discontinued</span></h3>
-        <p>Earlier project, no longer available — kept for reference</p>
-        
-      </div>
-      
-      <div class="proj-card reveal">
-        <h3>selftest.app<span class="status discontinued">discontinued</span></h3>
-        <p>Earlier version of the self-testing app, no longer available — kept for reference</p>
-        
-      </div>
-      
     </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">live</div>
+      <div>
+        <h3>lifetimetax.vercel.app</h3>
+        <p class="proj-desc">Lifetime tax liability calculator</p>
+        <a class="proj-link" href="https://lifetimetax.vercel.app" target="_blank" rel="noopener">Visit lifetimetax.vercel.app →</a>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">live</div>
+      <div>
+        <h3>airoadtripplanner.vercel.app</h3>
+        <p class="proj-desc">AI-powered road trip planner</p>
+        <a class="proj-link" href="https://airoadtripplanner.vercel.app" target="_blank" rel="noopener">Visit airoadtripplanner.vercel.app →</a>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">live</div>
+      <div>
+        <h3>faang-cv.vercel.app</h3>
+        <p class="proj-desc">CV builder tuned for FAANG-style applications</p>
+        <a class="proj-link" href="https://faang-cv.vercel.app" target="_blank" rel="noopener">Visit faang-cv.vercel.app →</a>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">live</div>
+      <div>
+        <h3>uberpro.in</h3>
+        <p class="proj-desc">Order management app for businesses</p>
+        <a class="proj-link" href="https://uberpro.in" target="_blank" rel="noopener">Visit uberpro.in →</a>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">discontinued</div>
+      <div>
+        <h3>swechhafarms.com</h3>
+        <p class="proj-desc">Earlier project, no longer available — kept for reference</p>
+        
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">discontinued</div>
+      <div>
+        <h3>covid19open.in</h3>
+        <p class="proj-desc">Earlier project, no longer available — kept for reference</p>
+        
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">discontinued</div>
+      <div>
+        <h3>selftest.app</h3>
+        <p class="proj-desc">Earlier version of the self-testing app, no longer available — kept for reference</p>
+        
+      </div>
+    </div>
+    
   </div>
 </section>
 
-<section id="stack">
+<section id="skills">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="mono">06 · Toolkit</span>
-      <h2>The stack behind the systems.</h2>
+    <div class="sec-head rise">
+      <span class="num">04</span><h2>Skills</h2>
     </div>
-    <div class="stack-grid">
-      
-      <div class="stack-cell reveal">
-        <h3>Architecture</h3>
-        <ul>
-          <li><span class="tag">System design</span></li><li><span class="tag">Scalable frontend architecture</span></li><li><span class="tag">Design patterns</span></li><li><span class="tag">Developer productivity</span></li><li><span class="tag">Metadata-driven development</span></li>
-        </ul>
+    
+    <div class="row reveal">
+      <div class="row-meta" style="font-family:var(--font-display);font-size:14px;color:var(--ink);font-weight:500">Architecture</div>
+      <div class="tags" style="margin-top:0">
+        <span class="pill">System design</span><span class="pill">Scalable frontend architecture</span><span class="pill">Design patterns</span><span class="pill">Developer productivity</span><span class="pill">Metadata-driven development</span>
       </div>
-      
-      <div class="stack-cell reveal">
-        <h3>AI & Agentic Engineering</h3>
-        <ul>
-          <li><span class="tag">AI agents</span></li><li><span class="tag">MCP workflows</span></li><li><span class="tag">Claude Code</span></li><li><span class="tag">Harness</span></li><li><span class="tag">Prompt engineering</span></li><li><span class="tag">Agent workflows</span></li><li><span class="tag">Tool orchestration</span></li><li><span class="tag">Multi-model systems</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Frontend & Platform</h3>
-        <ul>
-          <li><span class="tag">JavaScript (ES6+)</span></li><li><span class="tag">TypeScript</span></li><li><span class="tag">React</span></li><li><span class="tag">Next.js</span></li><li><span class="tag">Redux Toolkit</span></li><li><span class="tag">RTK Query</span></li><li><span class="tag">Node.js</span></li><li><span class="tag">Webpack</span></li><li><span class="tag">Vite</span></li><li><span class="tag">PWA</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Reliability & Quality</h3>
-        <ul>
-          <li><span class="tag">Jest</span></li><li><span class="tag">React Testing Library</span></li><li><span class="tag">Playwright</span></li><li><span class="tag">Performance optimization</span></li><li><span class="tag">WCAG / ARIA accessibility</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Backend & Data</h3>
-        <ul>
-          <li><span class="tag">Python</span></li><li><span class="tag">Java</span></li><li><span class="tag">C# / .NET</span></li><li><span class="tag">REST APIs</span></li><li><span class="tag">MongoDB</span></li><li><span class="tag">Meteor</span></li><li><span class="tag">Oracle Database</span></li><li><span class="tag">Oracle ODI</span></li><li><span class="tag">SQL / PLSQL</span></li>
-        </ul>
-      </div>
-      
-      <div class="stack-cell reveal">
-        <h3>Observability</h3>
-        <ul>
-          <li><span class="tag">Sentry</span></li><li><span class="tag">LogRocket</span></li><li><span class="tag">Datadog</span></li><li><span class="tag">Sumo Logic</span></li>
-        </ul>
-      </div>
-      
     </div>
-    <div class="edu" style="margin-top:14px">
-      
-      <div class="edu-card reveal">
-        <div>
-          <h3>National Institute of Technology (NIT), Tiruchirappalli</h3>
-          <p>Master of Computer Applications (MCA)</p>
-        </div>
-        <span class="mono">2007–2010</span>
+    
+    <div class="row reveal">
+      <div class="row-meta" style="font-family:var(--font-display);font-size:14px;color:var(--ink);font-weight:500">AI & Agentic Engineering</div>
+      <div class="tags" style="margin-top:0">
+        <span class="pill">AI agents</span><span class="pill">MCP workflows</span><span class="pill">Claude Code</span><span class="pill">Harness</span><span class="pill">Prompt engineering</span><span class="pill">Agent workflows</span><span class="pill">Tool orchestration</span><span class="pill">Multi-model systems</span>
       </div>
-      
-      <div class="edu-card reveal">
-        <div>
-          <h3>Banaras Hindu University (BHU), Varanasi</h3>
-          <p>BSc (Hons), Mathematics</p>
-        </div>
-        <span class="mono">2003–2006</span>
-      </div>
-      
     </div>
+    
+    <div class="row reveal">
+      <div class="row-meta" style="font-family:var(--font-display);font-size:14px;color:var(--ink);font-weight:500">Frontend & Platform</div>
+      <div class="tags" style="margin-top:0">
+        <span class="pill">JavaScript (ES6+)</span><span class="pill">TypeScript</span><span class="pill">React</span><span class="pill">Next.js</span><span class="pill">Redux Toolkit</span><span class="pill">RTK Query</span><span class="pill">Node.js</span><span class="pill">Webpack</span><span class="pill">Vite</span><span class="pill">PWA</span>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta" style="font-family:var(--font-display);font-size:14px;color:var(--ink);font-weight:500">Reliability & Quality</div>
+      <div class="tags" style="margin-top:0">
+        <span class="pill">Jest</span><span class="pill">React Testing Library</span><span class="pill">Playwright</span><span class="pill">Performance optimization</span><span class="pill">WCAG / ARIA accessibility</span>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta" style="font-family:var(--font-display);font-size:14px;color:var(--ink);font-weight:500">Backend & Data</div>
+      <div class="tags" style="margin-top:0">
+        <span class="pill">Python</span><span class="pill">Java</span><span class="pill">C# / .NET</span><span class="pill">REST APIs</span><span class="pill">MongoDB</span><span class="pill">Meteor</span><span class="pill">Oracle Database</span><span class="pill">Oracle ODI</span><span class="pill">SQL / PLSQL</span>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta" style="font-family:var(--font-display);font-size:14px;color:var(--ink);font-weight:500">Observability</div>
+      <div class="tags" style="margin-top:0">
+        <span class="pill">Sentry</span><span class="pill">LogRocket</span><span class="pill">Datadog</span><span class="pill">Sumo Logic</span>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <span class="num">05</span><h2>Education</h2>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">2007–2010</div>
+      <div>
+        <h3>National Institute of Technology (NIT), Tiruchirappalli</h3>
+        <p class="edu-degree">Master of Computer Applications (MCA)</p>
+      </div>
+    </div>
+    
+    <div class="row reveal">
+      <div class="row-meta">2003–2006</div>
+      <div>
+        <h3>Banaras Hindu University (BHU), Varanasi</h3>
+        <p class="edu-degree">BSc (Hons), Mathematics</p>
+      </div>
+    </div>
+    
     <div class="patent-note reveal">
-      Patent · <span class="num">US20150046358</span> "Importing tested objects into benefits programs deployed on production systems", assigned to Oracle Corp. · Abandoned
-      · <a href="https://patents.google.com/patent/US20150046358" target="_blank" rel="noopener">Google Patents</a>
+      Patent <span class="num" style="font-size:13px">US20150046358</span> — “Importing tested objects into benefits programs deployed on production systems”, assigned to Oracle Corp. · Abandoned ·
+      <a class="link" href="https://patents.google.com/patent/US20150046358" target="_blank" rel="noopener">Google Patents</a>
     </div>
   </div>
 </section>
 
 <section id="deep-dives">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="mono">07 · Deep dives</span>
-      <h2>Technical writeups of the ServiceNow systems.</h2>
+    <div class="sec-head rise">
+      <span class="num">06</span><h2>Deep dives</h2>
     </div>
-    <div class="dive-list">
-      
-      <a class="dive-link reveal" href="deep-dives/build-agent.md">ServiceNow Build Agent — autonomous AI developer companion</a>
-      
-      <a class="dive-link reveal" href="deep-dives/writeup-intuit.md">ServiceNow projects — technical writeup (Intuit application)</a>
-      
-      <a class="dive-link reveal" href="deep-dives/generic.md">Generic ServiceNow impact points</a>
-      
-      <a class="dive-link reveal" href="deep-dives/table-builder.md">Table Builder</a>
-      
-      <a class="dive-link reveal" href="deep-dives/workspace-builder.md">Workspace Builder</a>
-      
-      <a class="dive-link reveal" href="deep-dives/ala-app-summary-agent.md">App Summary Agent (ALA)</a>
-      
-      <a class="dive-link reveal" href="deep-dives/sn-claude-skills.md">Claude skills on ServiceNow</a>
-      
+    
+    <div class="row dive-row reveal">
+      <div class="row-meta">0</div>
+      <div><a href="deep-dives/build-agent.md">ServiceNow Build Agent — autonomous AI developer companion</a></div>
     </div>
+    
+    <div class="row dive-row reveal">
+      <div class="row-meta">1</div>
+      <div><a href="deep-dives/writeup-intuit.md">ServiceNow projects — technical writeup (Intuit application)</a></div>
+    </div>
+    
+    <div class="row dive-row reveal">
+      <div class="row-meta">2</div>
+      <div><a href="deep-dives/generic.md">Generic ServiceNow impact points</a></div>
+    </div>
+    
+    <div class="row dive-row reveal">
+      <div class="row-meta">3</div>
+      <div><a href="deep-dives/table-builder.md">Table Builder</a></div>
+    </div>
+    
+    <div class="row dive-row reveal">
+      <div class="row-meta">4</div>
+      <div><a href="deep-dives/workspace-builder.md">Workspace Builder</a></div>
+    </div>
+    
+    <div class="row dive-row reveal">
+      <div class="row-meta">5</div>
+      <div><a href="deep-dives/ala-app-summary-agent.md">App Summary Agent (ALA)</a></div>
+    </div>
+    
+    <div class="row dive-row reveal">
+      <div class="row-meta">6</div>
+      <div><a href="deep-dives/sn-claude-skills.md">Claude skills on ServiceNow</a></div>
+    </div>
+    
   </div>
 </section>
 
-<footer id="contact">
+<footer>
   <div class="wrap">
-    <div class="footer-main">
-      <h2>Building agents that <em>ship</em>.</h2>
-      <div class="footer-contact">
-        <div class="f-line">
-          <span class="mono">Email</span>
-          <a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a>
-        </div>
-        <div class="f-line">
-          <span class="mono">Phone</span>
-          <a href="tel:+917842740174">+917842740174</a>
-        </div>
-        <div class="f-line">
-          <span class="mono">Location</span>
-          <span>Hyderabad, India · Immediately available; open to in-office, hybrid, or remote roles from Hyderabad</span>
-        </div>
-        <div class="f-line">
-          <span class="mono">Online</span>
-          <a href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="https://github.com/xpressabhi" target="_blank" rel="noopener">GitHub</a>
-        </div>
+    <div class="footer-row">
+      <span>Abhishek Kumar Maurya · 16+ years of software engineering</span>
+      <div class="footer-links">
+        <a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a>
+        <a href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/xpressabhi" target="_blank" rel="noopener">GitHub</a>
+        <a href="cv/">CV</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>Abhishek Kumar Maurya · Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</span>
-      <span class="num">16+ years · AI agents · MCP · platforms</span>
-    </div>
+    <p class="footer-note">Immediately available; open to in-office, hybrid, or remote roles from Hyderabad</p>
   </div>
 </footer>
 
@@ -824,7 +589,7 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.08 });
     els.forEach(function (el) { io.observe(el); });
   })();
 </script>

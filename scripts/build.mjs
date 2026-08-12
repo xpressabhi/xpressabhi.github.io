@@ -385,6 +385,10 @@ for (const [rel, html] of jobs) {
   console.log(`✓ ${rel}`);
 }
 
+if (!existsSync(P("cv/abhishek-maurya-cv.pdf"))) {
+  console.warn("⚠ cv/abhishek-maurya-cv.pdf not found — the CV page embeds this file and will show a blank viewer. Run `npm run build:pdf`.");
+}
+
 writeFileSync("/Users/amaurya/Documents/GitHub/xpressabhi/README.md", buildProfileReadme());
 console.log("✓ ../xpressabhi/README.md");
 

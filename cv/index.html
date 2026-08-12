@@ -5,138 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Abhishek Kumar Maurya · CV</title>
 <meta name="description" content="Curriculum vitae of Abhishek Kumar Maurya — Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #141a17;
-    --ink-muted: #4a5550;
-    --accent: #0f7a52;
-    --line: #d8deda;
-    --paper: #ffffff;
-    --font-sans: "Inter", system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
-  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
   body {
-    background: #e9ecea;
-    color: var(--ink);
-    font-family: var(--font-sans);
-    font-size: 10.5pt;
-    line-height: 1.45;
+    background: #e8e8e8;
+    font-family: Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--accent); text-decoration: none; }
 
   .toolbar {
     position: sticky; top: 0; z-index: 20;
-    background: #141a17; color: #fff;
+    background: #111111; color: #fff;
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
     padding: 12px 24px;
   }
-  .toolbar .t-title { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #9fb8ab; }
+  .toolbar .t-title { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; }
   .toolbar .t-actions { display: flex; gap: 10px; }
   .t-btn {
     display: inline-flex; align-items: center; gap: 8px;
-    border: 1px solid rgba(255,255,255,0.25); border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3); border-radius: 6px;
     color: #fff; font-size: 13px; font-weight: 600;
-    padding: 9px 18px; background: rgba(255,255,255,0.06);
-    transition: background 0.2s ease;
+    padding: 9px 18px; background: rgba(255,255,255,0.08);
   }
-  .t-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
-  .t-btn.primary { background: #3ecf8e; border-color: #3ecf8e; color: #06231a; }
-  .t-btn.primary:hover { background: #55dca2; }
+  .t-btn:hover { background: rgba(255,255,255,0.18); color: #fff; text-decoration: none; }
+  .t-btn.primary { background: #ffffff; border-color: #ffffff; color: #111111; }
+  .t-btn.primary:hover { background: #e5e5e5; }
   .t-btn:active { transform: scale(0.98); }
 
-  .sheet {
-    max-width: 820px;
-    margin: 28px auto 56px;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 48px 52px;
-    box-shadow: 0 10px 30px rgba(20, 26, 23, 0.08);
-  }
-
-  .cv-head { padding-bottom: 18px; border-bottom: 2px solid var(--ink); margin-bottom: 20px; }
-  .cv-name { font-size: 26pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
-  .cv-role { font-size: 11.5pt; color: var(--accent); font-weight: 600; margin-top: 4px; }
-  .cv-contact {
-    display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px;
-    font-size: 9.5pt; color: var(--ink-muted);
-  }
-  .cv-contact .mono { font-size: 9pt; }
-
-  .cv-section { margin-top: 20px; }
-  .cv-section-title {
-    font-family: var(--font-mono); font-size: 9.5pt; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--accent); border-bottom: 1px solid var(--line);
-    padding-bottom: 5px; margin-bottom: 10px;
-  }
-  .cv-summary { color: var(--ink-muted); font-size: 10pt; }
-
-  .job { margin-bottom: 14px; page-break-inside: avoid; }
-  .job:last-child { margin-bottom: 0; }
-  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .job-title { font-size: 11pt; font-weight: 700; }
-  .job-title .org { color: var(--ink-muted); font-weight: 600; }
-  .job-period { font-family: var(--font-mono); font-size: 8.5pt; color: var(--ink-muted); white-space: nowrap; }
-  .job-stack { font-size: 8.5pt; color: var(--accent); margin: 2px 0 4px; }
-  .job ul { list-style: none; }
-  .job li {
-    position: relative; padding-left: 14px; margin-bottom: 3px;
-    color: var(--ink-muted); font-size: 9.8pt;
-  }
-  .job li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
-
-  .flagship-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
-  .f-card { page-break-inside: avoid; }
-  .f-card h3 { font-size: 10pt; font-weight: 700; }
-  .f-card p { font-size: 9.3pt; color: var(--ink-muted); margin-top: 2px; }
-  .f-metrics { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 5px; }
-  .f-chip { font-family: var(--font-mono); font-size: 7.8pt; color: var(--accent); border: 1px solid #bfdccd; border-radius: 5px; padding: 2px 7px; }
-
-  .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; }
-  .skill-group { page-break-inside: avoid; }
-  .skill-group h3 {
-    font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 3px;
-  }
-  .skill-group p { font-size: 9.3pt; color: var(--ink-muted); }
-
-  .proj-line { font-size: 9.8pt; color: var(--ink-muted); margin-bottom: 3px; }
-  .proj-line .pname { font-weight: 700; color: var(--ink); }
-  .proj-line .pstatus { font-family: var(--font-mono); font-size: 8pt; color: #8a7d6e; }
-
-  .edu-line { font-size: 9.8pt; color: var(--ink-muted); margin-bottom: 3px; }
-  .edu-line .ename { font-weight: 700; color: var(--ink); }
-
-  .patent { font-size: 9.8pt; color: var(--ink-muted); }
-  .patent .pnum { font-family: var(--font-mono); color: var(--accent); }
-
-  .cv-foot {
-    margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-    font-size: 8.5pt; color: #8a938d;
+  .pdf-frame {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 56px);
+    height: calc(100dvh - 56px);
+    border: 0;
+    background: #ffffff;
   }
 
   @media (max-width: 768px) {
-    .sheet { margin: 12px; padding: 28px 22px; }
-    .flagship-grid, .skill-grid { grid-template-columns: 1fr; }
     .toolbar { flex-direction: column; align-items: stretch; }
     .toolbar .t-actions { justify-content: stretch; }
     .t-btn { justify-content: center; }
   }
 
   @media print {
-    body { background: #fff; }
     .toolbar { display: none; }
-    .sheet { margin: 0; border: none; border-radius: 0; box-shadow: none; padding: 0; max-width: none; }
-    .cv-section { page-break-inside: avoid; }
-    @page { size: A4; margin: 14mm 15mm; }
   }
 </style>
 </head>
@@ -146,241 +58,12 @@
   <span class="t-title">Abhishek Kumar Maurya · CV</span>
   <div class="t-actions">
     <a class="t-btn primary" href="abhishek-maurya-cv.pdf" download>Download PDF</a>
-    <a class="t-btn" href="javascript:window.print()">Print</a>
+    <a class="t-btn" href="abhishek-maurya-cv.pdf" target="_blank" rel="noopener">Open in new tab</a>
     <a class="t-btn" href="../">← Back to portfolio</a>
   </div>
 </div>
 
-<div class="sheet">
-  <div class="cv-head">
-    <div class="cv-name">Abhishek Kumar Maurya</div>
-    <div class="cv-role">Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</div>
-    <div class="cv-contact">
-      <span>Hyderabad, India</span>
-      <span>+917842740174</span>
-      <span><a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a></span>
-      <span><a href="https://github.com/xpressabhi" target="_blank" rel="noopener">GitHub</a></span>
-      <span><a href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">LinkedIn</a></span>
-      <span class="mono">16+ years experience</span>
-    </div>
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Summary</div>
-    <p class="cv-summary">Software engineer with 16+ years of experience across AI agents, frontend and platform architecture, backend systems, developer productivity, and enterprise software. Experienced in designing scalable systems, leading technical initiatives, improving engineering workflows, mentoring engineers, and driving reliability, performance, accessibility, and testing.</p>
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Key achievements</div>
-    <div class="flagship-grid">
-      
-      <div class="f-card">
-        <h3>Agentic Developer Platform (ADP)</h3>
-        <p>Multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</p>
-        <div class="f-metrics">
-          <span class="f-chip">−90% task resolution time</span><span class="f-chip">20% → 90% legacy coverage</span><span class="f-chip">−90% external defects</span><span class="f-chip">Days → hours</span>
-        </div>
-      </div>
-      
-      <div class="f-card">
-        <h3>MCP-driven engineering workflows</h3>
-        <p>Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</p>
-        <div class="f-metrics">
-          <span class="f-chip">−95% research & debugging</span><span class="f-chip">20+ teams</span><span class="f-chip">Higher accuracy</span>
-        </div>
-      </div>
-      
-      <div class="f-card">
-        <h3>Build Agent, ServiceNow Studio</h3>
-        <p>Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration. Led the metadata-aware, multi-model (Now LLM + Claude on Bedrock) self-healing architecture.</p>
-        <div class="f-metrics">
-          <span class="f-chip">Multi-model</span><span class="f-chip">Self-healing</span><span class="f-chip">Metadata-aware</span>
-        </div>
-      </div>
-      
-      <div class="f-card">
-        <h3>Release lifecycle & app summary agents</h3>
-        <p>Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests. Documentation time went from hours to a single click.</p>
-        <div class="f-metrics">
-          <span class="f-chip">Hours → one click</span><span class="f-chip">CAB-ready manifests</span><span class="f-chip">Delta analysis</span>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Work experience</div>
-    
-    <div class="job">
-      <div class="job-head">
-        <span class="job-title">Staff Software Engineer · <span class="org">ServiceNow, Hyderabad</span></span>
-        <span class="job-period">Oct 2023 – Present</span>
-      </div>
-      <div class="job-stack">AI Agents, MCP, Harness, JavaScript, Java, React, Node.js, Python</div>
-      <ul>
-        <li>Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.</li><li>Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration; led its metadata-aware, multi-model (Now LLM + Claude on Bedrock), self-healing agentic architecture.</li><li>Founded the Agentic Developer Platform (ADP), a multi-tenant bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.</li><li>ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.</li><li>Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click.</li><li>Built scalable platform infrastructure supporting agentic application development; architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; core contributor to the App Template Framework (ATFr).</li><li>Drive performance optimization and accessibility compliance using WCAG/ARIA practices; established enterprise testing strategy with Jest, React Testing Library, and Playwright.</li><li>Lead technical hiring, high-bar architectural reviews, and mentoring of engineers in AI-first development practices.</li>
-      </ul>
-    </div>
-    
-    <div class="job">
-      <div class="job-head">
-        <span class="job-title">Senior Software Engineer · <span class="org">Rippling, Bengaluru</span></span>
-        <span class="job-period">Oct 2022 – Aug 2023</span>
-      </div>
-      <div class="job-stack">JavaScript, React, TypeScript, Node.js, Python, Playwright, Sentry, LogRocket</div>
-      <ul>
-        <li>Identified frontend codebase problem areas and developed improvement proposals.</li><li>Contributed to frontend infrastructure and global engineering initiatives.</li><li>Conducted interviews, reviewed pull requests, mentored junior developers, and shared technical learnings.</li>
-      </ul>
-    </div>
-    
-    <div class="job">
-      <div class="job-head">
-        <span class="job-title">Lead Engineer · <span class="org">Reputation, Hyderabad</span></span>
-        <span class="job-period">Sep 2020 – Sep 2022</span>
-      </div>
-      <div class="job-stack">JavaScript, Node.js, React, Python, RTK Query, Sumo Logic</div>
-      <ul>
-        <li>Led frontend development on the Actions Team, planning and delivering web-based tools.</li><li>Improved performance through advanced optimization techniques and ensured accessibility for a broad user base.</li><li>Built maintainable, scalable, and testable features using engineering best practices; mentored junior developers and reviewed code.</li>
-      </ul>
-    </div>
-    
-    <div class="job">
-      <div class="job-head">
-        <span class="job-title">Co-Founder / Lead Developer · <span class="org">Worktech Software, Hyderabad</span></span>
-        <span class="job-period">Jul 2017 – Aug 2020</span>
-      </div>
-      <div class="job-stack">JavaScript, Node.js, MongoDB, Meteor, REST APIs</div>
-      <ul>
-        <li>Built products and services using JavaScript, Node.js, MongoDB, Meteor, and REST APIs.</li><li>flexzone.in (2018–2020): aggregator of cafés into coworking spaces.</li><li>hospeto.in (2017–2018): video consultation platform for doctors, with health record and billing management.</li>
-      </ul>
-    </div>
-    
-    <div class="job">
-      <div class="job-head">
-        <span class="job-title">Senior Developer · <span class="org">Eze Software Group, Hyderabad</span></span>
-        <span class="job-period">Jun 2016 – Jun 2017</span>
-      </div>
-      <div class="job-stack">C#, .NET, REST APIs, MS SQL</div>
-      <ul>
-        <li>Developed and improved an order-management system for real-time trading related to short selling.</li><li>Maintained EzeLocate and DataFeed for locating short inventory and real-time stock-data processing.</li>
-      </ul>
-    </div>
-    
-    <div class="job">
-      <div class="job-head">
-        <span class="job-title">Project Leader · <span class="org">Oracle, Hyderabad</span></span>
-        <span class="job-period">Jun 2010 – May 2016</span>
-      </div>
-      <div class="job-stack">Java, Oracle Database, Oracle ODI, SQL/PLSQL</div>
-      <ul>
-        <li>Developed and improved Plan Copy and Benefits Relationships systems using Java, Oracle Database, Oracle ODI, and SQL/PLSQL.</li><li>Completed the Benefit Plan Copy project, reducing test-to-production HRMS data setup time by 80%.</li>
-      </ul>
-    </div>
-    
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Skills</div>
-    <div class="skill-grid">
-      
-      <div class="skill-group">
-        <h3>Architecture</h3>
-        <p>System design, Scalable frontend architecture, Design patterns, Developer productivity, Metadata-driven development</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>AI & Agentic Engineering</h3>
-        <p>AI agents, MCP workflows, Claude Code, Harness, Prompt engineering, Agent workflows, Tool orchestration, Multi-model systems</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Frontend & Platform</h3>
-        <p>JavaScript (ES6+), TypeScript, React, Next.js, Redux Toolkit, RTK Query, Node.js, Webpack, Vite, PWA</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Reliability & Quality</h3>
-        <p>Jest, React Testing Library, Playwright, Performance optimization, WCAG / ARIA accessibility</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Backend & Data</h3>
-        <p>Python, Java, C# / .NET, REST APIs, MongoDB, Meteor, Oracle Database, Oracle ODI, SQL / PLSQL</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Observability</h3>
-        <p>Sentry, LogRocket, Datadog, Sumo Logic</p>
-      </div>
-      
-    </div>
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Projects</div>
-    
-    <div class="proj-line">
-      <a class="pname" href="https://selftest.in" target="_blank" rel="noopener">selftest.in</a>
-      <span class="pstatus">(live)</span> — Self-testing and government job preparation app powered by the Gemini API
-    </div>
-    
-    <div class="proj-line">
-      <a class="pname" href="https://lifetimetax.vercel.app" target="_blank" rel="noopener">lifetimetax.vercel.app</a>
-      <span class="pstatus">(live)</span> — Lifetime tax liability calculator
-    </div>
-    
-    <div class="proj-line">
-      <a class="pname" href="https://airoadtripplanner.vercel.app" target="_blank" rel="noopener">airoadtripplanner.vercel.app</a>
-      <span class="pstatus">(live)</span> — AI-powered road trip planner
-    </div>
-    
-    <div class="proj-line">
-      <a class="pname" href="https://faang-cv.vercel.app" target="_blank" rel="noopener">faang-cv.vercel.app</a>
-      <span class="pstatus">(live)</span> — CV builder tuned for FAANG-style applications
-    </div>
-    
-    <div class="proj-line">
-      <a class="pname" href="https://uberpro.in" target="_blank" rel="noopener">uberpro.in</a>
-      <span class="pstatus">(live)</span> — Order management app for businesses
-    </div>
-    
-    <div class="proj-line">
-      <span class="pname">swechhafarms.com</span>
-      <span class="pstatus">(discontinued)</span> — Earlier project, no longer available — kept for reference
-    </div>
-    
-    <div class="proj-line">
-      <span class="pname">covid19open.in</span>
-      <span class="pstatus">(discontinued)</span> — Earlier project, no longer available — kept for reference
-    </div>
-    
-    <div class="proj-line">
-      <span class="pname">selftest.app</span>
-      <span class="pstatus">(discontinued)</span> — Earlier version of the self-testing app, no longer available — kept for reference
-    </div>
-    
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Education</div>
-    
-    <div class="edu-line"><span class="ename">National Institute of Technology (NIT), Tiruchirappalli</span> — Master of Computer Applications (MCA) · <span class="mono">2007–2010</span></div>
-    
-    <div class="edu-line"><span class="ename">Banaras Hindu University (BHU), Varanasi</span> — BSc (Hons), Mathematics · <span class="mono">2003–2006</span></div>
-    
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Patent</div>
-    <p class="patent"><span class="pnum">US20150046358</span> — "Importing tested objects into benefits programs deployed on production systems" · assigned to Oracle Corp. · status: Abandoned</p>
-  </div>
-
-  <div class="cv-foot">
-    <span>Abhishek Kumar Maurya · Hyderabad, India</span>
-    <span>Generated from data/profile.json · opencode profile-sync</span>
-  </div>
-</div>
+<iframe class="pdf-frame" src="abhishek-maurya-cv.pdf" title="Abhishek Kumar Maurya — Curriculum Vitae"></iframe>
 
 </body>
 </html>
