@@ -23,8 +23,8 @@
     background: #e9e7e4;
     color: var(--ink);
     font-family: var(--font-sans);
-    font-size: 10.5pt;
-    line-height: 1.45;
+    font-size: 10pt;
+    line-height: 1.38;
     -webkit-font-smoothing: antialiased;
   }
   a { color: var(--ink); text-decoration: none; }
@@ -55,76 +55,74 @@
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 10px;
-    padding: 48px 52px;
+    padding: 40px 46px;
     box-shadow: 0 10px 30px rgba(23, 21, 18, 0.08);
   }
 
-  .cv-head { padding-bottom: 18px; border-bottom: 2px solid var(--ink); margin-bottom: 20px; }
-  .cv-name { font-size: 26pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
-  .cv-role { font-size: 11.5pt; color: var(--muted); font-weight: 600; margin-top: 4px; }
+  .cv-head { padding-bottom: 14px; border-bottom: 2px solid var(--ink); margin-bottom: 14px; }
+  .cv-name { font-size: 21pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+  .cv-role { font-size: 10.5pt; color: var(--muted); font-weight: 600; margin-top: 3px; }
   .cv-contact {
-    display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px;
-    font-size: 9.5pt; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 8px;
+    font-size: 9pt; color: var(--muted);
   }
-  .cv-contact .mono { font-size: 9pt; }
+  .cv-contact .mono { font-size: 8.5pt; }
 
-  .cv-section { margin-top: 20px; }
+  .cv-section { margin-top: 14px; }
   .cv-section-title {
-    font-family: var(--font-mono); font-size: 9.5pt; font-weight: 600;
+    font-family: var(--font-mono); font-size: 9pt; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--ink); border-bottom: 1px solid var(--line);
-    padding-bottom: 5px; margin-bottom: 10px;
+    padding-bottom: 4px; margin-bottom: 7px;
   }
-  .cv-summary { color: var(--muted); font-size: 10pt; }
+  .cv-summary { color: var(--muted); font-size: 9.5pt; }
 
-  .job { margin-bottom: 14px; page-break-inside: avoid; }
+  .job { margin-bottom: 9px; page-break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .job-title { font-size: 11pt; font-weight: 700; }
+  .job-title { font-size: 10.5pt; font-weight: 700; }
   .job-title .org { color: var(--muted); font-weight: 600; }
-  .job-period { font-family: var(--font-mono); font-size: 8.5pt; color: var(--dim); white-space: nowrap; }
-  .job-stack { font-size: 8.5pt; color: var(--dim); margin: 2px 0 4px; }
+  .job-period { font-family: var(--font-mono); font-size: 8pt; color: var(--dim); white-space: nowrap; }
+  .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
   .job ul { list-style: none; }
   .job li {
-    position: relative; padding-left: 14px; margin-bottom: 3px;
-    color: var(--muted); font-size: 9.8pt;
+    position: relative; padding-left: 13px; margin-bottom: 2px;
+    color: var(--muted); font-size: 9.3pt;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
 
-  .flagship-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; }
-  .f-card { page-break-inside: avoid; }
-  .f-card h3 { font-size: 10pt; font-weight: 700; }
-  .f-card p { font-size: 9.3pt; color: var(--muted); margin-top: 2px; }
-  .f-metrics { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 5px; }
-  .f-chip { font-family: var(--font-mono); font-size: 7.8pt; color: var(--dim); border: 1px solid var(--line); border-radius: 5px; padding: 2px 7px; }
+  .flagship-list { display: flex; flex-direction: column; gap: 4px; }
+  .f-line { font-size: 9.5pt; color: var(--muted); }
+  .f-line .fname { font-weight: 700; color: var(--ink); }
+  .f-line .fmetrics { font-family: var(--font-mono); font-size: 8pt; color: var(--dim); }
 
-  .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; }
+  .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
   .skill-group { page-break-inside: avoid; }
   .skill-group h3 {
-    font-family: var(--font-mono); font-size: 8pt; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--ink); margin-bottom: 3px;
+    font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); margin-bottom: 2px;
   }
-  .skill-group p { font-size: 9.3pt; color: var(--muted); }
+  .skill-group p { font-size: 8.8pt; color: var(--muted); }
 
-  .proj-line { font-size: 9.8pt; color: var(--muted); margin-bottom: 3px; }
+  .proj-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 2px; }
   .proj-line .pname { font-weight: 700; color: var(--ink); }
-  .proj-line .pstatus { font-family: var(--font-mono); font-size: 8pt; color: var(--dim); }
+  .proj-line .pstatus { font-family: var(--font-mono); font-size: 7.5pt; color: var(--dim); }
 
-  .edu-line { font-size: 9.8pt; color: var(--muted); margin-bottom: 3px; }
+  .edu-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 2px; }
   .edu-line .ename { font-weight: 700; color: var(--ink); }
 
-  .patent { font-size: 9.8pt; color: var(--muted); }
+  .patent { font-size: 9.3pt; color: var(--muted); }
   .patent .pnum { font-family: var(--font-mono); color: var(--ink); }
 
   .cv-foot {
-    margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--line);
+    margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--line);
     display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-    font-size: 8.5pt; color: var(--dim);
+    font-size: 8pt; color: var(--dim);
   }
 
   @media (max-width: 768px) {
     .sheet { margin: 12px; padding: 28px 22px; }
-    .flagship-grid, .skill-grid { grid-template-columns: 1fr; }
+    .skill-grid { grid-template-columns: 1fr; }
     .toolbar { flex-direction: column; align-items: stretch; }
     .toolbar .t-actions { justify-content: stretch; }
     .t-btn { justify-content: center; }
@@ -134,8 +132,7 @@
     body { background: #fff; }
     .toolbar { display: none; }
     .sheet { margin: 0; border: none; border-radius: 0; box-shadow: none; padding: 0; max-width: none; }
-    .cv-section { page-break-inside: avoid; }
-    @page { size: A4; margin: 14mm 15mm; }
+    @page { size: A4; margin: 12mm 13mm; }
   }
 </style>
 </head>
@@ -171,39 +168,15 @@
 
   <div class="cv-section">
     <div class="cv-section-title">Key achievements</div>
-    <div class="flagship-grid">
+    <div class="flagship-list">
       
-      <div class="f-card">
-        <h3>Agentic Developer Platform (ADP)</h3>
-        <p>Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</p>
-        <div class="f-metrics">
-          <span class="f-chip">−90% task resolution time</span><span class="f-chip">20% → 90% legacy coverage</span><span class="f-chip">−90% external defects</span><span class="f-chip">Days → hours</span>
-        </div>
-      </div>
+      <div class="f-line"><span class="fname">Agentic Developer Platform (ADP)</span> — <span class="fmetrics">−90% task resolution time · 20% → 90% legacy coverage · −90% external defects · Days → hours</span></div>
       
-      <div class="f-card">
-        <h3>MCP-driven engineering workflows</h3>
-        <p>Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</p>
-        <div class="f-metrics">
-          <span class="f-chip">−95% research & debugging</span><span class="f-chip">20+ teams</span><span class="f-chip">Higher accuracy</span>
-        </div>
-      </div>
+      <div class="f-line"><span class="fname">MCP-driven engineering workflows</span> — <span class="fmetrics">−95% research & debugging · 20+ teams · Higher accuracy</span></div>
       
-      <div class="f-card">
-        <h3>Build Agent, ServiceNow Studio</h3>
-        <p>Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Led the metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.</p>
-        <div class="f-metrics">
-          <span class="f-chip">35+ metadata types · 11 domains</span><span class="f-chip">Multi-model</span><span class="f-chip">Self-healing</span><span class="f-chip">Metadata-aware</span>
-        </div>
-      </div>
+      <div class="f-line"><span class="fname">Build Agent, ServiceNow Studio</span> — <span class="fmetrics">35+ metadata types · 11 domains · Multi-model · Self-healing · Metadata-aware</span></div>
       
-      <div class="f-card">
-        <h3>Release lifecycle & app summary agents</h3>
-        <p>Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click. Ships as the Release lifecycle documentation agent in Now Assist for Creator.</p>
-        <div class="f-metrics">
-          <span class="f-chip">Hours → one click</span><span class="f-chip">CAB-ready manifests</span><span class="f-chip">Delta analysis</span>
-        </div>
-      </div>
+      <div class="f-line"><span class="fname">Release lifecycle & app summary agents</span> — <span class="fmetrics">Hours → one click · CAB-ready manifests · Delta analysis</span></div>
       
     </div>
   </div>
@@ -340,8 +313,8 @@
     </div>
     
     <div class="proj-line">
-      <a class="pname" href="https://uberpro.in" target="_blank" rel="noopener">uberpro.in</a>
-      <span class="pstatus">(live)</span> — Order management app for businesses
+      <span class="pname">uberpro.in</span>
+      <span class="pstatus">(discontinued)</span> — Earlier project, no longer available — kept for reference
     </div>
     
     <div class="proj-line">
@@ -377,7 +350,6 @@
 
   <div class="cv-foot">
     <span>Abhishek Kumar Maurya · Hyderabad, India</span>
-    <span>Generated from data/profile.json · opencode profile-sync</span>
   </div>
 </div>
 
