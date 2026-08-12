@@ -12,7 +12,7 @@
   :root {
     --ink: #171512;
     --muted: #5c564e;
-    --dim: #8a847c;
+    --dim: #6e6961;
     --line: #e5e5e5;
     --paper: #ffffff;
     --font-sans: "Inter", system-ui, sans-serif;
@@ -24,7 +24,7 @@
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 10pt;
-    line-height: 1.38;
+    line-height: 1.36;
     -webkit-font-smoothing: antialiased;
   }
   a { color: var(--ink); text-decoration: none; }
@@ -77,7 +77,7 @@
   }
   .cv-summary { color: var(--muted); font-size: 9.5pt; }
 
-  .job { margin-bottom: 9px; page-break-inside: avoid; }
+  .job { margin-bottom: 8px; page-break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .job-title { font-size: 10.5pt; font-weight: 700; }
@@ -86,15 +86,10 @@
   .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
   .job ul { list-style: none; }
   .job li {
-    position: relative; padding-left: 13px; margin-bottom: 2px;
+    position: relative; padding-left: 13px; margin-bottom: 1px;
     color: var(--muted); font-size: 9.3pt;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
-
-  .flagship-list { display: flex; flex-direction: column; gap: 4px; }
-  .f-line { font-size: 9.5pt; color: var(--muted); }
-  .f-line .fname { font-weight: 700; color: var(--ink); }
-  .f-line .fmetrics { font-family: var(--font-mono); font-size: 8pt; color: var(--dim); }
 
   .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
   .skill-group { page-break-inside: avoid; }
@@ -132,7 +127,7 @@
     body { background: #fff; }
     .toolbar { display: none; }
     .sheet { margin: 0; border: none; border-radius: 0; box-shadow: none; padding: 0; max-width: none; }
-    @page { size: A4; margin: 12mm 13mm; }
+    @page { size: A4; margin: 10mm 11mm; }
   }
 </style>
 </head>
@@ -162,16 +157,38 @@
   </div>
 
   <div class="cv-section">
-    <div class="cv-section-title">Key achievements</div>
-    <div class="flagship-list">
+    <div class="cv-section-title">Skills</div>
+    <div class="skill-grid">
       
-      <div class="f-line"><span class="fname">Agentic Developer Platform (ADP)</span> — <span class="fmetrics">−90% task resolution time · 20% → 90% legacy coverage · −90% external defects · Days → hours</span></div>
+      <div class="skill-group">
+        <h3>Architecture</h3>
+        <p>System design, Scalable frontend architecture, Design patterns, Developer productivity, Metadata-driven development</p>
+      </div>
       
-      <div class="f-line"><span class="fname">MCP-driven engineering workflows</span> — <span class="fmetrics">−95% research & debugging · 20+ teams · Higher accuracy</span></div>
+      <div class="skill-group">
+        <h3>AI & Agentic Engineering</h3>
+        <p>AI agents, MCP workflows, Claude Code, Harness, Prompt engineering, Agent workflows, Tool orchestration, Multi-model systems</p>
+      </div>
       
-      <div class="f-line"><span class="fname">Build Agent, ServiceNow Studio</span> — <span class="fmetrics">35+ metadata types · 11 domains · Multi-model · Self-healing · Metadata-aware</span></div>
+      <div class="skill-group">
+        <h3>Frontend & Platform</h3>
+        <p>JavaScript (ES6+), TypeScript, React, Next.js, Redux Toolkit, RTK Query, Node.js, Webpack, Vite, PWA</p>
+      </div>
       
-      <div class="f-line"><span class="fname">Release lifecycle & app summary agents</span> — <span class="fmetrics">Hours → one click · CAB-ready manifests · Delta analysis</span></div>
+      <div class="skill-group">
+        <h3>Reliability & Quality</h3>
+        <p>Jest, React Testing Library, Playwright, Performance optimization, WCAG / ARIA accessibility</p>
+      </div>
+      
+      <div class="skill-group">
+        <h3>Backend & Data</h3>
+        <p>Python, Java, REST APIs, MongoDB, Meteor, Oracle Database, Oracle ODI, SQL / PLSQL</p>
+      </div>
+      
+      <div class="skill-group">
+        <h3>Observability</h3>
+        <p>Sentry, LogRocket, Datadog, Sumo Logic</p>
+      </div>
       
     </div>
   </div>
@@ -248,43 +265,6 @@
   </div>
 
   <div class="cv-section">
-    <div class="cv-section-title">Skills</div>
-    <div class="skill-grid">
-      
-      <div class="skill-group">
-        <h3>Architecture</h3>
-        <p>System design, Scalable frontend architecture, Design patterns, Developer productivity, Metadata-driven development</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>AI & Agentic Engineering</h3>
-        <p>AI agents, MCP workflows, Claude Code, Harness, Prompt engineering, Agent workflows, Tool orchestration, Multi-model systems</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Frontend & Platform</h3>
-        <p>JavaScript (ES6+), TypeScript, React, Next.js, Redux Toolkit, RTK Query, Node.js, Webpack, Vite, PWA</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Reliability & Quality</h3>
-        <p>Jest, React Testing Library, Playwright, Performance optimization, WCAG / ARIA accessibility</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Backend & Data</h3>
-        <p>Python, Java, REST APIs, MongoDB, Meteor, Oracle Database, Oracle ODI, SQL / PLSQL</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Observability</h3>
-        <p>Sentry, LogRocket, Datadog, Sumo Logic</p>
-      </div>
-      
-    </div>
-  </div>
-
-  <div class="cv-section">
     <div class="cv-section-title">Projects</div>
     
     <div class="proj-line">
@@ -308,23 +288,8 @@
     </div>
     
     <div class="proj-line">
-      <span class="pname">uberpro.in</span>
-      <span class="pstatus"> (discontinued)</span> — Earlier project, no longer available — kept for reference
-    </div>
-    
-    <div class="proj-line">
-      <span class="pname">swechhafarms.com</span>
-      <span class="pstatus"> (discontinued)</span> — Earlier project, no longer available — kept for reference
-    </div>
-    
-    <div class="proj-line">
-      <span class="pname">covid19open.in</span>
-      <span class="pstatus"> (discontinued)</span> — Earlier project, no longer available — kept for reference
-    </div>
-    
-    <div class="proj-line">
-      <span class="pname">selftest.app</span>
-      <span class="pstatus"> (discontinued)</span> — Earlier version of the self-testing app, no longer available — kept for reference
+      <span class="pname">uberpro.in · swechhafarms.com · covid19open.in · selftest.app</span>
+      <span class="pstatus"> (discontinued)</span> — earlier projects, kept for reference
     </div>
     
   </div>

@@ -151,7 +151,15 @@ function buildPortfolio() {
 
 function buildCvPage() {
   const tpl = readFileSync(P("templates/cv.html"), "utf8");
-  return render(tpl, [REPO]);
+  const cv = { ...REPO };
+  const discontinued = REPO.projects.filter((p) => p.status === "discontinued");
+  const live = REPO.projects.filter((p) => p.status !== "discontinued");
+  cv.projects = live.concat(
+    discontinued.length
+      ? [{ name: discontinued.map((p) => p.name).join(" · "), status: "discontinued", description: "earlier projects, kept for reference", url: "" }]
+      : []
+  );
+  return render(tpl, [cv]);
 }
 
 function buildProfileReadme() {

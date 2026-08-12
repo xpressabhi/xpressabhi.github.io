@@ -12,7 +12,7 @@
   :root {
     --ink: #171512;
     --muted: #5c564e;
-    --dim: #8a847c;
+    --dim: #6e6961;
     --line: #e5e5e5;
     --paper: #ffffff;
     --font-sans: "Inter", system-ui, sans-serif;
@@ -24,7 +24,7 @@
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 10pt;
-    line-height: 1.38;
+    line-height: 1.36;
     -webkit-font-smoothing: antialiased;
   }
   a { color: var(--ink); text-decoration: none; }
@@ -77,7 +77,7 @@
   }
   .cv-summary { color: var(--muted); font-size: 9.5pt; }
 
-  .job { margin-bottom: 9px; page-break-inside: avoid; }
+  .job { margin-bottom: 8px; page-break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .job-title { font-size: 10.5pt; font-weight: 700; }
@@ -86,15 +86,10 @@
   .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
   .job ul { list-style: none; }
   .job li {
-    position: relative; padding-left: 13px; margin-bottom: 2px;
+    position: relative; padding-left: 13px; margin-bottom: 1px;
     color: var(--muted); font-size: 9.3pt;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
-
-  .flagship-list { display: flex; flex-direction: column; gap: 4px; }
-  .f-line { font-size: 9.5pt; color: var(--muted); }
-  .f-line .fname { font-weight: 700; color: var(--ink); }
-  .f-line .fmetrics { font-family: var(--font-mono); font-size: 8pt; color: var(--dim); }
 
   .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
   .skill-group { page-break-inside: avoid; }
@@ -132,7 +127,7 @@
     body { background: #fff; }
     .toolbar { display: none; }
     .sheet { margin: 0; border: none; border-radius: 0; box-shadow: none; padding: 0; max-width: none; }
-    @page { size: A4; margin: 12mm 13mm; }
+    @page { size: A4; margin: 10mm 11mm; }
   }
 </style>
 </head>
@@ -162,10 +157,13 @@
   </div>
 
   <div class="cv-section">
-    <div class="cv-section-title">Key achievements</div>
-    <div class="flagship-list">
-      {{#each flagship}}
-      <div class="f-line"><span class="fname">{{title}}</span> — <span class="fmetrics">{{join metrics " · "}}</span></div>
+    <div class="cv-section-title">Skills</div>
+    <div class="skill-grid">
+      {{#each skills}}
+      <div class="skill-group">
+        <h3>{{@key}}</h3>
+        <p>{{join this ", "}}</p>
+      </div>
       {{/each}}
     </div>
   </div>
@@ -184,18 +182,6 @@
       </ul>
     </div>
     {{/each}}
-  </div>
-
-  <div class="cv-section">
-    <div class="cv-section-title">Skills</div>
-    <div class="skill-grid">
-      {{#each skills}}
-      <div class="skill-group">
-        <h3>{{@key}}</h3>
-        <p>{{join this ", "}}</p>
-      </div>
-      {{/each}}
-    </div>
   </div>
 
   <div class="cv-section">
