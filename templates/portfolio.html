@@ -334,7 +334,8 @@
   (function () {
     document.querySelectorAll("a[href]").forEach(function (a) {
       var h = a.getAttribute("href");
-      if (h && h.charAt(0) !== "#" && !/^(mailto|tel):/i.test(h)) {
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
         a.setAttribute("target", "_blank");
         a.setAttribute("rel", "noopener");
       }
