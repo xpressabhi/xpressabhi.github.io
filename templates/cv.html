@@ -152,12 +152,7 @@
     <div class="cv-name">{{basics.name}}</div>
     <div class="cv-role">{{basics.headline}}</div>
     <div class="cv-contact">
-      <span>{{basics.location}}</span>
-      <span>{{basics.phone}}</span>
-      <span><a href="mailto:{{basics.email}}">{{basics.email}}</a></span>
-      <span><a href="{{basics.github}}" target="_blank" rel="noopener">GitHub</a></span>
-      <span><a href="{{basics.linkedin}}" target="_blank" rel="noopener">LinkedIn</a></span>
-      <span class="mono">{{basics.yearsExperience}} years experience</span>
+      <span>{{basics.location}} · {{basics.phone}} · <a href="mailto:{{basics.email}}">{{basics.email}}</a> · <a href="{{basics.github}}" target="_blank" rel="noopener">github.com/xpressabhi</a> · <a href="{{basics.linkedin}}" target="_blank" rel="noopener">linkedin.com/in/akm85</a> · <span class="mono">{{basics.yearsExperience}} years experience</span></span>
     </div>
   </div>
 
@@ -208,7 +203,7 @@
     {{#each projects}}
     <div class="proj-line">
       {{#if url}}<a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a>{{else}}<span class="pname">{{name}}</span>{{/if}}
-      <span class="pstatus">({{status}})</span> — {{description}}
+      <span class="pstatus"> ({{status}})</span> — {{description}}
     </div>
     {{/each}}
   </div>
