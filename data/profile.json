@@ -24,7 +24,7 @@
       "url": "https://patents.google.com/patent/US20150046358"
     }
   },
-  "summary": "Software engineer with 16+ years of experience across AI agents, frontend and platform architecture, backend systems, developer productivity, and enterprise software. Experienced in designing scalable systems, leading technical initiatives, improving engineering workflows, mentoring engineers, and driving reliability, performance, accessibility, and testing.",
+  "summary": "Software engineer with 16+ years of experience building AI agents, MCP-driven workflows, and scalable developer platforms. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams), leads a 9-person engineering team, and has deep roots in frontend architecture, system design, developer productivity, and enterprise reliability.",
   "capabilityCards": [
     {
       "wide": true,
@@ -78,7 +78,7 @@
     },
     {
       "title": "Technical leadership",
-      "blurb": "Lead technical hiring, run high-bar architectural reviews, and mentor engineers in AI-first development practices.",
+      "blurb": "Lead a 9-person engineering team, run technical hiring and high-bar architectural reviews, and mentor engineers in AI-first development practices.",
       "tags": [
         "Hiring",
         "Mentoring",
@@ -99,6 +99,9 @@
       "MCP workflows",
       "Claude Code",
       "Harness",
+      "LLM APIs (Anthropic, OpenAI, Gemini)",
+      "Amazon Bedrock",
+      "LangChain / LangGraph",
       "Prompt engineering",
       "Agent workflows",
       "Tool orchestration",
@@ -133,6 +136,11 @@
       "Oracle ODI",
       "SQL / PLSQL"
     ],
+    "CI/CD & Tooling": [
+      "GitHub Actions",
+      "Jenkins",
+      "Docker"
+    ],
     "Observability": [
       "Sentry",
       "LogRocket",
@@ -146,8 +154,8 @@
       "label": "less research and debugging effort for 20+ teams on MCP workflows"
     },
     {
-      "value": "90%",
-      "label": "faster case task resolution on the Agentic Developer Platform"
+      "value": "−90%",
+      "label": "case task resolution time on the Agentic Developer Platform"
     },
     {
       "value": "20% → 90%",
@@ -156,6 +164,14 @@
     {
       "value": "90%",
       "label": "fewer external defects, now single-digit org-wide"
+    },
+    {
+      "value": "80% → 95%",
+      "label": "accessibility compliance lift, Angular-to-React migration at Reputation"
+    },
+    {
+      "value": "9",
+      "label": "engineers led and mentored as tech lead at ServiceNow"
     },
     {
       "value": "4 wks",
@@ -245,9 +261,9 @@
         "Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.",
         "ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.",
         "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
-        "Built scalable platform infrastructure supporting agentic application development; architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; API and template contributions to the App Template Framework (ATFr).",
-        "Drive performance optimization and accessibility compliance using WCAG/ARIA practices; established enterprise testing strategy with Jest, React Testing Library, and Playwright.",
-        "Lead technical hiring, high-bar architectural reviews, and mentoring of engineers in AI-first development practices."
+        "Architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; API and template contributions to the App Template Framework (ATFr).",
+        "Lead a 9-person engineering team as tech lead: mentoring, technical hiring, and high-bar architectural reviews; ran cross-team onboarding sessions enabling teams to set up ADP skills, agents, rules, and MCP servers in a single session.",
+        "Drive performance optimization and WCAG/ARIA accessibility compliance; established enterprise testing strategy with Jest, React Testing Library, and Playwright."
       ]
     },
     {
@@ -267,9 +283,7 @@
         "LogRocket"
       ],
       "highlights": [
-        "Identified frontend codebase problem areas and developed improvement proposals.",
-        "Contributed to frontend infrastructure and global engineering initiatives.",
-        "Conducted interviews, reviewed pull requests, mentored junior developers, and shared technical learnings."
+        "Contributed to frontend infrastructure and global engineering initiatives; identified codebase problem areas, drove improvement proposals, interviewed candidates, and mentored junior engineers."
       ]
     },
     {
@@ -287,9 +301,9 @@
         "Sumo Logic"
       ],
       "highlights": [
-        "Led frontend development on the Actions Team, planning and delivering web-based tools.",
-        "Improved performance through advanced optimization techniques and ensured accessibility for a broad user base.",
-        "Built maintainable, scalable, and testable features using engineering best practices; mentored junior developers and reviewed code."
+        "Led the Actions Team frontend, migrating the application from Angular to React and cutting page load time in half.",
+        "Delivered the Actions feature and management dashboard; raised accessibility compliance from 80% to 95% for a broad user base.",
+        "Built maintainable, scalable, and testable features; mentored junior developers and reviewed code."
       ]
     },
     {

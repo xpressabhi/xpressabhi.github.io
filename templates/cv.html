@@ -187,10 +187,12 @@
   <div class="cv-section">
     <div class="cv-section-title">Projects</div>
     {{#each projects}}
+    {{#if url}}
     <div class="proj-line">
-      {{#if url}}<a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a>{{else}}<span class="pname">{{name}}</span>{{/if}}
+      <a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a>
       <span class="pstatus"> ({{status}})</span> — {{description}}
     </div>
+    {{/if}}
     {{/each}}
   </div>
 
