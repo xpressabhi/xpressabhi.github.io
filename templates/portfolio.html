@@ -185,6 +185,7 @@
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
+      <a href="blog/">Blog</a>
       <a href="resume/" class="nav-pill">CV</a>
     </div>
   </nav>
@@ -222,15 +223,18 @@
         <div class="metrics">
           {{#each metrics}}<span class="metric-pill">{{this}}</span>{{/each}}
         </div>
-        {{#if dive}}<div class="dive-link"><a href="deep-dives/?file={{dive}}">Read the deep dive →</a></div>{{/if}}
+        {{#if dive}}<div class="dive-link"><a href="blog/{{dive}}">Read the deep dive →</a></div>{{/if}}
       </div>
     </div>
     {{/each}}
     {{#if deepDives}}
     <div class="row reveal">
       <div class="row-meta">More writeups</div>
-      <div class="tags" style="margin-top:0">
-        {{#each deepDives}}<a class="pill dive-link" href="deep-dives/?file={{file}}">{{title}}</a>{{/each}}
+      <div>
+        <div class="tags" style="margin-top:0">
+          {{#each deepDives}}<a class="pill dive-link" href="blog/{{file}}">{{title}}</a>{{/each}}
+        </div>
+        <div class="dive-link"><a href="blog/">All posts on the blog →</a></div>
       </div>
     </div>
     {{/if}}
@@ -323,6 +327,7 @@
         <a href="mailto:{{basics.email}}">{{basics.email}}</a>
         <a href="{{basics.linkedin}}" target="_blank" rel="noopener">LinkedIn</a>
         <a href="{{basics.github}}" target="_blank" rel="noopener">GitHub</a>
+        <a href="blog/">Blog</a>
         <a href="resume/">CV</a>
       </div>
     </div>

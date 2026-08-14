@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ServiceNow Project Portfolio: Technical Writeup · Abhishek Kumar Maurya</title>
+<meta name="description" content="Over my tenure at ServiceNow, I have architected and delivered six major platform capabilities spanning AI-assisted development, low-code/no-code tooling, and internal developer productivity infras…">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --code-dim: #948c81;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --code-dim: #8b847a;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-back { font-size: 14px; color: var(--muted); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  .reader h1 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .reader .post-meta {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
+    margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- section headers ---------- */
+  .reader h2 {
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 46px 0 18px;
+    padding: 10px 14px 10px 14px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
+    scroll-margin-top: 76px;
+  }
+  .reader h3 {
+    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 30px 0 12px; color: var(--accent-ink);
+  }
+  .reader h4 {
+    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
+  }
+  .reader h4::before {
+    content: "▹ "; color: var(--accent); font-weight: 600;
+  }
+
+  /* ---------- body copy ---------- */
+  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader strong { color: var(--ink); font-weight: 600; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- lists ---------- */
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader li { margin-bottom: 6px; }
+  .reader li::marker { color: var(--accent); font-weight: 500; }
+
+  /* ---------- inline code ---------- */
+  .reader code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 5px;
+    padding: 1.5px 6px;
+  }
+
+  /* ---------- code blocks (terminal) ---------- */
+  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
+  .reader pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    position: relative;
+  }
+  .reader pre.code code {
+    display: block; padding: 18px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--code-ink); font-size: 13px; line-height: 1.65;
+  }
+  .reader pre.code[data-lang] { padding-top: 32px; }
+  .reader pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--code-dim);
+    border-bottom: 1px solid var(--code-border);
+  }
+
+  /* ---------- diagrams ---------- */
+  .reader pre.diagram {
+    background: var(--accent-soft);
+    border: 1px dashed var(--accent-line);
+    text-align: center;
+  }
+  .reader pre.diagram::before {
+    content: "Diagram";
+    display: block;
+    text-align: left;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .reader pre.diagram code {
+    display: block; padding: 16px 18px 20px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--ink); font-size: 12.5px; line-height: 1.55;
+    white-space: pre; text-align: center;
+  }
+
+  /* ---------- blockquotes ---------- */
+  .reader blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: var(--muted); font-style: italic; margin: 0 0 18px;
+  }
+
+  /* ---------- tables ---------- */
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
+  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+
+  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .reader-foot a { color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 768px) {
+    nav, main { padding-left: 24px; padding-right: 24px; }
+    main { padding-top: 40px; }
+    .nav-links a:not(.nav-back) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark" aria-label="Back to portfolio">
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
+    </a>
+    <div class="nav-links">
+      <a href="./">Blog</a>
+      <a href="../" class="nav-back">← Home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>ServiceNow Project Portfolio: Technical Writeup</h1>
+    <div class="post-meta"><span>Aug 14, 2026</span><span>·</span><span>10 min read</span><span>·</span><a href="./">All posts</a></div>
+    <p><strong>Author:</strong> Abhishek Maurya<br>
+<strong>Date:</strong> August 2026<br>
+<strong>Target Role:</strong> Staff/Principal Engineer — AI Platform, Developer Productivity, or Platform Engineering</p>
+<hr>
+<h2>Executive Summary</h2>
+<p>Over my tenure at ServiceNow, I have architected and delivered <strong>six major platform capabilities</strong> spanning <strong>AI-assisted development, low-code/no-code tooling, and internal developer productivity infrastructure</strong>. These projects collectively impact <strong>thousands of enterprise developers</strong> building on the ServiceNow platform and demonstrate deep expertise in:</p>
+<ul><li><strong>LLM-powered developer tooling</strong> (Build Agent, App Summary Agent, ALA Release Documentation Agent)</li><li><strong>Platform architecture &amp; multi-team systems</strong> (Agentic Developer Platform — 20+ skills, 20+ agents, 20+ teams)</li><li><strong>Low-code/no-code product design</strong> (Table Builder, Workspace Builder)</li><li><strong>Measurable productivity outcomes</strong> (90% reduction in task resolution, days→hours automation)</li></ul>
+<hr>
+<h2>Project 1: ServiceNow Build Agent — Autonomous AI Developer Companion</h2>
+<p><strong>Role:</strong> Technical Lead / Platform Architect<br>
+<strong>Scope:</strong> Core AI Platform — Now Assist for Creator suite<br>
+<strong>Impact:</strong> Flagship GenAI feature enabling natural-language app development</p>
+<h3>Problem</h3>
+<p>Enterprise developers spent weeks scaffolding applications — creating tables, business rules, ACLs, flows, and UI layouts manually. High barrier to entry for citizen developers; significant technical debt from duplicated schemas.</p>
+<h3>Solution</h3>
+<p>Designed and delivered the <strong>Build Agent</strong> — an autonomous, multi-model AI agent that generates production-ready applications from natural language prompts.</p>
+<h3>Technical Architecture</h3>
+<pre class="diagram"><code>┌────────────────────────────────────────────────────────┐
+│   Developer Interface (Studio, VS Code, Cursor, etc.)  │
+└───────────────────────────┬────────────────────────────┘
+                            │  Natural Language Prompt
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│        Orchestration Layer &amp; Reasoning Engine          │
+└───────────────────────────┬────────────────────────────┘
+                            │  Context Request
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│  Instance Context &amp; Discovery Layer (Metadata Search)   │
+└───────────────────────────┬────────────────────────────┘
+                            │  Live Instance Data
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│       LLM Gateway (Now LLM, Anthropic Claude, etc.)    │
+└───────────────────────────┬────────────────────────────┘
+                            │  Fluent Code / API Payloads
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│ Execution &amp; Compilation Layer (Fluent API &amp; Record API)│
+└───────────────────────────┬────────────────────────────┘
+                            │  Generated Artifacts
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│    Self-Healing Test Loop (Automated Test Framework)   │
+└───────────────────────────┬────────────────────────────┘
+                            │  Validated App
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│  Human-in-the-Loop Governance (Guardrails &amp; Review)   │
+└────────────────────────────────────────────────────────┘</code></pre>
+<h3>Key Innovations</h3>
+<table><thead><tr><th>Capability</th><th>Technical Approach</th></tr></thead><tbody><tr><td><strong>Conversational App Creation</strong></td><td>Multi-model LLM gateway (Now LLM + Anthropic Claude on AWS Bedrock) translates intent → Fluent API payloads</td></tr><tr><td><strong>Metadata-Aware Generation</strong></td><td>Pre-flight Metadata Search scans live instance (sys_dictionary, sys_db_object, ACLs) to reuse existing schemas, preventing duplication</td></tr><tr><td><strong>Autonomous Self-Healing</strong></td><td>ATF integration: runtime errors → stack trace capture → root-cause diagnosis → code rewrite → re-validation loop</td></tr><tr><td><strong>IDE-Agnostic</strong></td><td>Works in ServiceNow Studio, VS Code, Cursor, Windsurf, Claude Code, GitHub Copilot via ServiceNow SDK</td></tr><tr><td><strong>Governance-First</strong></td><td>Human-in-the-loop approval gate: all changes staged, visual diff presented, explicit approve required</td></tr></tbody></table>
+<h3>Outcomes</h3>
+<ul><li><strong>Time-to-market:</strong> Multi-week sprints → minutes for boilerplate generation</li><li><strong>Code quality:</strong> Eliminates schema duplication via live metadata indexing</li><li><strong>Adoption:</strong> Unified tooling across pro-code and low-code personas</li></ul>
+<hr>
+<h2>Project 2: ALA Release Lifecycle Documentation AI Agent &amp; App Summary Agent</h2>
+<p><strong>Role:</strong> Lead Architect<br>
+<strong>Scope:</strong> Application Lifecycle Analytics (ALA) — Now Assist for Creator<br>
+<strong>Impact:</strong> Automates release documentation for enterprise Change Advisory Boards (CAB)</p>
+<h3>Problem</h3>
+<p>Release documentation consumed hours of manual effort per deployment: compiling diffs, writing human-readable release notes, packaging audit trails for compliance.</p>
+<h3>Solution</h3>
+<p>Two complementary AI agents under the ALA framework:</p>
+<table><thead><tr><th>Agent</th><th>Focus</th><th>Output</th></tr></thead><tbody><tr><td><strong>App Summary Agent</strong></td><td>Full application architecture reverse-engineering</td><td>Architectural description, technical manifest (Markdown), Mermaid.js architecture diagrams</td></tr><tr><td><strong>ALA Release Documentation Agent</strong></td><td>Delta analysis between instance state &amp; update set/branch</td><td>Delta change identification, human-readable release notes, CAB-ready deployment manifests</td></tr></tbody></table>
+<h3>Technical Pipeline</h3>
+<ol start="1"><li><strong>Change Tracking</strong> — Live baseline index of application states</li><li><strong>Metadata Context</strong> — References ServiceNow Supported Metadata Library for structural understanding</li><li><strong>Delta Computation</strong> — Diffs update sets / repository branches against live instance</li><li><strong>Pipeline Ingestion</strong> — Feeds Markdown summaries directly into AEMC (App Engine Management Center) governance gates</li></ol>
+<h3>Outcomes</h3>
+<ul><li><strong>Documentation time:</strong> Hours → single click</li><li><strong>Compliance:</strong> Standardized manifests meet CAB requirements automatically</li><li><strong>Accuracy:</strong> Eliminates human error in release note generation</li></ul>
+<hr>
+<h2>Project 3: ServiceNow Table Builder — Unified Low-Code Data &amp; Form Designer</h2>
+<p><strong>Role:</strong> Product Engineer / Platform Lead<br>
+<strong>Scope:</strong> App Engine — Core Platform UI<br>
+<strong>Impact:</strong> Primary data modeling interface for all ServiceNow developers</p>
+<h3>Problem</h3>
+<p>Legacy workflow required context-switching across 3+ disconnected tools: System Dictionary (fields), Form Designer (layouts), Client Scripts/UI Policies (display logic).</p>
+<h3>Solution</h3>
+<p><strong>Table Builder</strong> — Single unified canvas consolidating schema design, form layout, and display logic.</p>
+<h3>Three Workspaces</h3>
+<table><thead><tr><th>Workspace</th><th>Capability</th></tr></thead><tbody><tr><td><strong>Data Tab</strong></td><td>Spreadsheet view (grid editing) + Schema view (graph visualization of FK relationships, parent-child extensions)</td></tr><tr><td><strong>Forms Tab</strong></td><td>Drag-and-drop form builder with dot-walked fields from referenced tables</td></tr><tr><td><strong>Display Logic</strong></td><td>Embedded UI policies, client alerts, field requirements — no context switching</td></tr></tbody></table>
+<h3>Premium (App Engine v2) Features</h3>
+<ul><li><strong>Integrated Micro-Flows</strong> — Flow Designer triggers attached directly to table events</li><li><strong>PDF Structural Extractor</strong> — Ingests physical/digital forms → auto-maps to database schema</li><li><strong>Ecosystem Binding</strong> — Native integration with Workspace Builder &amp; Flow Templates</li></ul>
+<h3>Outcomes</h3>
+<ul><li><strong>Developer velocity:</strong> Single tool vs. 3+ legacy tools</li><li><strong>Consistency:</strong> Schema + form + logic co-located = fewer drift errors</li><li><strong>Adoption:</strong> Default entry point for all new App Engine applications</li></ul>
+<hr>
+<h2>Project 4: ServiceNow Workspace Builder — No-Code Digital Workspace Designer</h2>
+<p><strong>Role:</strong> Platform Engineer<br>
+<strong>Scope:</strong> App Engine — Experience Layer<br>
+<strong>Impact:</strong> Citizen developer / business analyst primary UI customization tool</p>
+<h3>Problem</h3>
+<p>Business analysts needed to customize agent workspaces (homepages, lists, record layouts) but lacked coding skills; UI Builder was too complex.</p>
+<h3>Solution</h3>
+<p><strong>Workspace Builder</strong> — No-code visual designer for three workspace zones:</p>
+<table><thead><tr><th>Zone</th><th>Customization</th></tr></thead><tbody><tr><td><strong>Dynamic Homepages</strong></td><td>Drag-drop widgets: filters, visualizations, images, text blocks</td></tr><tr><td><strong>Role-Based Lists</strong></td><td>Filtered data grids per organizational role (fulfillers see only relevant records)</td></tr><tr><td><strong>Record Layouts</strong></td><td>Visibility control: form, Activity Stream, related lists, Playbooks, Response Templates, Agent Assist sidebar</td></tr></tbody></table>
+<h3>Differentiation from UI Builder</h3>
+<table><thead><tr><th>Attribute</th><th>Workspace Builder</th><th>UI Builder</th></tr></thead><tbody><tr><td><strong>Persona</strong></td><td>Citizen developers, analysts</td><td>Pro-code developers, UX architects</td></tr><tr><td><strong>Depth</strong></td><td>Predefined template zones</td><td>Full component/event/data binding control</td></tr><tr><td><strong>Speed</strong></td><td>Rapid scaffolding, guided framework</td><td>Granular, from-scratch freedom</td></tr><tr><td><strong>Interop</strong></td><td>One-click &quot;Open in UI Builder&quot; for advanced edits</td><td>N/A</td></tr></tbody></table>
+<h3>Outcomes</h3>
+<ul><li><strong>Democratization:</strong> Non-technical roles customize workspaces independently</li><li><strong>Governance:</strong> Constrained framework prevents breaking changes</li><li><strong>Time-to-value:</strong> Minutes vs. days for workspace iterations</li></ul>
+<hr>
+<h2>Project 5: Agentic Developer Platform (ADP) — Internal AI Engineering Infrastructure</h2>
+<p><strong>Role:</strong> Founder / Platform Architect (Solo → 7-team rollout)<br>
+<strong>Scope:</strong> Enterprise-wide developer productivity platform<br>
+<strong>Timeline:</strong> <strong>4 weeks</strong> from concept to production<br>
+<strong>Scale:</strong> <strong>20+ Skills, 20+ Autonomous Agents, 20+ Teams, 7 Pilot Squads</strong></p>
+<h3>Problem</h3>
+<p>Teams adopting Claude Code / MCP tooling faced: fragmented configs, no team context injection, manual setup drift, zero visibility into adoption/metrics.</p>
+<h3>Solution</h3>
+<p><strong>ADP</strong> — Multi-team, zero-friction bootstrap platform for AI-assisted engineering.</p>
+<h3>Architecture</h3>
+<pre class="diagram"><code>┌────────────────────────────────────────────────────────────────────────┐
+│                      DEVELOPER WORKSTATION / MACBOOK                   │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                           Executes: sh install_platform.sh
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│           1. INITIALIZATION &amp; PREREQUISITE VERIFICATION GATE           │
+├────────────────────────────────────────────────────────────────────────┤
+│  • Node.js &amp; Tool Checks   • Claude Code Status   • Local User Configs │
+│  • Git Connection Status   • Playwright Browser   • Extension Audits   │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                  2. MULTI-TENANT TEAM SELECTOR &amp; ENGINE                │
+├────────────────────────────────────────────────────────────────────────┤
+│  • Create Net-New Team Profile    OR    • Select Existing Team Profile │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│            3. CONTEXT ENRICHMENT &amp; METADATA HARVESTING LAYER           │
+├────────────────────────────────────────────────────────────────────────┤
+│                        Team Setup Skill Execution                      │
+│        ┌──────────────────────────┴──────────────────────────┐         │
+│        ▼                                                     ▼         │
+│  MCP Server Calls (APIs)                             User Guided Input │
+│  [Fetches: Repo Paths, Feature Branches, SNOW Assignment Groups, Logs] │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│               4. PERSISTENT STORAGE &amp; SYMLINKING ENGINE                │
+├────────────────────────────────────────────────────────────────────────┤
+│  • Writes /teams/&lt;team_name&gt;/config.json (Structured Metadata)         │
+│  • Writes /teams/&lt;team_name&gt;/context.md  (Human-Readable Context)       │
+│  • Symlinks Team Markdown Profile Directly Into: .claude/rules/        │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                         ┌────────────┴────────────┐
+                         ▼                         ▼
+┌──────────────────────────────┐       ┌──────────────────────────────┐
+│   5. AUTOMATIC RUNTIME       │       │     6. BACKGROUND OPERATIONS │
+├──────────────────────────────┤       ├──────────────────────────────┤
+│  • Claude Code Starts        │       │  • MacBook Cron Auto-Updates │
+│  • Automatic Rules Injection │       │  • Git-Based Issue Telemetry │
+└──────────────────────────────┘       └──────────────────────────────┘</code></pre>
+<h3>Core Components</h3>
+<table><thead><tr><th>Component</th><th>Innovation</th></tr></thead><tbody><tr><td><strong>Zero-Friction Bootstrap (<code>install.sh</code>)</strong></td><td>Validates Node, Claude Code, MCP, Git, Playwright, extensions; auto-symlinks skills/agents/rules</td></tr><tr><td><strong>Multi-Tenant Team Context</strong></td><td>Team Setup Skill harvests context via MCP (repo paths, branches, assignment groups) + user input → dual-file storage (<code>config.json</code> + <code>context.md</code>) → auto-symlinked to <code>.claude/rules/</code> for automatic LLM context injection</td></tr><tr><td><strong>Playwright Automation Layer</strong></td><td>Bypasses missing APIs: UI test generation, headless browser debugging, dashboard scraping, console error extraction</td></tr><tr><td><strong>Lightweight GitHub Telemetry</strong></td><td>Privacy-first schema (user, folder, skills[], team, timestamp) → posted as GitHub Issues for adoption analytics; MacBook cron jobs auto-pull config patches</td></tr></tbody></table>
+<h3>Measurable Outcomes</h3>
+<table><thead><tr><th>Metric</th><th>Result</th></tr></thead><tbody><tr><td><strong>Build Time</strong></td><td>4 weeks (design → test → ship)</td></tr><tr><td><strong>Platform Scale</strong></td><td>20+ Skills, 20+ Agents, 20+ Team Ecosystems</td></tr><tr><td><strong>Enterprise Rollout</strong></td><td>7 pilot engineering squads onboarded with management partnership</td></tr><tr><td><strong>Productivity Gains</strong></td><td>90% reduction in case task resolution time (Claude Code + MCP + skills repo)</td></tr><tr><td><strong>Automation Speed</strong></td><td>Days → hours (even for legacy codebases)</td></tr><tr><td><strong>Test Coverage</strong></td><td>Legacy codebase: 20% → 90%</td></tr><tr><td><strong>Defect Reduction</strong></td><td>External defects: 90% reduction, now single-digit across org</td></tr></tbody></table>
+<hr>
+<h3>Cross-Cutting Platform Metrics &amp; Impact</h3>
+<table><thead><tr><th>Dimension</th><th>Before</th><th>After</th><th>Driver</th></tr></thead><tbody><tr><td><strong>Case Task Resolution</strong></td><td>Baseline</td><td><strong>90% faster</strong></td><td>ADP skills repo + Claude Code + MCP</td></tr><tr><td><strong>Automation Development</strong></td><td>Days</td><td><strong>Hours</strong></td><td>Build Agent + ADP custom tooling</td></tr><tr><td><strong>Legacy Code Coverage</strong></td><td>20%</td><td><strong>90%</strong></td><td>Playwright automation + ADP test generation</td></tr><tr><td><strong>External Defects</strong></td><td>High volume</td><td><strong>Single-digit</strong></td><td>Self-healing ATF loop + metadata-aware generation</td></tr></tbody></table>
+<hr>
+<h2>Technical Themes Demonstrated</h2>
+<table><thead><tr><th>Theme</th><th>Evidence Across Projects</th></tr></thead><tbody><tr><td><strong>LLM-Native Architecture</strong></td><td>Build Agent (multi-model gateway, tool-calling), ADP (Claude Code + MCP), ALA Agents (Now LLM + Claude)</td></tr><tr><td><strong>Platform Governance</strong></td><td>Human-in-the-loop approval gates (Build Agent), admin-role restrictions (ALA), constrained frameworks (Workspace Builder)</td></tr><tr><td><strong>Metadata-Driven Development</strong></td><td>Build Agent Metadata Search, Table Builder Schema View, ADP context harvesting</td></tr><tr><td><strong>Self-Healing / Closed-Loop Systems</strong></td><td>Build Agent ATF loop, ADP Playwright debugging, ALA delta tracking</td></tr><tr><td><strong>Multi-Tenant / Enterprise Scale</strong></td><td>ADP (20+ teams), Build Agent (org-wide), ALA (CAB compliance)</td></tr><tr><td><strong>Developer Experience Obsession</strong></td><td>Zero-friction install, IDE-agnostic, no-code → pro-code continuum, automatic context injection</td></tr></tbody></table>
+<hr>
+<h2>Where This Experience Applies</h2>
+<table><thead><tr><th>Engineering Focus Area</th><th>My Direct Experience</th></tr></thead><tbody><tr><td><strong>AI-Powered Developer Platforms</strong></td><td>Built Build Agent (flagship GenAI dev tool), ADP (internal AI platform at scale)</td></tr><tr><td><strong>Platform Engineering / Internal Tools</strong></td><td>ADP: 4-week build, 7-team rollout, telemetry, self-service onboarding</td></tr><tr><td><strong>Low-Code/No-Code Democratization</strong></td><td>Table Builder, Workspace Builder — designed for citizen developers</td></tr><tr><td><strong>Compliance &amp; Governance at Scale</strong></td><td>ALA Release Agent (CAB manifests), Build Agent (approval gates), ADP (admin controls)</td></tr><tr><td><strong>Measurable Productivity Outcomes</strong></td><td>90% task reduction, days→hours automation, 20%→90% coverage, single-digit defects</td></tr><tr><td><strong>Multi-Model LLM Integration</strong></td><td>Now LLM + Anthropic Claude (Bedrock) routing, tool-calling architectures, MCP</td></tr></tbody></table>
+<hr>
+<h2>Appendix: Project Artifacts Reference</h2>
+<table><thead><tr><th>Project</th><th>Source Document</th></tr></thead><tbody><tr><td>ALA App Summary Agent</td><td><code>servicenow/ala-App-Summary-Agent.md</code></td></tr><tr><td>Build Agent</td><td><code>servicenow/build-agent.md</code></td></tr><tr><td>Table Builder</td><td><code>servicenow/table-builder.md</code></td></tr><tr><td>Workspace Builder</td><td><code>servicenow/workspace-builder.md</code></td></tr><tr><td>Agentic Developer Platform</td><td><code>servicenow/sn-claude-skills.md</code></td></tr><tr><td>Aggregate Metrics</td><td><code>servicenow/generic.md</code></td></tr></tbody></table>
+<hr>
+<p><em>All projects were delivered during tenure at ServiceNow. Metrics reflect measured outcomes from production deployments and pilot programs.</em></p>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

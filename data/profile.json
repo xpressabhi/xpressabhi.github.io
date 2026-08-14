@@ -189,7 +189,7 @@
       "org": "ServiceNow",
       "role": "Founder",
       "summary": "Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.",
-      "dive": "writeup-intuit.md",
+      "dive": "servicenow-project-portfolio.md",
       "metrics": [
         "−90% task resolution time",
         "20% → 90% legacy coverage",
@@ -421,6 +421,10 @@
     }
   ],
   "deepDives": [
+    {
+      "title": "Claude Code rollout to 20+ teams in 4 weeks",
+      "file": "adp-claude-code-rollout.md"
+    },
     {
       "title": "Generic ServiceNow impact points",
       "file": "generic.md"

@@ -4,16 +4,19 @@ Guidance for AI agents working in this repository.
 
 ## What this repo is
 
-The single hub for Abhishek's public presence: portfolio (GitHub Pages), CV
-view with PDF download, GitHub profile README sync, and career-ops/career-os CV
-sync. Everything is generated from one file.
+The single hub for Abhishek's public presence: portfolio (GitHub Pages), blog,
+CV view with PDF download, GitHub profile README sync, and career-ops/career-os
+CV sync. Everything is generated from one file plus markdown post sources.
 
 ## Rules
 
-- **`data/profile.json` is the ONLY hand-edited file.** Never hand-edit
-  generated outputs (`index.html`, `resume/index.html`, `resume/abhishek-maurya-cv.pdf`,
-  `../xpressabhi/README.md`, `../career-ops/cv.md`,
+- **`data/profile.json` and `deep-dives/*.md` are the only hand-edited sources.**
+  Never hand-edit generated outputs (`index.html`, `blog/**`, `resume/index.html`,
+  `resume/abhishek-maurya-cv.pdf`, `../xpressabhi/README.md`, `../career-ops/cv.md`,
   `../career-os/data/files/abhishek_maurya_2026.md`) — the build overwrites them.
+- Blog posts live in `deep-dives/<slug>.md`; the build renders them to static
+  `blog/<slug>.html` pages and lists them on `blog/index.html`. Any new `.md`
+  file in `deep-dives/` is picked up automatically.
 - Regenerate with `npm run build` (add `--pdf` for the PDF; needs Playwright).
 - Facts must come from `data/profile.json` or the user's explicit statements.
   Never invent metrics or authorship claims.

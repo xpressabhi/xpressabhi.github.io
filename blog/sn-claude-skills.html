@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technical Specification: Agentic Developer Platform (ADP) · Abhishek Kumar Maurya</title>
+<meta name="description" content="The Agentic Developer Platform (ADP) is a unified, multi-team automation framework designed to bootstrap, govern, and scale AI-assisted engineering workflows across the enterprise. Built and scaled…">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --code-dim: #948c81;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --code-dim: #8b847a;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-back { font-size: 14px; color: var(--muted); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  .reader h1 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .reader .post-meta {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
+    margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- section headers ---------- */
+  .reader h2 {
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 46px 0 18px;
+    padding: 10px 14px 10px 14px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
+    scroll-margin-top: 76px;
+  }
+  .reader h3 {
+    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 30px 0 12px; color: var(--accent-ink);
+  }
+  .reader h4 {
+    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
+  }
+  .reader h4::before {
+    content: "▹ "; color: var(--accent); font-weight: 600;
+  }
+
+  /* ---------- body copy ---------- */
+  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader strong { color: var(--ink); font-weight: 600; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- lists ---------- */
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader li { margin-bottom: 6px; }
+  .reader li::marker { color: var(--accent); font-weight: 500; }
+
+  /* ---------- inline code ---------- */
+  .reader code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 5px;
+    padding: 1.5px 6px;
+  }
+
+  /* ---------- code blocks (terminal) ---------- */
+  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
+  .reader pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    position: relative;
+  }
+  .reader pre.code code {
+    display: block; padding: 18px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--code-ink); font-size: 13px; line-height: 1.65;
+  }
+  .reader pre.code[data-lang] { padding-top: 32px; }
+  .reader pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--code-dim);
+    border-bottom: 1px solid var(--code-border);
+  }
+
+  /* ---------- diagrams ---------- */
+  .reader pre.diagram {
+    background: var(--accent-soft);
+    border: 1px dashed var(--accent-line);
+    text-align: center;
+  }
+  .reader pre.diagram::before {
+    content: "Diagram";
+    display: block;
+    text-align: left;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .reader pre.diagram code {
+    display: block; padding: 16px 18px 20px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--ink); font-size: 12.5px; line-height: 1.55;
+    white-space: pre; text-align: center;
+  }
+
+  /* ---------- blockquotes ---------- */
+  .reader blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: var(--muted); font-style: italic; margin: 0 0 18px;
+  }
+
+  /* ---------- tables ---------- */
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
+  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+
+  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .reader-foot a { color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 768px) {
+    nav, main { padding-left: 24px; padding-right: 24px; }
+    main { padding-top: 40px; }
+    .nav-links a:not(.nav-back) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark" aria-label="Back to portfolio">
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
+    </a>
+    <div class="nav-links">
+      <a href="./">Blog</a>
+      <a href="../" class="nav-back">← Home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>Technical Specification: Agentic Developer Platform (ADP)</h1>
+    <div class="post-meta"><span>Aug 12, 2026</span><span>·</span><span>5 min read</span><span>·</span><a href="./">All posts</a></div>
+    <p>The <strong>Agentic Developer Platform (ADP)</strong> is a unified, multi-team automation framework designed to bootstrap, govern, and scale AI-assisted engineering workflows across the enterprise. Built and scaled within a rapid <strong>4-week timeline</strong>, the platform standardizes the deployment of advanced LLM tooling (Claude Code, Model Context Protocol (MCP) servers, custom agents, and specialized skills).</p>
+<p>The platform bridges the gap between raw LLM capabilities and isolated team workflows, enabling development squads to inherit deep metadata footprints with zero manual configuration. It currently supports <strong>20+ Global Skills</strong>, <strong>20+ Autonomous Agents</strong>, and <strong>20+ Active Teams</strong>, with initial onboarding executed across <strong>7 pilot engineering squads</strong> in partnership with management.</p>
+<hr>
+<h2>🏗️ System Architecture Diagram</h2>
+<pre class="diagram"><code> ┌────────────────────────────────────────────────────────────────────────┐
+ │                      DEVELOPER WORKSTATION / MACBOOK                   │
+ └───────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                        Executes: sh install_platform.sh
+                                     │
+                                     ▼
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │           1. INITIALIZATION &amp; PREREQUISITE VERIFICATION GATE           │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │  • Node.js &amp; Tool Checks   • Claude Code Status   • Local User Configs │
+ │  • Git Connection Status   • Playwright Browser   • Extension Audits   │
+ └───────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │                  2. MULTI-TENANT TEAM SELECTOR &amp; ENGINE                │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │  • Create Net-New Team Profile    OR    • Select Existing Team Profile │
+ └───────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │            3. CONTEXT ENRICHMENT &amp; METADATA HARVESTING LAYER           │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │                        Team Setup Skill Execution                      │
+ │        ┌──────────────────────────┴──────────────────────────┐         │
+ │        ▼                                                     ▼         │
+ │  MCP Server Calls (APIs)                             User Guided Input │
+ │  [Fetches: Repo Paths, Feature Branches, SNOW Assignment Groups, Logs] │
+ └───────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                                     ▼
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │               4. PERSISTENT STORAGE &amp; SYMLINKING ENGINE                │
+ ├────────────────────────────────────────────────────────────────────────┤
+ │  • Writes /teams/&lt;team_name&gt;/config.json (Structured Metadata)         │
+ │  • Writes /teams/&lt;team_name&gt;/context.md  (Human-Readable Context)       │
+ │  • Symlinks Team Markdown Profile Directly Into: .claude/rules/        │
+ └───────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                        ┌────────────┴────────────┐
+                        ▼                         ▼
+ ┌──────────────────────────────┐       ┌──────────────────────────────┐
+ │   5. AUTOMATIC RUNTIME       │       │     6. BACKGROUND OPERATIONS │
+ ├──────────────────────────────┤       ├──────────────────────────────┤
+ │  • Claude Code Starts        │       │  • MacBook Cron Auto-Updates │
+ │  • Automatic Rules Injection │       │  • Git-Based Issue Telemetry │
+ └──────────────────────────────┘       └──────────────────────────────┘</code></pre>
+<hr>
+<h2>🚀 Core Platform Components &amp; Capabilities</h2>
+<h3>1. Zero-Friction Bootstrapping (<code>install.sh</code>)</h3>
+<p>The platform features an automated configuration script that validates environmental dependencies, removing manual engineering setup time:</p>
+<ul><li><strong>Runtime Verification:</strong> Checks for operational Node.js environments, local system variables, and active git repositories.</li><li><strong>Tooling Audits:</strong> Verifies the active installation status of Claude Code, MCP configuration links, and auxiliary plugins.</li><li><strong>Symlink Engine:</strong> Automatically links centralized skills, agents, and rules inside the repository, ensuring zero configuration drift.</li></ul>
+<h3>2. Multi-Tenant Team Subsystems &amp; Context Injection</h3>
+<p>The core differentiator of the platform is its multi-team architecture, recognizing that engineering squads work on isolated feature branches, code repositories, or specific assignment groups.</p>
+<ul><li><strong>The Team Setup Skill:</strong> An orchestrator skill that aggregates team boundaries via automated MCP inquiries or guided terminal prompts.</li><li><strong>Dual-File Storage:</strong> Stores metadata under specialized team directories:<ul><li><code>config.json</code>: Structured properties built for programmatic lookup.</li><li><code>context.md</code>: Human-readable technical descriptions optimized for language model token ingestion.</li></ul></li><li><strong>Automatic Rule Injection:</strong> The active team's <code>.md</code> file is automatically symlinked straight into the local <code>.claude/rules/</code> workspace directory. When Claude Code initializes, it injects the team profile natively into the execution prompt context without requiring manual text flags.</li></ul>
+<h3>3. Playwright Automation Integration</h3>
+<p>To bypass limitations where official API/MCP endpoints are missing or locked down, the platform packages a pre-configured <strong>Playwright CLI wrapper</strong>:</p>
+<ul><li><strong>UI Test Generation:</strong> Empowers Claude Code to natively write and spin up automated End-to-End browser interface tests.</li><li><strong>Instance Debugging:</strong> Allows the LLM to programmatically spin up headless browser instances to scrape internal dashboards, extract execution runtime flags, and read system console errors.</li></ul>
+<h3>4. Lightweight GitHub Telemetry &amp; Maintenance</h3>
+<p>The platform prioritizes metadata privacy while ensuring platform usage stats are collected transparently:</p>
+<ul><li><strong>Minimalist Tracking Schema:</strong> Telemetry payloads capture only critical execution fields to determine platform adoption metrics:</li></ul>
+<pre class="code" data-lang="json"><code>  {
+    &quot;user&quot;: &quot;developer_identifier&quot;,
+    &quot;folder_where_invoked&quot;: &quot;/Users/dev/repo/subfolder&quot;,
+    &quot;skills&quot;: [&quot;git_helper&quot;, &quot;db_schema_mapper&quot;],
+    &quot;team_name&quot;: &quot;squad_delta&quot;,
+    &quot;time_stamp&quot;: &quot;2026-08-01T11:38:00Z&quot;
+  }</code></pre>
+<ul><li><strong>Serverless Reporting Pipeline:</strong> Telemetry details are safely posted as lightweight payloads to a centralized GitHub Issues repository to measure onboarding rates, identify high-frequency skills, and trace user activity.</li><li><strong>MacBook Automation Crons:</strong> Transparent macOS background cron jobs run automatically to pull downstream config patches, preventing local custom prompts from falling behind master branches.</li></ul>
+<hr>
+<h2>📊 Onboarding &amp; Platform Metrics</h2>
+<ul><li><strong>Development Velocity:</strong> Core infrastructure designed, tested, and shipped in <strong>4 weeks</strong>.</li><li><strong>Operational Scale:</strong> Fully models and contains over <strong>20+ Skills</strong>, <strong>20+ Dedicated Agents</strong>, and <strong>20+ Configured Team Ecosystems</strong>.</li><li><strong>Enterprise Expansion:</strong> Demonstrated and successfully deployed to <strong>7 initial engineering teams</strong> in coordination with management, establishing cross-organizational buy-in.</li></ul>
+<h2>My prompt for sn-claude-skills </h2>
+<h3>I have developed a config tool repo which hosts claude skills, agents, rules, mcp tools, at once place in the repo and one install scripts which checks about claude code installation status, node check, local user configs , mcp conneciton status, git conneciton status, playwright cli/mcp installation status, few more claude plugins installation status, symlinking of the skills, agents and rules, telemetry via github issues, auto update for cron jobs in macbook, team setup and status, team selection or team creation setup, so the unique part of this repo is teams, as teams work on seperate stuff, some times features, repo, assignment groups, so to attached thes info into contexnt, a team setup skills used to fetch all info and enrich it via mcp calls or user input and store it in a team folder int his repo where it stores a json file for informations and a md file for more info to consume by LLMs, </h3>
+<h3>now create a formal details summary in a structured way with architecture diagram to share with anyone, ask me more info if you need before proceeding</h3>
+<h3>just for info this repo tools provide quick installation and setup of the the things requires, there are 20+ skills, 20+ agents and 20+ teams already onboarded , I build this in 4 weeks and demoed to 7 teams to onboard them with my manager who helped schedule all the call and made sure everybody is on board</h3>
+<h3>telemetry format {user, folder where invoked, skills, team name, time stamp} , minimal telemtry to know the most used skills, which is onboarded and using and who all, </h3>
+<h3>context injection: team context is gettign symlinked ot .claude/rules folder which is loaded in context when claude code starts so kinds automatic</h3>
+<h3>playwirhgt cli was used to write UI automations tests and instance debugging and anything for mcp is not availabel , so claude code can open the pag ein browser and read logs, data etc</h3>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-# ServiceNow Project Portfolio: Technical Writeup for Intuit Application
+# ServiceNow Project Portfolio: Technical Writeup
 
 **Author:** Abhishek Maurya  
 **Date:** August 2026  
@@ -288,9 +288,9 @@ Teams adopting Claude Code / MCP tooling faced: fragmented configs, no team cont
 
 ---
 
-## Relevance to Intuit
+## Where This Experience Applies
 
-| Intuit Priority | My Direct Experience |
+| Engineering Focus Area | My Direct Experience |
 |-----------------|---------------------|
 | **AI-Powered Developer Platforms** | Built Build Agent (flagship GenAI dev tool), ADP (internal AI platform at scale) |
 | **Platform Engineering / Internal Tools** | ADP: 4-week build, 7-team rollout, telemetry, self-service onboarding |
@@ -314,4 +314,4 @@ Teams adopting Claude Code / MCP tooling faced: fragmented configs, no team cont
 
 ---
 
-*This writeup is prepared for Intuit application purposes. All projects were delivered during tenure at ServiceNow. Metrics reflect measured outcomes from production deployments and pilot programs.*
+*All projects were delivered during tenure at ServiceNow. Metrics reflect measured outcomes from production deployments and pilot programs.*

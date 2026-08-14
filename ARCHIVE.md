@@ -12,7 +12,7 @@ Both repos were folded into this hub repo (Feb 2026 consolidation). Nothing is l
 | | `servicenow/workspace-builder.md` | `deep-dives/workspace-builder.md` |
 | | `servicenow/sn-claude-skills.md` | `deep-dives/sn-claude-skills.md` |
 | | `servicenow/generic.md` | `deep-dives/generic.md` |
-| | `SERVICENOW_PROJECTS_WRITEUP.md` | `deep-dives/writeup-intuit.md` |
+| | `SERVICENOW_PROJECTS_WRITEUP.md` | `deep-dives/servicenow-project-portfolio.md` |
 | | `writeup.md` | dropped (duplicate of writeup-intuit) |
 
 ## Steps (run once, after pushing this repo)
