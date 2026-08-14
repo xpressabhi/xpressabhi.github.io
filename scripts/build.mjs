@@ -370,17 +370,20 @@ function buildBlog() {
 
     const words = Math.max(1, body.split(/\s+/).length);
     const read = Math.max(1, Math.round(words / 200)) + " min read";
-    const updated = statSync(P("deep-dives", file)).mtime.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    const mtime = statSync(P("deep-dives", file)).mtimeMs;
+    const updated = new Date(mtime).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     const slug = file.replace(/\.md$/i, "");
 
     const scope = { name: REPO.basics.name, slug, title, excerpt, updated, read, featured: featured.has(file), content: mdToHtml(body) };
     posts.push({
       slug, title, excerpt, updated, read,
       featured: featured.has(file),
+      mtime,
       html: render(postTpl, [scope]),
     });
   }
 
+  posts.sort((a, b) => b.mtime - a.mtime);
   const index = render(indexTpl, [{ name: REPO.basics.name, email: REPO.basics.email, posts }]);
   return { posts, index };
 }
