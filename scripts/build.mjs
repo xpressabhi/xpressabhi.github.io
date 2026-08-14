@@ -176,14 +176,19 @@ function buildProfileReadme() {
     .join("\n");
   return `# ${b.name} 👋
 
-Staff Software Engineer at **ServiceNow**, focused on **AI Agents, MCP & Harness Engineering**. Ex-Rippling | Ex-Reputation | Ex-Oracle. NIT Trichy (MCA), ${b.yearsExperience} years of software development from ${b.location}.
+Staff Software Engineer at **ServiceNow** — founded the **MCP-driven Agentic Developer Platform** used by **20+ teams** (Claude Code · MCP servers · agents · skills). AI Agents, MCP & agentic platform engineering. Ex-Rippling | Ex-Reputation | Ex-Oracle. NIT Trichy (MCA), ${b.yearsExperience} years of software development from ${b.location}.
 
-- 🤖 Building AI-assisted developer tooling — contributed to the **Build Agent in ServiceNow Studio**, powering agentic workflows for AI-assisted application creation, flow generation, and tool orchestration.
-- 🔌 Designed and integrated **MCP-driven agentic workflows** into the engineering lifecycle, adopted by **20+ teams** across the organization.
-- ⚡ Reduced case task resolution, research and debugging effort by **~95%** while improving accuracy.
-- 🏗️ Built an **Agentic Developer Platform (ADP)** in 4 weeks — 20+ skills, 20+ agents, 20+ teams — bootstrapping Claude Code, MCP servers, and custom agents with zero manual config.
-- 🏆 Patent holder (${b.patent.number}) for importing tested objects into benefit programs at Oracle.
-- 🌱 Continuously learning — currently exploring AI-first development practices.
+- 🔌 Founded the **Agentic Developer Platform (ADP)** — multi-team bootstrap and governance for Claude Code, MCP servers, agents & skills: built in **4 weeks**, 20+ skills, 20+ agents, 20+ teams.
+- 🤖 Led the architecture of the **Build Agent in ServiceNow Studio** — metadata-aware, multi-model (Claude Opus 4.6 + Now LLM + Bedrock), self-healing agentic workflows across 35+ metadata types & 11 domains.
+- ⚡ **−95%** research & debugging effort, **−90%** case resolution time, **−90%** external defects on MCP-driven workflows.
+- 🏆 Patent holder (${b.patent.number}) for importing tested objects into benefits programs at Oracle.
+- 🌱 Exploring AI-first development practices — mentoring engineers in agentic development.
+
+<br>
+
+## 🔎 What I'm looking for
+
+Staff/Principal roles building **AI agents, MCP tooling, or agentic platforms** — AI startups, dev tools, or mission-driven orgs. Remote (IST, US/EU overlap) or Hyderabad/Bengaluru. DMs open: agent platform work, MCP deep dives.
 
 <br>
 
