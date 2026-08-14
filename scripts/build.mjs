@@ -176,6 +176,7 @@ function escHtml(s) {
 function inlineMd(s) {
   return s
     .replace(/`([^`]+)`/g, (_, c) => "<code>" + escHtml(c) + "</code>")
+    .replace(/!\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, u) => `<img src="${escHtml(u)}" alt="${t}" loading="lazy">`)
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/(^|[^*])\*([^*\s][^*]*)\*/g, "$1<em>$2</em>")
     .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, t, u) => {
@@ -301,6 +302,13 @@ function mdToHtml(md) {
 
     if (/^\s*[-*+]\s+/.test(line) || /^\s*\d+[.)]\s+/.test(line)) { list(); continue; }
     if (line.includes("|") && i + 1 < lines.length && /^\s*\|?[\s:|-]+\|?\s*$/.test(lines[i + 1])) { table(); continue; }
+
+    const img = line.match(/^!\[([^\]]+)\]\(([^)\s]+)\)\s*$/);
+    if (img) {
+      out.push(`<img class="post-image" src="${escHtml(img[2])}" alt="${escHtml(img[1])}" loading="lazy">`);
+      i++;
+      continue;
+    }
 
     para();
   }

@@ -2,6 +2,8 @@ How We Turned Claude Code Into a Self-Improving AI Engineering Platform for Our 
 A deep dive into building a shared AI toolkit with 20+ skills, 20+ specialist agents, and safety guardrails - and what happened when we scaled it across 20+ teams in 4 weeks.
 
 ---
+![Claude Cose Setup](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*Bt7yHhFzAg4oJ7JmLJImKA.png)
+___
 
 # The Starting Point
 Four weeks ago, I started using Claude Code - Anthropic's AI coding assistant that runs directly in the terminal. Out of the box, it's remarkably capable: it reads your codebase, writes code, runs tests, commits changes. For individual tasks, it felt like a significant productivity boost.
@@ -210,3 +212,5 @@ The long-term vision: a shared AI engineering platform where every correction by
 
 Claude Code is developed by Anthropic. The architectural patterns described in this article - skills, agents, hooks, and team context - are built on Claude Code's extensibility features. The specific implementation is our team's work.
 #ClaudeCode #Anthropic #AIEngineering #DeveloperProductivity #SoftwareEngineering
+
+Originally published at [https://medium.com/@amaurya/how-we-turned-claude-code-into-a-self-improving-ai-engineering-platform-for-our-entire-organization-4e7f3c1b8d6](https://medium.com/@amaurya/how-we-turned-claude-code-into-a-self-improving-ai-engineering-platform-for-our-entire-organization-4e7f3c1b8d6)

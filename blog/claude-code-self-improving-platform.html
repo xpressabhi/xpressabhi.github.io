@@ -113,6 +113,11 @@
 
   /* ---------- body copy ---------- */
   .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader .post-image {
+    display: block; max-width: 100%; height: auto;
+    margin: 28px auto; border-radius: 12px;
+    border: 1px solid var(--line);
+  }
   .reader strong { color: var(--ink); font-weight: 600; }
   .reader em { color: var(--ink); }
   .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
@@ -226,6 +231,8 @@
     <h1>How We Turned Claude Code Into a Self-Improving AI Engineering Platform for Our Entire Organization</h1>
     <div class="post-meta"><span>Aug 14, 2026</span><span>·</span><span>16 min read</span><span>·</span><a href="./">All posts</a></div>
     <p>A deep dive into building a shared AI toolkit with 20+ skills, 20+ specialist agents, and safety guardrails - and what happened when we scaled it across 20+ teams in 4 weeks.</p>
+<hr>
+<img class="post-image" src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*Bt7yHhFzAg4oJ7JmLJImKA.png" alt="Claude Cose Setup" loading="lazy">
 <hr>
 <h2>The Starting Point</h2>
 <p>Four weeks ago, I started using Claude Code - Anthropic's AI coding assistant that runs directly in the terminal. Out of the box, it's remarkably capable: it reads your codebase, writes code, runs tests, commits changes. For individual tasks, it felt like a significant productivity boost.<br>
@@ -401,6 +408,7 @@ The long-term vision: a shared AI engineering platform where every correction by
 <hr>
 <p>Claude Code is developed by Anthropic. The architectural patterns described in this article - skills, agents, hooks, and team context - are built on Claude Code's extensibility features. The specific implementation is our team's work.<br>
 #ClaudeCode #Anthropic #AIEngineering #DeveloperProductivity #SoftwareEngineering</p>
+<p>Originally published at <a href="https://medium.com/@amaurya/how-we-turned-claude-code-into-a-self-improving-ai-engineering-platform-for-our-entire-organization-4e7f3c1b8d6" target="_blank" rel="noopener">https://medium.com/@amaurya/how-we-turned-claude-code-into-a-self-improving-ai-engineering-platform-for-our-entire-organization-4e7f3c1b8d6</a></p>
   </article>
   <div class="reader-foot">
     <a href="./">← All posts</a>
