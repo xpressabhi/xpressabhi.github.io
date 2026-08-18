@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running Local LLMs on Apple Silicon: Ollama, MLX, and Memory-Efficient Inference · Abhishek Kumar Maurya</title>
+<meta name="description" content="Running serious models locally on a MacBook M1 used to mean one thing: the entire model must fit in RAM. My setup changed when I started combining MLX-optimized models served through Ollama with a …">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --code-dim: #948c81;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --code-dim: #8b847a;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-back { font-size: 14px; color: var(--muted); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  .reader h1 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .reader .post-meta {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
+    margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- section headers ---------- */
+  .reader h2 {
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 46px 0 18px;
+    padding: 10px 14px 10px 14px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
+    scroll-margin-top: 76px;
+  }
+  .reader h3 {
+    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 30px 0 12px; color: var(--accent-ink);
+  }
+  .reader h4 {
+    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
+  }
+  .reader h4::before {
+    content: "▹ "; color: var(--accent); font-weight: 600;
+  }
+
+  /* ---------- body copy ---------- */
+  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader .post-image {
+    display: block; max-width: 100%; height: auto;
+    margin: 28px auto; border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .reader strong { color: var(--ink); font-weight: 600; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- lists ---------- */
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader li { margin-bottom: 6px; }
+  .reader li::marker { color: var(--accent); font-weight: 500; }
+
+  /* ---------- inline code ---------- */
+  .reader code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 5px;
+    padding: 1.5px 6px;
+  }
+
+  /* ---------- code blocks (terminal) ---------- */
+  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
+  .reader pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    position: relative;
+  }
+  .reader pre.code code {
+    display: block; padding: 18px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--code-ink); font-size: 13px; line-height: 1.65;
+  }
+  .reader pre.code[data-lang] { padding-top: 32px; }
+  .reader pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--code-dim);
+    border-bottom: 1px solid var(--code-border);
+  }
+
+  /* ---------- diagrams ---------- */
+  .reader pre.diagram {
+    background: var(--accent-soft);
+    border: 1px dashed var(--accent-line);
+    text-align: center;
+  }
+  .reader pre.diagram::before {
+    content: "Diagram";
+    display: block;
+    text-align: left;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .reader pre.diagram code {
+    display: block; padding: 16px 18px 20px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--ink); font-size: 12.5px; line-height: 1.55;
+    white-space: pre; text-align: center;
+  }
+
+  /* ---------- blockquotes ---------- */
+  .reader blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: var(--muted); font-style: italic; margin: 0 0 18px;
+  }
+
+  /* ---------- tables ---------- */
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
+  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+
+  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .reader-foot a { color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 768px) {
+    nav, main { padding-left: 24px; padding-right: 24px; }
+    main { padding-top: 40px; }
+    .nav-links a:not(.nav-back) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark" aria-label="Back to portfolio">
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
+    </a>
+    <div class="nav-links">
+      <a href="./">Blog</a>
+      <a href="../" class="nav-back">← Home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>Running Local LLMs on Apple Silicon: Ollama, MLX, and Memory-Efficient Inference</h1>
+    <div class="post-meta"><span>Aug 18, 2026</span><span>·</span><span>4 min read</span><span>·</span><a href="./">All posts</a></div>
+    <h2><a href="https://github.com/drumih/turbo-fieldfare" target="_blank" rel="noopener">turbo-fieldfare</a></h2>
+<p>Running serious models locally on a MacBook M1 used to mean one thing: the entire model must fit in RAM. My setup changed when I started combining <strong>MLX-optimized models served through Ollama</strong> with a memory-efficient loader like <strong>turbo-fieldfare</strong> that only loads the parts of the model it is actively using. The result: a 26B-parameter model — Gemma 4 26B — running under 2GB of RAM on an M1, where the conventional approach needs 13–16GB or more just for weights.</p>
+<hr>
+<h2>🚀 Why Run Models Locally at All?</h2>
+<ul><li><strong>Privacy:</strong> Prompts and code never leave the machine — no data shipped to a third-party API.</li><li><strong>Offline &amp; air-gapped work:</strong> Full agentic workflows that keep working with no network.</li><li><strong>Zero marginal cost:</strong> Unlimited experimentation, no per-token billing, no rate limits.</li><li><strong>Hands-on LLM depth:</strong> Running inference yourself builds real intuition for context windows, quantization, and memory behavior that API-only developers miss.</li></ul>
+<hr>
+<h2>🏗️ The Stack: Ollama + MLX-Category Models</h2>
+<p>On macOS the sweet spot is <strong>MLX</strong> — Apple's MLX framework produces model builds specifically optimized for Apple silicon (M1/M2/M3+), taking advantage of the unified memory and GPU. My daily drivers are <strong>Qwen 3.5</strong>, <strong>Gemma 4</strong>, and <strong>DeepSeek-R1</strong> — all run as MLX-category models through <strong>Ollama</strong>, which handles model downloads, the local inference server, and an OpenAI-compatible API out of the box.</p>
+<pre class="diagram"><code>┌───────────────────────────────────────────────┐
+│            Your Tools / Agent Stack           │
+│   (CLI, editors, scripts, agent frameworks)   │
+└───────────────────────┬───────────────────────┘
+                        │  OpenAI-compatible API
+┌───────────────────────▼───────────────────────┐
+│                  Ollama Server                │
+│   model management · quantization · serving   │
+└───────────────────────┬───────────────────────┘
+                        │  MLX-category weights
+┌───────────────────────▼───────────────────────┐
+│            Apple silicon (M1+) unified RAM     │
+│   Qwen 3.5 · Gemma 4 · DeepSeek-R1            │
+└───────────────────────────────────────────────┘</code></pre>
+<h3>Quick Setup (Ollama)</h3>
+<ol start="1"><li>Install Ollama: <code>brew install ollama</code> (or the macOS installer from <a href="https://ollama.com" target="_blank" rel="noopener">ollama.com</a>).</li><li>Pull the MLX-category builds of your models of choice:</li></ol>
+<p><code>ollama pull &amp;lt;model&amp;gt;</code> — e.g. Qwen 3.5, Gemma 4, or DeepSeek-R1 variants.</p>
+<ol start="3"><li>Run and chat: <code>ollama run &amp;lt;model&amp;gt;</code>.</li><li>Use the local API from any agent or script — it speaks the OpenAI-compatible protocol at <code>localhost:11434</code>, so switching between local and hosted models is a base-URL change.</li></ol>
+<hr>
+<h2>🧠 The Memory Wall: Full-Load Inference</h2>
+<p>Here is where conventional local runners hit a wall. <strong>Ollama loads the entire model into RAM</strong> before inference starts — weights, KV cache, and context all resident in memory. The math is unforgiving:</p>
+<ul><li>A 26B-parameter model needs roughly <strong>13–16GB of RAM for weights alone</strong> at 4-bit quantization.</li><li>Add the KV cache and overhead, and a 26B model demands a 32GB machine to be comfortable.</li><li>On an 8GB or 16GB MacBook M1, that rules out everything above ~8B comfortably — and even those fight with the OS for memory.</li></ul>
+<p>The classic answer is &quot;buy more RAM.&quot; There is a better one: <strong>stop loading what you are not using.</strong></p>
+<hr>
+<h2>⚡ turbo-fieldfare: Load Only What You Use</h2>
+<p><a href="https://github.com/drumih/turbo-fieldfare" target="_blank" rel="noopener">turbo-fieldfare</a> is a Rust-based local LLM runner that takes a fundamentally different approach: instead of mapping the whole model into RAM up front, it <strong>loads only the portions of the model needed for the current inference step</strong>, keeping the rest on disk and streaming it through on demand.</p>
+<ul><li><strong>Gemma 4 26B under 2GB RAM on an M1</strong> — a model that full-load runners can barely fit on a 32GB machine, running on a laptop with a fraction of the memory.</li><li><strong>Same model, far smaller footprint</strong> — swap the runner, not the model.</li><li><strong>Trade-off is speed, not quality</strong> — because the weights themselves are identical, the output quality is unchanged; you exchange peak throughput for memory headroom.</li></ul>
+<pre class="diagram"><code>Ollama (full-load):      ── 13–16 GB RAM for 26B ──  everything resident
+turbo-fieldfare:         ── &lt; 2 GB RAM for 26B ──   layers streamed on demand</code></pre>
+<h3>Setup &amp; Usage</h3>
+<ol start="1"><li>Clone the repo and follow its README for the install steps: <code>git clone https://github.com/drumih/turbo-fieldfare</code>.</li><li>Point it at the same model files you already use with Ollama.</li><li>Run inference — the loader handles mapping the weights and streaming only the active layers through memory.</li><li>Wire it into your agent stack the same way: it exposes a local endpoint your scripts and agents can call.</li></ol>
+<hr>
+<h2>🎯 When to Reach for Which</h2>
+<table><thead><tr><th>Scenario</th><th>Runner</th></tr></thead><tbody><tr><td>Small/medium models (≤8B), fastest possible local chat, plugin ecosystem</td><td><strong>Ollama</strong> (full-load)</td></tr><tr><td>Big models (26B+) on a memory-constrained MacBook</td><td><strong>turbo-fieldfare</strong> (partial-load)</td></tr><tr><td>Building/distributing tooling that needs a full-load reference runner</td><td><strong>Ollama</strong></td></tr><tr><td>Long-running background inference alongside a busy desktop</td><td><strong>turbo-fieldfare</strong></td></tr></tbody></table>
+<hr>
+<h2>💡 Lessons</h2>
+<ul><li><strong>Memory efficiency is a loader problem, not just a model problem.</strong> Quantization shrinks weights; partial loading shrinks the runtime footprint. Combining MLX-optimized weights with on-demand layer loading is what makes 26B-class models practical on M1 laptops.</li><li><strong>Local inference is a first-class agent ingredient.</strong> With an OpenAI-compatible local endpoint, the same agentic patterns (tool orchestration, self-healing loops) work fully offline.</li><li><strong>Model quality is preserved.</strong> Streaming weights from disk changes the memory curve, not the weights — the same model, the same outputs, a fraction of the RAM.</li></ul>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

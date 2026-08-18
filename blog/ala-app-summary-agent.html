@@ -229,9 +229,14 @@
 <main>
   <article class="reader">
     <h1>ServiceNow ALA: Release Lifecycle Documentation AI Agent</h1>
-    <div class="post-meta"><span>Aug 12, 2026</span><span>·</span><span>4 min read</span><span>·</span><a href="./">All posts</a></div>
+    <div class="post-meta"><span>Aug 18, 2026</span><span>·</span><span>5 min read</span><span>·</span><a href="./">All posts</a></div>
     <h2><a href="https://www.servicenow.com/docs/r/application-development/now-assist-for-creator/release-lifecycle-documentation-agent-landing.html" target="_blank" rel="noopener">ALA</a></h2>
 <p>The <strong>Release Lifecycle Documentation AI Agent</strong> is an autonomous governance tool integrated into the ServiceNow platform under the <strong>Application Lifecycle Analytics (ALA)</strong> framework. Powered by the <strong>Now Assist for Creator</strong> suite, it automates one of the most tedious parts of DevOps: compiling exhaustive release notes, deployment manifests, and audit trails for application updates.</p>
+<hr>
+<h2>🧠 Agent Architecture: Built on the REAct Framework</h2>
+<p>Both the ALA Release Documentation Agent and the App Summary Agent are built on the <strong>REAct agentic framework</strong> — Reason → Act → Observe — rather than a single monolithic prompt. Each documentation run is a closed reasoning loop:</p>
+<ol start="1"><li><strong>Reason:</strong> Analyze the current state (a scoped application, or the delta between an update set and the live instance) and decide what documentation step to take next.</li><li><strong>Act:</strong> Invoke the semantic discovery tools — crawl metadata configurations, diffs, script includes, and UI structures to gather the evidence the step needs.</li><li><strong>Observe:</strong> Interpret the tool results, fold them into the running manifest, and loop back to reasoning until the documentation set is complete (release notes, CAB deployment manifest, architecture diagrams).</li></ol>
+<p>The REAct loop is what lets the agents handle arbitrary applications of any size: they keep reasoning and acting until the evidence is exhausted, instead of depending on a pre-baked prompt covering every case.</p>
 <hr>
 <h2>🚀 Core Capabilities</h2>
 <p>The agent automatically monitors and crawls scoped application changes, providing three primary automation benefits:</p>

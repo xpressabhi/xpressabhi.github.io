@@ -70,6 +70,17 @@ Behind the scenes, the ServiceNow Build Agent operates as an **orchestrated, mul
 
 Every time a prompt like *"Create a hardware return app with an approvals workflow"* is submitted, the platform triggers a precise sequence of technical layers:
 
+### 0. Plan First, Then Execute (Planning Pattern)
+
+The Build Agent is built on the **planning pattern** — *think first, then execute*. It never jumps straight to code generation. Every request is decomposed into an explicit execution plan before a single tool is called:
+
+1. **Reason & Plan:** The reasoning engine analyzes the prompt, indexes the target instance's metadata, and produces a structured plan of the artifacts to create (tables, business rules, ACLs, flows, UI layouts) with their dependencies.
+2. **Present the Plan:** The plan is staged for the developer as an exhaustive visual blueprint — nothing is executed until it is reviewed and approved (see Human-in-the-Loop Governance below).
+3. **Execute Step-by-Step:** Each approved plan step maps to a concrete tool invocation (metadata search, schema inspection, Fluent API compile), so execution is deterministic and auditable rather than a free-form generation.
+4. **Verify & Self-Heal:** Generated artifacts run through the Automated Test Framework (ATF) loop — failures are diagnosed and rewritten until the plan's quality gates pass.
+
+This think-first design is what turns the agent from a text predictor into a deterministic, governance-friendly application compiler.
+
 ### 1. Context Discovery (Metadata Search)
 Before making an external Large Language Model (LLM) call, the Build Agent looks inward via an internal **Metadata Search** engine. 
 * It scans the live target instance's existing tables, data schemas, access control lists (ACLs), configurations, and user roles.

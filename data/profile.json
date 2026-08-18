@@ -39,6 +39,17 @@
       ]
     },
     {
+      "title": "Local LLM inference",
+      "blurb": "Run MLX-optimized models (Qwen, Gemma, DeepSeek) locally on Apple silicon via Ollama, plus memory-efficient loaders like turbo-fieldfare that stream model portions on demand — Gemma 4 26B under 2GB RAM.",
+      "tags": [
+        "Ollama",
+        "MLX",
+        "turbo-fieldfare",
+        "Apple silicon",
+        "Memory-efficient inference"
+      ]
+    },
+    {
       "title": "Developer platforms",
       "blurb": "Founded the Agentic Developer Platform: multi-team bootstrap and governance infrastructure for agents, skills, and MCP servers.",
       "tags": [
@@ -105,7 +116,11 @@
       "Prompt engineering",
       "Agent workflows",
       "Tool orchestration",
-      "Multi-model systems"
+      "Multi-model systems",
+      "REAct agents",
+      "Planning pattern (think first, then execute)",
+      "Multi-agent orchestration",
+      "Local LLM inference (Ollama, MLX)"
     ],
     "Frontend & Platform": [
       "JavaScript (ES6+)",
@@ -188,13 +203,14 @@
       "title": "Agentic Developer Platform (ADP)",
       "org": "ServiceNow",
       "role": "Founder",
-      "summary": "Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.",
+      "summary": "Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks on a multi-agent orchestration pattern, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.",
       "dive": "servicenow-project-portfolio.md",
       "metrics": [
         "−90% task resolution time",
         "20% → 90% legacy coverage",
         "−90% external defects",
-        "Days → hours"
+        "Days → hours",
+        "Multi-agent pattern"
       ]
     },
     {
@@ -215,13 +231,14 @@
       "title": "Build Agent, ServiceNow Studio",
       "org": "ServiceNow",
       "role": "App Engine",
-      "summary": "Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Led the metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
+      "summary": "Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern — think first, then execute — with a metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
       "dive": "build-agent.md",
       "metrics": [
         "35+ metadata types · 11 domains",
         "Multi-model",
         "Self-healing",
-        "Metadata-aware"
+        "Metadata-aware",
+        "Planning pattern (think → execute)"
       ]
     },
     {
@@ -229,12 +246,13 @@
       "title": "Release lifecycle & app summary agents",
       "org": "ServiceNow",
       "role": "Now Assist for Creator",
-      "summary": "Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click. Ships as the Release lifecycle documentation agent in Now Assist for Creator.",
+      "summary": "Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click. Built on the REAct agentic framework (reason → act → observe). Ships as the Release lifecycle documentation agent in Now Assist for Creator.",
       "dive": "ala-app-summary-agent.md",
       "metrics": [
         "Hours → one click",
         "CAB-ready manifests",
-        "Delta analysis"
+        "Delta analysis",
+        "REAct framework"
       ]
     }
   ],
@@ -257,10 +275,10 @@
       ],
       "highlights": [
         "Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.",
-        "Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains; led its metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
-        "Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.",
+        "Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains; built on the planning pattern (think first, then execute) and led its metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
+        "Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks on a multi-agent orchestration pattern and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.",
         "ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.",
-        "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
+        "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests on the REAct agentic framework — documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
         "Architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; API and template contributions to the App Template Framework (ATFr).",
         "Lead a 9-person engineering team as tech lead: mentoring, technical hiring, and high-bar architectural reviews; ran cross-team onboarding sessions enabling teams to set up ADP skills, agents, rules, and MCP servers in a single session.",
         "Drive performance optimization and WCAG/ARIA accessibility compliance; established enterprise testing strategy with Jest, React Testing Library, and Playwright."
@@ -421,6 +439,10 @@
     }
   ],
   "deepDives": [
+    {
+      "title": "Local LLM inference on Apple silicon: Ollama, MLX & turbo-fieldfare",
+      "file": "local-llm-inference.md"
+    },
     {
       "title": "Claude Code rollout to 20+ teams in 4 weeks",
       "file": "adp-claude-code-rollout.md"

@@ -229,7 +229,7 @@
 <main>
   <article class="reader">
     <h1>ServiceNow Build Agent Architecture</h1>
-    <div class="post-meta"><span>Aug 12, 2026</span><span>·</span><span>6 min read</span><span>·</span><a href="./">All posts</a></div>
+    <div class="post-meta"><span>Aug 18, 2026</span><span>·</span><span>7 min read</span><span>·</span><a href="./">All posts</a></div>
     <h2>ServiceNow Build Agent: Executive Summary</h2>
 <p>The <strong>ServiceNow Build Agent</strong> is an autonomous, AI-driven developer companion integrated natively into the ServiceNow AI Platform. It enables creators and engineers to design, build, test, and deploy production-ready application workflows using plain natural language instructions.</p>
 <hr>
@@ -277,6 +277,10 @@
 <hr>
 <h2>Step-by-Step Execution Lifecycle</h2>
 <p>Every time a prompt like <em>&quot;Create a hardware return app with an approvals workflow&quot;</em> is submitted, the platform triggers a precise sequence of technical layers:</p>
+<h3>0. Plan First, Then Execute (Planning Pattern)</h3>
+<p>The Build Agent is built on the <strong>planning pattern</strong> — <em>think first, then execute</em>. It never jumps straight to code generation. Every request is decomposed into an explicit execution plan before a single tool is called:</p>
+<ol start="1"><li><strong>Reason &amp; Plan:</strong> The reasoning engine analyzes the prompt, indexes the target instance's metadata, and produces a structured plan of the artifacts to create (tables, business rules, ACLs, flows, UI layouts) with their dependencies.</li><li><strong>Present the Plan:</strong> The plan is staged for the developer as an exhaustive visual blueprint — nothing is executed until it is reviewed and approved (see Human-in-the-Loop Governance below).</li><li><strong>Execute Step-by-Step:</strong> Each approved plan step maps to a concrete tool invocation (metadata search, schema inspection, Fluent API compile), so execution is deterministic and auditable rather than a free-form generation.</li><li><strong>Verify &amp; Self-Heal:</strong> Generated artifacts run through the Automated Test Framework (ATF) loop — failures are diagnosed and rewritten until the plan's quality gates pass.</li></ol>
+<p>This think-first design is what turns the agent from a text predictor into a deterministic, governance-friendly application compiler.</p>
 <h3>1. Context Discovery (Metadata Search)</h3>
 <p>Before making an external Large Language Model (LLM) call, the Build Agent looks inward via an internal <strong>Metadata Search</strong> engine.</p>
 <ul><li>It scans the live target instance's existing tables, data schemas, access control lists (ACLs), configurations, and user roles.</li><li>This step ensures that the agent utilizes pre-existing roles and data schemas rather than creating redundant, duplicate objects.</li></ul>

@@ -7,6 +7,18 @@ The **Release Lifecycle Documentation AI Agent** is an autonomous governance too
 
 ---
 
+## 🧠 Agent Architecture: Built on the REAct Framework
+
+Both the ALA Release Documentation Agent and the App Summary Agent are built on the **REAct agentic framework** — Reason → Act → Observe — rather than a single monolithic prompt. Each documentation run is a closed reasoning loop:
+
+1. **Reason:** Analyze the current state (a scoped application, or the delta between an update set and the live instance) and decide what documentation step to take next.
+2. **Act:** Invoke the semantic discovery tools — crawl metadata configurations, diffs, script includes, and UI structures to gather the evidence the step needs.
+3. **Observe:** Interpret the tool results, fold them into the running manifest, and loop back to reasoning until the documentation set is complete (release notes, CAB deployment manifest, architecture diagrams).
+
+The REAct loop is what lets the agents handle arbitrary applications of any size: they keep reasoning and acting until the evidence is exhausted, instead of depending on a pre-baked prompt covering every case.
+
+---
+
 ## 🚀 Core Capabilities
 
 The agent automatically monitors and crawls scoped application changes, providing three primary automation benefits:
