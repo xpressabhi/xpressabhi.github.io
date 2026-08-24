@@ -1,0 +1,31 @@
+{
+  "$comment": "Provenance for claims in profile.json. Every public claim should cite where it comes from (repo, session, live site). Claim keys: projects:<name>, skills:<item>, flagship:<title>, deepDive:<file>. `npm run build` warns about uncovered claims; --strict-evidence fails on them. Backfill legacy entries as you touch them.",
+  "claims": {
+    "projects:SpendIQ Copilot": [
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/SpendIQ_Candidate",
+        "date": "2026-08",
+        "note": "All 7 commits authored by Abhishek; LangGraph ReAct agent over SQLite/FTS5, AST-whitelisted calculator, 14-case eval harness with majority voting (eval_report.json: 14/14 passing)"
+      }
+    ],
+    "skills:FastAPI": [
+      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "FastAPI 0.141 backend: /api/chat, /api/health, static mount; sync endpoint in threadpool" }
+    ],
+    "skills:SQLite": [
+      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "5 normalized tables, 7 analytic views, FTS5 index with triggers, read-only URI connections" }
+    ],
+    "skills:LLM evals (golden sets, LLM-as-judge, majority voting)": [
+      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "Custom evals/ harness: 14 tiered cases, composable checks, optional LLM judge, majority vote over 3 runs; graders unit-tested" }
+    ],
+    "skills:RAG / keyword retrieval (BM25, FTS5)": [
+      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "BM25 over FTS5 with AND→OR fallback, prefix wildcards, snippet highlighting; documented BM25-over-embeddings decision in DESIGN_NOTES.md" }
+    ],
+    "deepDive:spendiq-copilot.md": [
+      { "source": "repo+session", "ref": "ses_fcdea61eaffenQwUzSc9wDzsOn", "date": "2026-08", "note": "Blog post written from SpendIQ_Candidate repo evidence gathered in this session" }
+    ],
+    "projects:ordo": [
+      { "source": "repo+site", "ref": "github.com/xpressabhi/ordo", "date": "2026-08", "note": "On-device VLM take-home: Qwen2-VL-2B on llama.cpp, 270-run quantization ladder, iPhone deploy" }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+name: validate
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Build (no deps needed; PDF skipped in CI)
+        run: npm run build
+      - name: Generated outputs are up to date
+        run: git diff --exit-code
+      - name: Evidence coverage report
+        run: node scripts/build.mjs --strict-evidence || true  # advisory until legacy claims are backfilled
+      - name: Unit tests
+        run: npm test
+
+  links:
+    runs-on: ubuntu-latest
+    continue-on-error: true # external sites flake; failures are surfaced but don't block deploys
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: PII lint + link check
+        run: npm run check

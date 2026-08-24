@@ -35,3 +35,26 @@ CV sync. Everything is generated from one file plus markdown post sources.
    Check: contact line has no orphaned words, skill columns end level, no bad
    page breaks (role heading stranded from its bullets), no mid-word wraps.
 5. Commit & push this repo — plus `../xpressabhi` whenever its README changed.
+
+## Evidence pipeline (how claims earn their place)
+
+- **Provenance**: every claim in `profile.json` should have an entry in
+  `data/evidence.json` (`projects:<name>`, `skills:<item>`, `flagship:<title>`,
+  `deepDive:<file>` → source, ref, date, note). The build warns about
+  uncovered claims; `--strict-evidence` makes it fail.
+- **Two evidence sources**: session chat (`profile-sync` skill's
+  `scan-sessions.mjs`) and git history (`npm run repos:scan`, which walks
+  `~/Documents/GitHub` for commits since the last watermark; `--mark` advances
+  it). Review proposals, then hand-edit `profile.json` — nothing auto-writes.
+- **LLM classification**: pipe a session report through
+  `npm run signals:classify` to grade signals project/skill/learning/noise.
+  Output is a proposal file (`output/signal-proposals.json`), never applied.
+- **Market loop**: drop JDs into `data/market/`, run `npm run market:sync`,
+  get ranked learning targets in `output/learning-targets.md`.
+- **Checks**: `npm run check` = PII lint (emails/phones outside the
+  intentional-public allowlist) + link check over every URL claimed in
+  `profile.json`. `npm test` = unit tests for the template engine and evidence
+  helpers. CI (`.github/workflows/validate.yml`) runs build + `git diff
+  --exit-code` + tests on every push.
+- **Commit convention**: profile-content changes use `sync: <what> (session
+  <id> or repo)` so provenance stays traceable in git history.
