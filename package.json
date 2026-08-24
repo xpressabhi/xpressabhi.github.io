@@ -7,6 +7,7 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:pdf": "node scripts/build.mjs --pdf",
+    "cv:preview": "node scripts/cv-preview.mjs",
     "verify": "node scripts/build.mjs --verify"
   }
 }
