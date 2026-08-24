@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpendIQ Copilot: Guardrails, Evals, and Honesty for an Agent Over Enterprise Data · Abhishek Kumar Maurya</title>
+<meta name="description" content="Most agent demos are theater: a model, a vector database, and a happy path. I wanted to build the opposite — an agent that touches financial data (vendors, contracts, purchase orders, invoices) and…">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --code-dim: #948c81;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --code-dim: #8b847a;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-back { font-size: 14px; color: var(--muted); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  .reader h1 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .reader .post-meta {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
+    margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- section headers ---------- */
+  .reader h2 {
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 46px 0 18px;
+    padding: 10px 14px 10px 14px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
+    scroll-margin-top: 76px;
+  }
+  .reader h3 {
+    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 30px 0 12px; color: var(--accent-ink);
+  }
+  .reader h4 {
+    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
+  }
+  .reader h4::before {
+    content: "▹ "; color: var(--accent); font-weight: 600;
+  }
+
+  /* ---------- body copy ---------- */
+  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader .post-image {
+    display: block; max-width: 100%; height: auto;
+    margin: 28px auto; border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .reader strong { color: var(--ink); font-weight: 600; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- lists ---------- */
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader li { margin-bottom: 6px; }
+  .reader li::marker { color: var(--accent); font-weight: 500; }
+
+  /* ---------- inline code ---------- */
+  .reader code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 5px;
+    padding: 1.5px 6px;
+  }
+
+  /* ---------- code blocks (terminal) ---------- */
+  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
+  .reader pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    position: relative;
+  }
+  .reader pre.code code {
+    display: block; padding: 18px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--code-ink); font-size: 13px; line-height: 1.65;
+  }
+  .reader pre.code[data-lang] { padding-top: 32px; }
+  .reader pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--code-dim);
+    border-bottom: 1px solid var(--code-border);
+  }
+
+  /* ---------- diagrams ---------- */
+  .reader pre.diagram {
+    background: var(--accent-soft);
+    border: 1px dashed var(--accent-line);
+    text-align: center;
+  }
+  .reader pre.diagram::before {
+    content: "Diagram";
+    display: block;
+    text-align: left;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .reader pre.diagram code {
+    display: block; padding: 16px 18px 20px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--ink); font-size: 12.5px; line-height: 1.55;
+    white-space: pre; text-align: center;
+  }
+
+  /* ---------- blockquotes ---------- */
+  .reader blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: var(--muted); font-style: italic; margin: 0 0 18px;
+  }
+
+  /* ---------- tables ---------- */
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
+  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+
+  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .reader-foot a { color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 768px) {
+    nav, main { padding-left: 24px; padding-right: 24px; }
+    main { padding-top: 40px; }
+    .nav-links a:not(.nav-back) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark" aria-label="Back to portfolio">
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
+    </a>
+    <div class="nav-links">
+      <a href="./">Blog</a>
+      <a href="../" class="nav-back">← Home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>SpendIQ Copilot: Guardrails, Evals, and Honesty for an Agent Over Enterprise Data</h1>
+    <div class="post-meta"><span>Aug 24, 2026</span><span>·</span><span>5 min read</span><span>·</span><a href="./">All posts</a></div>
+    <p>Most agent demos are theater: a model, a vector database, and a happy path. I wanted to build the opposite — an agent that touches <strong>financial data</strong> (vendors, contracts, purchase orders, invoices) and has to earn trust before it answers. SpendIQ Copilot was my submission for a 2-hour AI &amp; Data Engineer take-home, and it became a good vehicle for the decisions that actually matter when an LLM sits between a user's question and a company's data.</p>
+<p>Source: <a href="https://github.com/xpressabhi/SpendIQ_Candidate" target="_blank" rel="noopener">github.com/xpressabhi/SpendIQ_Candidate</a></p>
+<hr>
+<h2>What the agent does</h2>
+<p>Nimbus Retail Co. (fictional, ~$220M revenue) asks questions like <em>&quot;What did we spend with Stratos Cloud over the last 12 months?&quot;</em>, <em>&quot;What's the notice period to exit Aperture SaaS?&quot;</em>, and the interesting ones: <em>&quot;Are there POs being split to dodge approval thresholds?&quot;</em> — questions that need both structured tables <strong>and</strong> contract documents.</p>
+<p>The architecture is deliberately boring:</p>
+<pre class="diagram"><code>CSVs + contracts (MD/PDF) ──► ingest ──► SQLite
+                              ├── 5 normalized tables
+                              ├── 7 anomaly-detection SQL views
+                              └── FTS5 index (~80 doc chunks)
+                                        │
+                              LangGraph ReAct agent (5 tools)
+                                        │
+                              FastAPI /api/chat ──► chat UI with citations</code></pre>
+<p>Five tools: validated SQL, BM25 document retrieval, a safe arithmetic evaluator, date utilities, and fuzzy entity resolution. No embeddings, no vector DB, no microservices. Every deviation from boring had to justify itself.</p>
+<hr>
+<h2>Decision 1: guardrails on agent-generated SQL — defense in depth</h2>
+<p>The riskiest thing in this system is the LLM writing SQL against financial tables. One layer is never enough, so the SQL tool stacks four:</p>
+<ol start="1"><li><strong>Prompt-level</strong>: the schema summary is injected into the tool description so the model writes correct column names instead of guessing.</li><li><strong>Syntax-level validation</strong>: exactly one statement, <code>SELECT</code>/<code>WITH</code> only, and a banned-keyword regex covering <code>PRAGMA</code>, <code>ATTACH</code>, and friends.</li><li><strong>Connection-level</strong>: the agent runs against <code>file:...?mode=ro</code> — a read-only SQLite URI. Even if validation misses something, there is physically no write path.</li><li><strong>Test-level</strong>: pytest asserts writes are rejected through the actual connection path, not just in theory.</li></ol>
+<p>The lesson generalizes: **constrain what the model <em>can do</em>, not just what you <em>ask it to do</em>.** A prompt saying &quot;only read&quot; is a hope; <code>mode=ro</code> is a fact.</p>
+<h2>Decision 2: an AST-whitelisted calculator instead of <code>eval</code></h2>
+<p>Agents are bad at arithmetic (&quot;47 × 1,610 ÷ 12&quot; will eventually come out wrong), so the standard move is a calculator tool. The naive implementation is <code>eval()</code>, which means the model can execute arbitrary Python.</p>
+<p>Instead, the calculator parses expressions into a Python AST and walks it against a whitelist: numbers, the four operators, parentheses. Anything else — function calls, names, attributes — is rejected before execution, with a recursion depth cap for good measure. The test suite feeds it <code>__import__('os').system('ls')</code> and expects a refusal.</p>
+<p>This is ~50 lines of code that removes an entire attack class. When someone later asks &quot;what happens if a prompt injection tells the agent to run something?&quot;, the answer for this tool is: nothing can happen.</p>
+<h2>Decision 3: BM25 over embeddings — fit the retrieval to the corpus</h2>
+<p>The obvious 2026 move is chunk → embed → vector DB. I went keyword-first and wrote down why: the whole document corpus is ~80 chunks (15 contracts + policies). At that size,</p>
+<ul><li>BM25 over SQLite FTS5 is <strong>deterministic</strong> — same question, same chunks, every time;</li><li>it's fully <strong>offline</strong> — no embedding API cost, latency, or rate limit in the loop;</li><li>failure modes are legible: if a term doesn't match, you can see why.</li></ul>
+<p>FTS5 still bit me twice: hyphens inside query terms parse as column-filter syntax (<code>notice-period</code> is <em>not</em> a search for &quot;notice-period&quot;), and <code>snippet()</code> needs the right column index. Both gotchas are now documented in the design notes — the kind of thing only a build log catches.</p>
+<p>An embeddings path remains the documented upgrade for when the corpus grows past what BM25 handles well. Choosing the simpler thing first — with a written exit ramp — beat reaching for infrastructure the data didn't need.</p>
+<h2>Decision 4: determinism by construction</h2>
+<p>&quot;What did we spend last quarter?&quot; is unanswerable without knowing what &quot;last quarter&quot; means relative to the dataset. So a single reference date is baked into three places at once: the SQL views' date windows, the date-utilities tool, and the agent's system prompt. Relative-date questions resolve identically across runs, sessions, and demos — including edge cases like month-end arithmetic across February (leap-year-aware, tested).</p>
+<p>Demo environments die when the model improvises. Anchoring time removed the biggest source of run-to-run surprise.</p>
+<h2>Decision 5: an eval harness that survives LLM variance</h2>
+<p>A golden set where pass/fail depends on how chatty the model feels that day isn't an eval. The harness separates <strong>what must be true</strong> from <strong>how it's phrased</strong>:</p>
+<table><thead><tr><th>Check type</th><th>Example</th></tr></thead><tbody><tr><td><code>contains_all</code> / <code>contains_none</code></td><td>answer must include &quot;$494K&quot;, must not invent a vendor name</td></tr><tr><td><code>count_near(N)</code></td><td>accepts &quot;47&quot;, &quot;forty-seven&quot;, rejects &quot;190&quot;</td></tr><tr><td><code>tool_used</code></td><td>the split-PO question <em>must</em> hit the anomaly view</td></tr><tr><td><code>source_cited</code></td><td>contract answers must cite the actual contract ID</td></tr><tr><td><code>llm_judge</code></td><td>rubric-based grading for free-form quality, with fenced/waffled JSON parsing handled</td></tr></tbody></table>
+<p>Then, because single runs flip on phrasing luck, every case runs <strong>N times with majority voting</strong>. The committed report: 14 cases across four difficulty tiers, all passing over 3 runs. And because graders have bugs too, the grader logic itself is unit-tested — including false-positive checks (an answer containing &quot;190&quot; must not satisfy <code>count_near(47)</code>).</p>
+<p>This was also the piece built after the clock stopped. The 2-hour version answered questions; the eval harness made claims about them.</p>
+<hr>
+<h2>Honesty as a feature</h2>
+<p>The system prompt forbids invented numbers, requires citations for document claims, and instructs the agent to ask a clarifying question when a vendor name is ambiguous rather than guess. The design notes carry a limitations section — no auth, in-memory checkpointer, FX rates not normalized — because a reviewer scoring &quot;honesty higher than over-claiming&quot; should find the warts listed, not hidden.</p>
+<p>That turned out to be my favorite property of the whole build: an agent over enterprise data earns trust the same way engineers do — by being precise about what it knows, showing its work (tool calls and sources render as chips in the UI), and stating its limits up front.</p>
+<p><strong>Stack:</strong> Python 3.12 · uv · FastAPI · LangGraph (ReAct) · SQLite + FTS5 · pypdf · pytest</p>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

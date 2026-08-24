@@ -128,7 +128,9 @@
       "llama.cpp / GGUF",
       "Model quantization (GGUF ladders, imatrix)",
       "Vision-language models",
-      "LoRA fine-tuning (MLX)"
+      "LoRA fine-tuning (MLX)",
+      "LLM evals (golden sets, LLM-as-judge, majority voting)",
+      "RAG / keyword retrieval (BM25, FTS5)"
     ],
     "Frontend & Platform": [
       "JavaScript (ES6+)",
@@ -151,6 +153,8 @@
     ],
     "Backend & Data": [
       "Python",
+      "FastAPI",
+      "SQLite",
       "Java",
       "REST APIs",
       "MongoDB",
@@ -390,6 +394,12 @@
   ],
   "projects": [
     {
+      "name": "SpendIQ Copilot",
+      "url": "https://github.com/xpressabhi/SpendIQ_Candidate",
+      "description": "Conversational spend-analysis agent: LangGraph ReAct over SQLite + FTS5 with SQL guardrails (SELECT-only, read-only connections), an AST-whitelisted calculator instead of eval, and a 14-case golden-set eval harness with majority voting — all passing",
+      "status": "live"
+    },
+    {
       "name": "ordo",
       "url": "https://xpressabhi.github.io/ordo/",
       "description": "Ordo take-home: on-device vision-language model — Qwen2-VL-2B on llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
@@ -457,6 +467,10 @@
     }
   ],
   "deepDives": [
+    {
+      "title": "SpendIQ Copilot: guardrails, evals, and honesty for an agent over enterprise data",
+      "file": "spendiq-copilot.md"
+    },
     {
       "title": "On-device VLM on iPhone: 270 benchmark runs on the quantization ladder",
       "file": "on-device-vlm-iphone.md"
