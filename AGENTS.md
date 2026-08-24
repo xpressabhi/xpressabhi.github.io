@@ -46,9 +46,12 @@ CV sync. Everything is generated from one file plus markdown post sources.
   `scan-sessions.mjs`) and git history (`npm run repos:scan`, which walks
   `~/Documents/GitHub` for commits since the last watermark; `--mark` advances
   it). Review proposals, then hand-edit `profile.json` — nothing auto-writes.
-- **LLM classification**: pipe a session report through
-  `npm run signals:classify` to grade signals project/skill/learning/noise.
-  Output is a proposal file (`output/signal-proposals.json`), never applied.
+- **LLM analysis**: the recommended gate before proposing anything.
+  `npm run analyze` merges both scans, builds an evidence bundle per candidate
+  (README, tree, commits), and produces verdicts — portfolio_project /
+  cv_skill / blog_post / already_covered / noise — with reasoning and draft
+  changes in `output/scan-analysis.md`. (`signals:classify` grades session
+  signals only.) Analysis output is a proposal file, never applied.
 - **Market loop**: drop JDs into `data/market/`, run `npm run market:sync`,
   get ranked learning targets in `output/learning-targets.md`.
 - **Checks**: `npm run check` = PII lint (emails/phones outside the

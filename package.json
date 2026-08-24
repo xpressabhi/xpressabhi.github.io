@@ -11,6 +11,7 @@
     "check": "node scripts/check.mjs",
     "repos:scan": "node scripts/scan-repos.mjs",
     "signals:classify": "node scripts/classify-signals.mjs",
+    "analyze": "node scripts/analyze.mjs",
     "market:sync": "node scripts/market-sync.mjs",
     "test": "node --test \"scripts/test/*.test.mjs\"",
     "verify": "node scripts/build.mjs --verify"
