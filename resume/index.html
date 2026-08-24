@@ -63,9 +63,10 @@
   .cv-name { font-size: 21pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
   .cv-role { font-size: 10.5pt; color: var(--muted); font-weight: 600; margin-top: 3px; }
   .cv-contact {
-    display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 8px;
+    display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px;
     font-size: 9pt; color: var(--muted);
   }
+  .cv-contact > span { white-space: nowrap; }
   .cv-contact .mono { font-size: 8.5pt; }
 
   .cv-section { margin-top: 14px; }
@@ -86,13 +87,17 @@
   .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
   .job ul { list-style: none; }
   .job li {
-    position: relative; padding-left: 13px; margin-bottom: 1px;
+    position: relative; padding-left: 15px; margin-bottom: 1px;
     color: var(--muted); font-size: 9.3pt;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
 
-  .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
-  .skill-group { page-break-inside: avoid; }
+  .skill-grid { column-count: 2; column-gap: 22px; }
+  .skill-group {
+    break-inside: avoid; page-break-inside: avoid;
+    margin-bottom: 7px;
+  }
+  .skill-group:last-child { margin-bottom: 0; }
   .skill-group h3 {
     font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--ink); margin-bottom: 2px;
@@ -117,7 +122,7 @@
 
   @media (max-width: 768px) {
     .sheet { margin: 12px; padding: 28px 22px; }
-    .skill-grid { grid-template-columns: 1fr; }
+    .skill-grid { column-count: 1; }
     .toolbar { flex-direction: column; align-items: stretch; }
     .toolbar .t-actions { justify-content: stretch; }
     .t-btn { justify-content: center; }
@@ -147,7 +152,11 @@
     <div class="cv-name">Abhishek Kumar Maurya</div>
     <div class="cv-role">Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms</div>
     <div class="cv-contact">
-      <span>Hyderabad, India · +917842740174 · <a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a> · <a href="https://github.com/xpressabhi" target="_blank" rel="noopener">github.com/xpressabhi</a> · <a href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">linkedin.com/in/akm85</a> · <span class="mono">16+ years experience</span></span>
+      <span>Hyderabad, India</span>
+      <span class="mono">+917842740174</span>
+      <span><a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a></span>
+      <span><a href="https://github.com/xpressabhi" target="_blank" rel="noopener">github.com/xpressabhi</a></span>
+      <span><a href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">linkedin.com/in/akm85</a></span>
     </div>
   </div>
 
