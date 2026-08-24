@@ -40,13 +40,16 @@
     },
     {
       "title": "Local LLM inference",
-      "blurb": "Run MLX-optimized models (Qwen, Gemma, DeepSeek) locally on Apple silicon via Ollama, plus memory-efficient loaders like turbo-fieldfare that stream model portions on demand — Gemma 4 26B under 2GB RAM.",
+      "blurb": "Run MLX-optimized models (Qwen, Gemma, DeepSeek) locally on Apple silicon via Ollama, plus memory-efficient loaders like turbo-fieldfare that stream model portions on demand — Gemma 4 26B under 2GB RAM. Took VLMs end-to-end on-device: Qwen2-VL-2B on llama.cpp/GGUF via Metal across a quantization ladder on iPhone, with sub-second TTFT from architecture and resolution levers.",
       "tags": [
         "Ollama",
         "MLX",
         "turbo-fieldfare",
         "Apple silicon",
-        "Memory-efficient inference"
+        "Memory-efficient inference",
+        "llama.cpp",
+        "GGUF quantization",
+        "On-device inference"
       ]
     },
     {
@@ -120,7 +123,12 @@
       "REAct agents",
       "Planning pattern (think first, then execute)",
       "Multi-agent orchestration",
-      "Local LLM inference (Ollama, MLX)"
+      "Local LLM inference (Ollama, MLX)",
+      "On-device inference (iOS/Metal)",
+      "llama.cpp / GGUF",
+      "Model quantization (GGUF ladders, imatrix)",
+      "Vision-language models",
+      "LoRA fine-tuning (MLX)"
     ],
     "Frontend & Platform": [
       "JavaScript (ES6+)",
@@ -195,6 +203,10 @@
     {
       "value": "80%",
       "label": "faster test-to-production HRMS setup, Oracle Benefit Plan Copy"
+    },
+    {
+      "value": "30s → 805ms",
+      "label": "TTFT for on-device VLM inference via architecture and resolution levers (Ordo)"
     }
   ],
   "flagship": [
@@ -378,6 +390,12 @@
   ],
   "projects": [
     {
+      "name": "ordo",
+      "url": "https://xpressabhi.github.io/ordo/",
+      "description": "Ordo take-home: on-device vision-language model — Qwen2-VL-2B on llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
+      "status": "live"
+    },
+    {
       "name": "selftest.in",
       "url": "https://selftest.in",
       "description": "Self-testing and government job preparation app powered by the Gemini API",
@@ -439,6 +457,10 @@
     }
   ],
   "deepDives": [
+    {
+      "title": "On-device VLM on iPhone: 270 benchmark runs on the quantization ladder",
+      "file": "on-device-vlm-iphone.md"
+    },
     {
       "title": "Local LLM inference on Apple silicon: Ollama, MLX & turbo-fieldfare",
       "file": "local-llm-inference.md"

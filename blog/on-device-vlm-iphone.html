@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Putting a Vision-Language Model on a Phone: What 270 Benchmark Runs Taught Me About On-Device AI · Abhishek Kumar Maurya</title>
+<meta name="description" content="Ordo started as a take-home assignment: take a vision-language model (VLM), measure how far quantization can push it, and get it running on a phone. I picked Qwen2-VL-2B-Instruct on llama.cpp and b…">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --code-dim: #948c81;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --code-dim: #8b847a;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-back { font-size: 14px; color: var(--muted); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  .reader h1 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .reader .post-meta {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
+    margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- section headers ---------- */
+  .reader h2 {
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 46px 0 18px;
+    padding: 10px 14px 10px 14px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
+    scroll-margin-top: 76px;
+  }
+  .reader h3 {
+    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 30px 0 12px; color: var(--accent-ink);
+  }
+  .reader h4 {
+    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
+  }
+  .reader h4::before {
+    content: "▹ "; color: var(--accent); font-weight: 600;
+  }
+
+  /* ---------- body copy ---------- */
+  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader .post-image {
+    display: block; max-width: 100%; height: auto;
+    margin: 28px auto; border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .reader strong { color: var(--ink); font-weight: 600; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- lists ---------- */
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader li { margin-bottom: 6px; }
+  .reader li::marker { color: var(--accent); font-weight: 500; }
+
+  /* ---------- inline code ---------- */
+  .reader code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 5px;
+    padding: 1.5px 6px;
+  }
+
+  /* ---------- code blocks (terminal) ---------- */
+  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
+  .reader pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    position: relative;
+  }
+  .reader pre.code code {
+    display: block; padding: 18px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--code-ink); font-size: 13px; line-height: 1.65;
+  }
+  .reader pre.code[data-lang] { padding-top: 32px; }
+  .reader pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--code-dim);
+    border-bottom: 1px solid var(--code-border);
+  }
+
+  /* ---------- diagrams ---------- */
+  .reader pre.diagram {
+    background: var(--accent-soft);
+    border: 1px dashed var(--accent-line);
+    text-align: center;
+  }
+  .reader pre.diagram::before {
+    content: "Diagram";
+    display: block;
+    text-align: left;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .reader pre.diagram code {
+    display: block; padding: 16px 18px 20px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--ink); font-size: 12.5px; line-height: 1.55;
+    white-space: pre; text-align: center;
+  }
+
+  /* ---------- blockquotes ---------- */
+  .reader blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: var(--muted); font-style: italic; margin: 0 0 18px;
+  }
+
+  /* ---------- tables ---------- */
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
+  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+
+  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .reader-foot a { color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 768px) {
+    nav, main { padding-left: 24px; padding-right: 24px; }
+    main { padding-top: 40px; }
+    .nav-links a:not(.nav-back) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark" aria-label="Back to portfolio">
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
+    </a>
+    <div class="nav-links">
+      <a href="./">Blog</a>
+      <a href="../" class="nav-back">← Home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>Putting a Vision-Language Model on a Phone: What 270 Benchmark Runs Taught Me About On-Device AI</h1>
+    <div class="post-meta"><span>Aug 24, 2026</span><span>·</span><span>8 min read</span><span>·</span><a href="./">All posts</a></div>
+    <p><strong>Ordo</strong> started as a take-home assignment: take a vision-language model (VLM), measure how far quantization can push it, and get it running on a phone. I picked <strong>Qwen2-VL-2B-Instruct</strong> on <strong>llama.cpp</strong> and built a full measurement rig around it — a custom C++ benchmark harness with per-stage timers, a private eval set of 18 real-world photos taken on my own iPhone, and a SwiftUI test app deployed to an iPhone 15 (A16 Bionic). After ~270 runs across the quantization ladder, plus a debugging saga that took thirty iterations to crack, the results overturned most of my assumptions about where on-device AI time actually goes.</p>
+<p>Live site: <a href="https://xpressabhi.github.io/ordo/" target="_blank" rel="noopener">xpressabhi.github.io/ordo</a> · Source: <a href="https://github.com/xpressabhi/ordo" target="_blank" rel="noopener">github.com/xpressabhi/ordo</a></p>
+<hr>
+<h2>The setup</h2>
+<ul><li><strong>Model:</strong> Qwen2-VL-2B-Instruct as GGUF, llama.cpp b10549, Metal backend — same code path and weight format on an M2 Pro MacBook and the iPhone.</li><li><strong>Eval set:</strong> 18 photos I shot myself — product labels, book spines, appliance displays, handwriting, posters. Tagged at capture into 6 easy / 6 medium / 6 hard. Own photos matter: they can't be in the model's training data.</li><li><strong>Metric:</strong> Answer Recall — the fraction of ground-truth answer tokens present in the prediction. The model answers in full sentences (&quot;The price is $5.50&quot;) while ground truth is the bare fact (&quot;$5.50&quot;); for a voice-assistant use case, containment is what matters. Exact Match stayed at 0% by design — models don't speak telegraphese.</li><li><strong>The ladder:</strong> text weights from f16 → Q8_0 → Q4_K_M → Q2_K → IQ2_XXS (imatrix-calibrated), crossed with vision encoder (<code>mmproj</code>) f16/Q8/Q4 — 15 combinations × 18 photos.</li></ul>
+<p>The harness times each stage separately: vision encode, prefill, decode, TTFT, plus peak RSS. That per-stage split is what produced every interesting finding below.</p>
+<hr>
+<h2>Finding 1: the vision encoder IS the latency problem</h2>
+<p>For the best config, here is where a single photo-question round-trip actually goes:</p>
+<table><thead><tr><th>Stage</th><th>Time</th><th>Share of TTFT</th></tr></thead><tbody><tr><td>Vision encode</td><td>~26s</td><td>~87%</td></tr><tr><td>Prefill (~104 prompt tokens)</td><td>~3.4s</td><td>~11%</td></tr><tr><td>Decode (per token)</td><td>~0.27s</td><td>—</td></tr></tbody></table>
+<p>A 600-token prompt costs about <strong>0.6 seconds</strong> of prefill. One photo costs <strong>26 seconds</strong> of encode. Everyone in the LLM world optimizes decode tok/s; for VLMs on device, the image is the wall. Every product decision that matters — resolution, tiling, encoder architecture — lives in that 26 seconds.</p>
+<h2>Finding 2: quantization bites the decoder, not the encoder</h2>
+<p>I cross-quantized the vision encoder (f16 / Q8 / Q4) against a fixed Q4 text model. The result: <strong>accuracy changed by zero points</strong> (81% across all three), encode time moved only ~5%.</p>
+<p>This asymmetry has a clean explanation:</p>
+<ul><li>The <strong>decoder is bandwidth-bound</strong>: autoregressive generation streams every weight from memory once per token, so smaller weights pay off directly (f16 → Q4 doubled decode speed, ~42 → 78 tok/s).</li><li>The <strong>encoder is compute-bound</strong>: it runs many small ops over fixed image activations; its weights (~20% of the model) barely factor into its cost.</li></ul>
+<p>Consequence: <strong>halving bytes does not halve latency</strong>. f16 → Q4 halves the download and doubles decode speed, but TTFT barely moves because encode dominates and doesn't care about text-model quant.</p>
+<p>The ladder itself had a cliff: <strong>IQ2_XXS is unusable for real-world text</strong> (glare logos, handwriting, small print all fail), and Q2_K holds easy/medium items but collapses to ~40% on hard ones. The sweet spot was <strong>Q4_K_M text + Q8 mmproj: 1.6GB, 81% AR, 2.3GB peak RSS</strong> — which even beat f16 (78%) on this set. That's small-set noise, not &quot;Q4 &gt; f16&quot;, but it's a reminder that the ladder isn't monotonic at this scale.</p>
+<hr>
+<h2>The bug that ate thirty iterations</h2>
+<p>Then I moved to the phone, and everything broke silently.</p>
+<p>On the iPhone's A16 GPU, Qwen2-VL's vision tower emitted <strong>near-constant embeddings</strong> (values clamped to ≈ {-1.79, 1.0}) regardless of image content. The model loaded fine, encoded fine, generated fluently — and hallucinated with total confidence (&quot;The Netherlands&quot; for a puzzle-label photo). No crash, no warning. Just confident nonsense.</p>
+<p>What this survived: three framework builds (two hand-merged xcframeworks, one official), three mmproj quants, flash-attention on/off, KV-cache and batch size changes, CPU/GPU decode splits. I verified pixel input was correct going in. Same binary, same weights: flawless on the M2.</p>
+<p>The breakthrough came from a hypothesis rather than another rebuild: <strong>try smaller images</strong>. At 768px instead of full-resolution captures (3213×5712), the exact same tower read perfectly — healthy embedding spread, 46% AR on the same eval set. The collapse is <strong>tile-grid-size dependent</strong>: full-res photos tile into dozens of 28px patches, and something in Qwen2-VL's dynamic-resolution (2D-RoPE) Metal kernels breaks on large tile grids specifically on A16-class silicon. At capture resolution, broken; at eval resolution, fine.</p>
+<p>Two lessons worth the price of admission:</p>
+<ol start="1"><li>Hardware bugs can be both <strong>architecture-specific and input-shape-specific</strong>. SmolVLM ran flawlessly on the same phone on the first attempt — one model's tower collapses, another's doesn't. &quot;The A16 can't run Qwen2-VL&quot; was wrong in its generality; &quot;the A16 can't run it at full-res tile counts&quot; was right.</li><li><strong>Silent confidence is the worst failure mode.</strong> An exception would have saved me days. A model that answers smoothly from garbage embeddings gives you nothing to grep for — which is why my harness now sanity-checks embedding statistics, not just outputs.</li></ol>
+<hr>
+<h2>What actually ships on the phone</h2>
+<p>With the constraint understood, two viable configs emerged on the iPhone:</p>
+<table><thead><tr><th>Model @768px</th><th>AR</th><th>Encode med</th><th>TTFT med</th><th>Peak RSS</th></tr></thead><tbody><tr><td>SmolVLM-256M Q8</td><td>39%</td><td>753ms</td><td><strong>805ms</strong></td><td>~370MB</td></tr><tr><td>Qwen2-VL-2B Q4_K_M</td><td><strong>46%</strong></td><td>4124ms</td><td>5784ms</td><td>1130MB</td></tr></tbody></table>
+<p>SmolVLM-256M ran the full 18-photo eval on-device in ~110 seconds, sub-second first token, real embeddings, in a 335MB app. The resolution sweep showed encode cost plateaus above 768px (500 → 752 → 764ms for 512/768/1024) while accuracy keeps climbing — each 2× downscale cuts tiles roughly 4×, so resolution is the accuracy-per-millisecond knob.</p>
+<p>Just as instructive was what didn't help: stepping up SmolVLM-256M → 500M cost +160ms TTFT and +80MB RAM for <strong>zero</strong> accuracy gain on this task. Below the capability threshold your task needs, bigger is just slower.</p>
+<hr>
+<h2>The single biggest product lever: pre-compute at capture</h2>
+<p>One architectural change transformed the latency budget: <strong>encode the photo when the camera snaps it, not when the question arrives</strong>, then cache the embeddings. Multi-turn measurement confirmed cache hits on every follow-up: turn 1 TTFT ~940ms, turn 2 on the same photo — encode = 0ms, TTFT <strong>~200ms</strong>.</p>
+<p>Against a conversational budget (ASR ~300ms + TTS ~500ms inside a 2-second loop), follow-up questions become effectively free. For any camera-at-ear-level product, pre-compute is the difference between &quot;demo&quot; and &quot;usable&quot;.</p>
+<hr>
+<h2>Squeezing the rest</h2>
+<p>After the encoder, three levers, all measured:</p>
+<ul><li><strong>Quantize the tower anyway</strong> (Q8 → Q4 mmproj): only −10% encode. Compute-bound, again.</li><li><strong>Prefill batch size</strong> 2048 → 4096: −16% prefill. Image-token prefill is batch-bound, not weight-bound.</li><li><strong>Short answers</strong> (prompted brevity + n_predict 24): −65% decode, −68% total wall time. The largest practical lever was asking for fewer tokens, not a faster model.</li></ul>
+<p>One methodology trap surfaced here: token-containment Answer Recall punished terse-but-correct answers (&quot;120 g&quot; vs &quot;The net quantity is 120 grams&quot;) — a metric artifact I verified on the Mac before believing. Metrics measure phrasing as much as truth; know which one you're paying for.</p>
+<h2>Fine-tuning beats climbing the precision ladder</h2>
+<p>The assignment's final question: does fine-tuning recover what quantization costs? On this task, yes — decisively. A LoRA (rank 8, alpha 16, 300 iters, MLX, language-only adapters — unfreezing the vision tower OOM'd a 16GB Mac) took base fp16 from 38% → <strong>65%</strong> AR (+27 points).</p>
+<p>The honest caveat: this is in-distribution — training rows are paraphrases of eval-style items, so it proves a ceiling, not generalization. But the engineering conclusion stands: <strong>fine-tune the Q4 build rather than stepping up precision</strong>. You keep the memory win and buy back more accuracy than the ladder ever sold you.</p>
+<p>(MLX gotchas for the curious: mlx-vlm 0.6.15's CLI dropped <code>--export</code>; images are <em>silently ignored</em> unless the prompt goes through <code>apply_chat_template(..., num_images=1)</code>; and <code>model.eval()</code> breaks generation.)</p>
+<hr>
+<h2>Sustained use: thermals, not battery</h2>
+<p>Twenty sequential queries: throughput held (TTFT fell off by 13ms end-to-end). A five-minute continuous soak told the real story: the A16 hits &quot;serious&quot; thermal state within ~45 seconds and stays there — <strong>TTFT degrades ~16%, encode ~18%</strong>, while decode stays flat. Memory never moved (354–362MB).</p>
+<p>Battery, meanwhile, measured 0.0% drain over six minutes of continuous inference. Thermals are the sustained-use constraint; battery isn't. The product answer is pacing — encode the camera feed at 2–3fps, not continuously — not bigger batteries or better quants.</p>
+<hr>
+<h2>What I'd tell anyone shipping on-device AI</h2>
+<ol start="1"><li><strong>Profile per stage before optimizing anything.</strong> The intuition &quot;decode speed matters most&quot; was off by 10×.</li><li><strong>Attack the encoder, not the decoder.</strong> Quantize the decoder freely — it's where quant pays. Leave encoder precision alone; it buys nothing.</li><li><strong>Resolution is the master knob.</strong> It drives tiles, which drive encode compute, which drives TTFT and thermals.</li><li><strong>Pre-compute at capture.</strong> Cached embeddings turn a 6s interaction into a 200ms one.</li><li><strong>Assert on intermediate signals.</strong> Embedding statistics would have caught in minutes what took thirty debug iterations to isolate.</li><li><strong>Small models win until proven otherwise.</strong> The 500M upgrade bought nothing; measure the step before paying for it.</li><li><strong>Fine-tune down, not up.</strong> LoRA on a Q4 build beats f16 envy.</li></ol>
+<p>Full data, failure analysis, and reproduction scripts live at <a href="https://github.com/xpressabhi/ordo" target="_blank" rel="noopener">github.com/xpressabhi/ordo</a>, with the visual guide at <a href="https://xpressabhi.github.io/ordo/" target="_blank" rel="noopener">xpressabhi.github.io/ordo</a>.</p>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
