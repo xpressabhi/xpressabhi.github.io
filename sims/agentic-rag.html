@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switchyard · Agentic AI + RAG Harness — Abhishek Maurya</title>
+<meta name="description" content="Switchyard — an interactive harness for agentic AI workflows with RAG. Configure the stack, watch data flow, inspect tool calls, follow a live time-series log.">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --ok: #2f7d54;
+    --ok-soft: rgba(47, 125, 84, 0.12);
+    --warn: #b45309;
+    --warn-soft: rgba(180, 83, 9, 0.12);
+    --bad: #c2453a;
+    --bad-soft: rgba(194, 69, 58, 0.12);
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --ok: #6fbf93;
+      --ok-soft: rgba(111, 191, 147, 0.13);
+      --warn: #e0924f;
+      --warn-soft: rgba(224, 146, 79, 0.13);
+      --bad: #e06a5f;
+      --bad-soft: rgba(224, 106, 95, 0.13);
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scrollbar-color: var(--dim) transparent; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 14px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  button { font-family: inherit; cursor: pointer; }
+  input, select, textarea { font-family: var(--font-mono); color: var(--ink); }
+
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 1560px; margin: 0 auto; padding: 0 20px; height: 52px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .mark em { font-style: normal; color: var(--dim); font-family: var(--font-mono); font-size: 11.5px; }
+  .nav-links { display: flex; align-items: center; gap: 18px; font-size: 13.5px; }
+  .nav-links a { color: var(--muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links .live { color: var(--accent-ink); font-family: var(--font-mono); font-size: 11.5px; border: 1px solid var(--accent-line); border-radius: 999px; padding: 2px 10px; }
+
+  .app {
+    display: grid; grid-template-columns: 308px minmax(0, 1fr) 430px;
+    gap: 0; height: calc(100vh - 52px); min-height: 540px;
+  }
+  @media (max-width: 1280px) { .app { grid-template-columns: 290px minmax(0, 1fr); } #logPanel { display: none; } }
+  @media (max-width: 900px)  { .app { grid-template-columns: 1fr; height: auto; overflow: visible; } #setupPanel, #logPanel { display: block; height: auto; } }
+
+  /* ---------- panels ---------- */
+  .panel { overflow-y: auto; padding: 16px; }
+  #setupPanel { border-right: 1px solid var(--line); }
+  #logPanel   { border-left: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 55%, var(--bg)); display: flex; flex-direction: column; }
+  .panel::-webkit-scrollbar { width: 8px; }
+  .panel::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+
+  fieldset { border: none; margin-bottom: 6px; }
+  details.cfg { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px; background: var(--bg); overflow: hidden; }
+  details.cfg > summary {
+    list-style: none; display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 12px; cursor: pointer; font-weight: 600; font-size: 13px; user-select: none;
+  }
+  details.cfg > summary::-webkit-details-marker { display: none; }
+  details.cfg > summary::after { content: "+"; font-family: var(--font-mono); color: var(--dim); font-size: 15px; }
+  details.cfg[open] > summary::after { content: "–"; }
+  details.cfg[open] > summary { border-bottom: 1px solid var(--line); background: var(--surface); }
+  details.cfg[open] > summary .tag { background: var(--accent-soft); color: var(--accent-ink); }
+  .cfg-body { padding: 11px 12px 13px; display: flex; flex-direction: column; gap: 10px; }
+
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .row label { font-size: 12px; color: var(--muted); flex-shrink: 0; }
+  .row select { max-width: 180px; }
+  .row output { font-family: var(--font-mono); font-size: 11px; color: var(--accent-ink); min-width: 38px; text-align: right; }
+  select, input[type="text"], input[type="number"], textarea {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 7px;
+    padding: 5px 8px; font-size: 11.5px; outline: none; min-width: 0;
+  }
+  select:focus, input:focus, textarea:focus { border-color: var(--accent-line); box-shadow: 0 0 0 3px var(--accent-soft); }
+  textarea { resize: vertical; width: 100%; line-height: 1.5; }
+  input[type="range"] { accent-color: var(--accent); flex: 1; min-width: 0; }
+  .full { width: 100%; }
+
+  .switch { position: relative; width: 32px; height: 18px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .switch span {
+    position: absolute; inset: 0; border-radius: 999px; background: var(--line); transition: background .18s var(--ease); cursor: pointer;
+  }
+  .switch span::after {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px;
+    border-radius: 50%; background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,.25);
+    transition: transform .18s var(--ease);
+  }
+  .switch input:checked + span { background: var(--accent); }
+  .switch input:checked + span::after { transform: translateX(14px); }
+
+  .btn {
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 8px; padding: 6px 12px; font-size: 12.5px; font-weight: 500;
+    transition: all .15s var(--ease); white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent-line); color: var(--accent-ink); }
+  .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn.primary:hover { opacity: .85; color: var(--bg); }
+  .btn.accent { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent-ink); }
+  .btn.small { padding: 3px 9px; font-size: 11px; border-radius: 6px; }
+  .btn.danger:hover { border-color: var(--bad); color: var(--bad); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 11px; font-family: var(--font-mono); border: 1px solid var(--line);
+    border-radius: 999px; padding: 2.5px 10px; background: var(--bg); color: var(--muted);
+    transition: all .15s var(--ease);
+  }
+  .chip:hover { border-color: var(--accent-line); color: var(--accent-ink); }
+  .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .hint { font-size: 10.5px; color: var(--dim); line-height: 1.5; }
+  .divider { border-top: 1px dashed var(--line); margin: 2px 0; }
+
+  /* tools + docs editors */
+  .tool-item, .doc-item { border: 1px solid var(--line); border-radius: 8px; padding: 8px 9px; display: flex; flex-direction: column; gap: 6px; background: var(--surface); }
+  .tool-head { display: flex; align-items: center; gap: 8px; }
+  .tool-head code { font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; }
+  .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tool-grid label { font-size: 10px; color: var(--dim); display: block; }
+  .tool-grid input { width: 100%; }
+  .doc-item summary { cursor: pointer; font-size: 12px; font-weight: 500; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .doc-item summary::-webkit-details-marker { display: none; }
+  .doc-meta { font-family: var(--font-mono); font-size: 10px; color: var(--dim); }
+
+  /* ---------- stage ---------- */
+  #stage { display: flex; flex-direction: column; min-width: 0; overflow-y: auto; }
+  .stage-top { padding: 12px 18px 0; display: flex; flex-direction: column; gap: 10px; }
+  .querybar { display: flex; gap: 8px; align-items: center; }
+  .querybar input[type="text"] { flex: 1; padding: 9px 12px; font-size: 13px; border-radius: 9px; }
+  .metrics { display: flex; flex-wrap: wrap; gap: 6px; }
+  .metric {
+    font-family: var(--font-mono); font-size: 10.5px; border: 1px solid var(--line);
+    border-radius: 7px; padding: 3px 8px; color: var(--muted); background: var(--bg);
+  }
+  .metric b { color: var(--ink); font-weight: 500; }
+  .metric.good b { color: var(--ok); }
+  .metric.badm b { color: var(--bad); }
+
+  .playbar {
+    display: flex; align-items: center; gap: 8px; padding: 10px 18px;
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px);
+  }
+  .pbtn {
+    width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--ink); font-size: 13px; display: grid; place-items: center;
+  }
+  .pbtn:hover { border-color: var(--accent-line); }
+  .pbtn.go { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  #scrubber { flex: 1; }
+  #speedSel { width: 74px; }
+
+  .pipeline-wrap { padding: 2px 12px 8px; display: flex; justify-content: center; }
+  svg#pipe { width: 100%; max-width: 1080px; height: auto; display: block; }
+
+  .node rect.box { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; rx: 10; transition: stroke .2s, fill .2s; }
+  .node text.nlabel { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; fill: var(--ink); text-anchor: middle; }
+  .node text.nsub { font-family: var(--font-mono); font-size: 8.5px; fill: var(--dim); text-anchor: middle; }
+  .node .badge { font-family: var(--font-mono); font-size: 8.5px; fill: var(--bg); }
+  .node .badge-rect { fill: var(--dim); rx: 5; }
+  .node.active rect.box { stroke: var(--accent); fill: var(--accent-soft); }
+  .node.active text.nlabel { fill: var(--accent-ink); }
+  .node.done rect.box { stroke: var(--accent-line); }
+  .node.error rect.box { stroke: var(--bad); fill: var(--bad-soft); }
+  .node.error text.nlabel { fill: var(--bad); }
+  .node.dimmed { opacity: .35; }
+  .node.clickable { cursor: pointer; }
+  .edge-path { fill: none; stroke: var(--line); stroke-width: 1.4; }
+  .edge-active { stroke: var(--accent) !important; stroke-width: 2 !important; }
+  .lane-label { font-family: var(--font-mono); font-size: 9.5px; fill: var(--dim); letter-spacing: .12em; }
+
+  .inspector {
+    margin: 4px 18px 16px; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--bg); overflow: hidden; display: none;
+  }
+  .inspector.open { display: block; }
+  .inspector header {
+    position: static; background: var(--surface); border-bottom: 1px solid var(--line);
+    padding: 7px 12px; display: flex; justify-content: space-between; align-items: center; backdrop-filter: none;
+  }
+  .inspector header b { font-size: 12.5px; }
+  .inspector pre {
+    font-family: var(--font-mono); font-size: 10.5px; line-height: 1.55; padding: 10px 12px;
+    overflow: auto; max-height: 220px; white-space: pre-wrap; word-break: break-word; color: var(--muted);
+  }
+  .inspector pre b { color: var(--accent-ink); font-weight: 500; }
+
+  /* ---------- log panel ---------- */
+  .log-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .log-head b { font-size: 12.5px; }
+  .log-filters { display: flex; flex-wrap: wrap; gap: 5px; padding: 8px 0; }
+  .log-search { width: 100%; }
+  #logStream { flex: 1; overflow-y: auto; font-family: var(--font-mono); font-size: 10.8px; display: flex; flex-direction: column; }
+  .log-row {
+    display: flex; gap: 7px; padding: 3.5px 4px; border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+    align-items: baseline; border-radius: 5px; animation: login .25s var(--ease);
+  }
+  @keyframes login { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .log-row:hover { background: var(--accent-soft); cursor: pointer; }
+  .log-row:hover .log-t { color: var(--accent-ink); }
+  .log-t { color: var(--dim); flex-shrink: 0; }
+  .log-tag {
+    flex-shrink: 0; font-size: 9px; font-weight: 500; border-radius: 4px; padding: 1px 5px;
+    letter-spacing: .04em; min-width: 52px; text-align: center;
+  }
+  .log-msg { word-break: break-word; color: var(--ink); min-width: 0; }
+  .log-dur { margin-left: auto; color: var(--dim); flex-shrink: 0; font-size: 9.5px; }
+  .log-row.lv-ERR .log-msg { color: var(--bad); }
+  .log-row.lv-WARN .log-msg { color: var(--accent-ink); }
+  .tag-SYS    { background: var(--surface); color: var(--muted); border: 1px solid var(--line); }
+  .tag-INGEST { background: var(--ok-soft); color: var(--ok); }
+  .tag-EMBED  { background: var(--ok-soft); color: var(--ok); }
+  .tag-STORE  { background: var(--ok-soft); color: var(--ok); }
+  .tag-GUARD  { background: var(--warn-soft); color: var(--warn); }
+  .tag-AGENT  { background: var(--accent-soft); color: var(--accent-ink); }
+  .tag-RETR   { background: var(--accent-soft); color: var(--accent-ink); }
+  .tag-RERANK { background: var(--accent-soft); color: var(--accent-ink); }
+  .tag-CTX    { background: var(--surface); color: var(--muted); border: 1px solid var(--line); }
+  .tag-LLM    { background: var(--accent-soft); color: var(--accent-ink); }
+  .tag-TOOL   { background: var(--warn-soft); color: var(--warn); }
+  .tag-MEM    { background: var(--surface); color: var(--muted); border: 1px solid var(--line); }
+  .tag-METRIC { background: var(--ok-soft); color: var(--ok); }
+  .tag-ERR    { background: var(--bad-soft); color: var(--bad); }
+  details.pay { margin-top: 2px; }
+  details.pay summary { cursor: pointer; color: var(--dim); font-size: 9.5px; list-style: none; }
+  details.pay summary::-webkit-details-marker { display: none; }
+  details.pay summary:hover { color: var(--accent-ink); }
+  details.pay pre {
+    margin-top: 4px; background: var(--code-bg); color: var(--code-ink);
+    border: 1px solid var(--code-border); border-radius: 7px; padding: 7px 9px;
+    font-size: 10px; white-space: pre-wrap; word-break: break-word; max-height: 200px; overflow: auto;
+  }
+  .log-empty { color: var(--dim); padding: 20px 8px; text-align: center; font-size: 11px; }
+
+  /* ---------- modal ---------- */
+  dialog {
+    border: 1px solid var(--line); border-radius: 14px; background: var(--bg); color: var(--ink);
+    padding: 0; width: min(720px, 94vw); max-height: 86vh;
+  }
+  dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(3px); }
+  .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 13px 18px; border-bottom: 1px solid var(--line); }
+  .modal-head b { font-size: 14px; }
+  .modal-body { padding: 16px 18px; overflow: auto; max-height: calc(86vh - 110px); }
+  .modal-body pre {
+    background: var(--code-bg); color: var(--code-ink); border: 1px solid var(--code-border);
+    border-radius: 9px; padding: 13px 15px; font-family: var(--font-mono); font-size: 11px;
+    line-height: 1.6; overflow: auto; white-space: pre;
+  }
+  .modal-foot { padding: 11px 18px; border-top: 1px solid var(--line); display: flex; gap: 8px; justify-content: flex-end; }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ink); color: var(--bg); font-size: 12.5px; padding: 8px 18px;
+    border-radius: 999px; opacity: 0; pointer-events: none; transition: all .25s var(--ease); z-index: 99;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <span class="mark"><span class="mark-sq">AM</span> switchyard <em>agentic AI + RAG harness</em> <em id="stackBadge">langgraph · chroma</em></span>
+    <span class="nav-links">
+      <span class="live">interactive sim</span>
+      <a href="/">portfolio</a>
+      <a href="/blog/">blog</a>
+      <a href="/blog/agentic-rag-simulator.html">companion post</a>
+    </span>
+  </nav>
+</header>
+
+<div class="app">
+
+  <!-- ══════════ SETUP / CONFIG ══════════ -->
+  <aside class="panel" id="setupPanel">
+    <fieldset>
+      <details class="cfg" open>
+        <summary>Scenario presets <span class="tag chip">start here</span></summary>
+        <div class="cfg-body">
+          <div class="chips" id="scenarioChips"></div>
+          <div class="hint" id="scenarioHint"></div>
+        </div>
+      </details>
+
+      <details class="cfg" open>
+        <summary>Stack <span class="tag chip">framework · vectordb</span></summary>
+        <div class="cfg-body">
+          <div class="row"><label>Orchestrator</label>
+            <select id="cOrch"></select></div>
+          <div class="row"><label>Vector DB</label>
+            <select id="cVdb"></select></div>
+          <div class="row"><label>LLM provider</label>
+            <select id="cLlmProv"></select></div>
+          <div class="row"><label>Embeddings</label>
+            <select id="cEmbProv"></select></div>
+          <div class="hint" id="stackHint"></div>
+        </div>
+      </details>
+
+      <details class="cfg">
+        <summary>LLM parameters</summary>
+        <div class="cfg-body">
+          <div class="row"><label>Model name</label><input type="text" id="cModel" style="width:150px"></div>
+          <div class="row"><label>Temperature <output id="oTemp"></output></label><input type="range" id="cTemp" min="0" max="1.5" step="0.05"></div>
+          <div class="row"><label>Max tokens <output id="oMaxTok"></output></label><input type="range" id="cMaxTok" min="128" max="4096" step="64"></div>
+          <div class="row"><label>Stream tokens</label><label class="switch"><input type="checkbox" id="cStream"><span></span></label></div>
+          <label class="row" style="flex-direction:column;align-items:stretch;gap:4px"><label style="color:var(--muted);font-size:12px">System prompt</label>
+            <textarea id="cSysPrompt" rows="3"></textarea></label>
+        </div>
+      </details>
+
+      <details class="cfg" open>
+        <summary>RAG pipeline <span class="tag chip">tune me</span></summary>
+        <div class="cfg-body">
+          <div class="row"><label>Chunk size <output id="oChunk"></output></label><input type="range" id="cChunk" min="80" max="800" step="20"></div>
+          <div class="row"><label>Overlap <output id="oOverlap"></output></label><input type="range" id="cOverlap" min="0" max="200" step="10"></div>
+          <div class="row"><label>Top-K <output id="oTopk"></output></label><input type="range" id="cTopk" min="1" max="8" step="1"></div>
+          <div class="row"><label>Similarity threshold <output id="oThr"></output></label><input type="range" id="cThr" min="0.1" max="0.98" step="0.01"></div>
+          <div class="row"><label>Embedding dim <output id="oDim"></output></label><input type="range" id="cDim" min="256" max="3072" step="256"></div>
+          <div class="row"><label>Reranker</label><label class="switch"><input type="checkbox" id="cRerank"><span></span></label></div>
+          <button class="btn small" id="btnReindex">↻ Re-run ingestion</button>
+          <div class="hint">Watch the Chunker node: chunk boundaries recompute live. Raise the threshold until retrieval misses to see the agent fall back.</div>
+        </div>
+      </details>
+
+      <details class="cfg">
+        <summary>Agent loop &amp; memory</summary>
+        <div class="cfg-body">
+          <div class="row"><label>Pattern</label>
+            <select id="cPattern">
+              <option value="react">ReAct</option>
+              <option value="plan-execute">Plan-and-Execute</option>
+              <option value="graph">State graph (conditional edges)</option>
+            </select></div>
+          <div class="row"><label>Max iterations <output id="oIter"></output></label><input type="range" id="cIter" min="1" max="10" step="1"></div>
+          <div class="row"><label>Memory window (turns)</label><input type="number" id="cMemWin" min="0" max="20" style="width:64px"></div>
+          <div class="row"><label>Long-term vector memory</label><label class="switch"><input type="checkbox" id="cVecMem"><span></span></label></div>
+          <div class="row"><label>On no-retrieval-hit</label>
+            <select id="cFallback">
+              <option value="tool">Fall back to a tool</option>
+              <option value="best-effort">Answer best-effort (no context)</option>
+              <option value="refuse">Refuse politely</option>
+            </select></div>
+          <div class="row"><label>Multi-agent team</label><label class="switch"><input type="checkbox" id="cMulti"><span></span></label></div>
+          <div class="hint">Multi-agent swaps the single loop for Planner → Researcher → Critic hand-offs.</div>
+        </div>
+      </details>
+
+      <details class="cfg">
+        <summary>Guardrails</summary>
+        <div class="cfg-body">
+          <div class="row"><label>Input filter</label><label class="switch"><input type="checkbox" id="cGuardIn"><span></span></label></div>
+          <label class="row" style="flex-direction:column;align-items:stretch;gap:4px"><label style="color:var(--muted);font-size:12px">Blocked terms (comma-separated)</label>
+            <input type="text" id="cBlockTerms" class="full"></label>
+          <div class="row"><label>Output filter (redact PII)</label><label class="switch"><input type="checkbox" id="cGuardOut"><span></span></label></div>
+          <div class="hint">Try a preset query containing a blocked term, or watch the output filter redact numbers in the answer.</div>
+        </div>
+      </details>
+
+      <details class="cfg" open>
+        <summary>Tools <span class="tag chip" id="toolCount">3</span></summary>
+        <div class="cfg-body">
+          <div id="toolList" style="display:flex;flex-direction:column;gap:7px"></div>
+          <div class="chips">
+            <button class="chip" id="btnAddTool">+ custom tool</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="cfg" open>
+        <summary>Knowledge base <span class="tag chip" id="docCount">3 docs</span></summary>
+        <div class="cfg-body">
+          <div id="docList" style="display:flex;flex-direction:column;gap:7px"></div>
+          <div class="chips"><button class="chip" id="btnAddDoc">+ add document</button></div>
+          <div class="hint">Documents are chunked for real — edit bodies and watch chunk counts change.</div>
+        </div>
+      </details>
+
+      <details class="cfg">
+        <summary>Chaos engineering</summary>
+        <div class="cfg-body">
+          <div class="row"><label>Slow down</label>
+            <select id="cSlow">
+              <option value="">nothing</option>
+              <option value="embed">embedder</option>
+              <option value="retr">retriever</option>
+              <option value="llm">LLM</option>
+              <option value="tool">tools</option>
+            </select></div>
+          <div class="row"><label>Fail next tool call</label><label class="switch"><input type="checkbox" id="cInjectFail"><span></span></label></div>
+        </div>
+      </details>
+
+      <fieldset>
+        <div class="chips" style="padding:4px 0 20px">
+          <button class="chip" id="btnExportCfg">⬇ export config</button>
+          <button class="chip" id="btnImportCfg">⬆ import config</button>
+          <button class="chip" id="btnShareLink">🔗 share link</button>
+          <button class="chip" id="btnCode">⌨ code scaffold</button>
+          <button class="chip" id="btnResetAll">⟲ reset defaults</button>
+        </div>
+      </fieldset>
+    </fieldset>
+  </aside>
+
+  <!-- ══════════ STAGE ══════════ -->
+  <section id="stage">
+    <div class="stage-top">
+      <div class="querybar">
+        <input type="text" id="qInput" spellcheck="false" placeholder="Ask a question…" aria-label="User query">
+        <button class="btn primary" id="btnRun">Run ▸</button>
+      </div>
+      <div class="metrics" id="metricsBar"></div>
+    </div>
+
+    <div class="playbar">
+      <button class="pbtn go" id="btnPlay" title="Play/Pause">▶</button>
+      <button class="pbtn" id="btnStepBack" title="Step back one event (←)">⏮</button>
+      <button class="pbtn" id="btnStep" title="Step one event (→)">⏭</button>
+      <input type="range" id="scrubber" min="0" max="0" value="0" step="1" aria-label="Timeline scrubber">
+      <select id="speedSel" aria-label="Playback speed">
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+        <option value="2">2×</option>
+        <option value="4">4×</option>
+      </select>
+      <button class="pbtn" id="btnResetRun" title="Reset run">⟲</button>
+    </div>
+
+    <div class="pipeline-wrap">
+      <svg id="pipe" viewBox="0 0 980 512" role="img" aria-label="Agent + RAG pipeline diagram"></svg>
+    </div>
+
+    <div class="inspector" id="inspector">
+      <header><b id="inspTitle">Inspector</b><button class="btn small" id="inspClose">close</button></header>
+      <pre id="inspBody"></pre>
+    </div>
+  </section>
+
+  <!-- ══════════ TIME-SERIES LOG ══════════ -->
+  <aside class="panel" id="logPanel">
+    <div class="log-head">
+      <b>Time-series trace</b>
+      <span class="chips">
+        <button class="chip on" data-lvl="all">all</button>
+        <button class="chip" data-lvl="INFO">info</button>
+        <button class="chip" data-lvl="WARN">warn</button>
+        <button class="chip" data-lvl="ERR">err</button>
+        <button class="chip" id="btnExportLog" title="Download trace as text">⬇</button>
+      </span>
+    </div>
+    <div class="log-filters" id="compFilters"></div>
+    <input type="text" class="log-search" id="logSearch" placeholder="filter messages…">
+    <div id="logStream"><div class="log-empty">Configure anything on the left, then press <b>Run ▸</b>.<br>Every step lands here with timestamps, payloads &amp; latency.</div></div>
+  </aside>
+</div>
+
+<dialog id="dlg">
+  <div class="modal-head"><b id="dlgTitle"></b><button class="btn small" id="dlgClose">✕</button></div>
+  <div class="modal-body" id="dlgBody"></div>
+  <div class="modal-foot" id="dlgFoot"></div>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const $ = (s) => document.querySelector(s);
+
+/* ---------- defaults ---------- */
+const DEFAULTS = () => ({
+  version: 1,
+  scenario: "rag-hit",
+  stack: { orch: "langgraph", vdb: "chroma", llmProvider: "openai", embProvider: "openai" },
+  llm: {
+    model: "gpt-4o-mini", temperature: 0.3, maxTokens: 800, streaming: true,
+    sysPrompt: "You are a precise assistant. Answer strictly from provided context; say so when context is missing."
+  },
+  rag: { chunkSize: 240, overlap: 40, topK: 3, threshold: 0.72, dim: 1536, rerank: true },
+  agent: { pattern: "react", maxIterations: 5, memWindow: 4, vecMemory: true, fallback: "tool", multiAgent: false },
+  guard: { input: true, blockTerms: ["internal-only", "confidential"], output: true },
+  tools: [
+    { id: "web_search",  name: "web_search",  desc: "Search the public web for fresh information.", lat: 900, fail: 5,  on: true },
+    { id: "calculator",  name: "calculator",  desc: "Evaluate arithmetic expressions exactly.",     lat: 120, fail: 0,  on: true },
+    { id: "sql_query",   name: "sql_query",   desc: "Run read-only SQL against the analytics DB.",  lat: 450, fail: 8,  on: false },
+    { id: "code_interp", name: "code_interp", desc: "Execute sandboxed Python for data crunching.", lat: 1400, fail: 10, on: false }
+  ],
+  docs: [
+    { id: "d1", title: "Q3-Churn-Report.txt",
+      body: "Q3 churn reached 4.1 percent, up from 3.2 percent in Q2. The largest driver was the pricing change on the Starter plan, which pushed 380 accounts to cancel within 30 days of renewal. Support transcripts show billing confusion was the top complaint theme. Enterprise churn stayed flat at 1.2 percent thanks to dedicated success managers." },
+    { id: "d2", title: "Onboarding-Playbook.md",
+      body: "New accounts receive a guided onboarding flow with five steps: workspace setup, invite teammates, connect a data source, create a first dashboard, and schedule the kickoff call. Accounts that complete all five steps within 14 days retain 22 percent better at month three. The playbook assigns owners for each step." },
+    { id: "d3", title: "Platform-Architecture.md",
+      body: "The platform runs on a Kubernetes cluster in three regions. The API gateway rate limits requests per account. Events flow through Kafka into ClickHouse for analytics. Vector embeddings are stored alongside metadata so hybrid search can combine keyword and semantic results. Nightly jobs recompute account health scores." }
+  ],
+  chaos: { slow: "", injectFail: false }
+});
+
+const ORCHESTRATORS = {
+  generic:    { label: "Generic (framework-neutral)", hint: "Framework-neutral naming — maps to any library." },
+  langchain:  { label: "LangChain (chains)",           hint: "Composable chains: Retriever → LLMChain. Tools wrap as @tool." },
+  langgraph:  { label: "LangGraph (state machine)",    hint: "Explicit graph: conditional edges route between retrieve → grade → rewrite → generate." },
+  llamaindex: { label: "LlamaIndex (query engine)",    hint: "QueryEngine over an Index; router picks between RAG and tools." },
+  haystack:   { label: "Haystack (pipelines)",         hint: "Declarative Pipeline YAML wiring components together." },
+  crewai:     { label: "CrewAI (agent crew)",          hint: "Role-playing crew: tasks delegated between agents." },
+  autogen:    { label: "AutoGen (group chat)",         hint: "Conversable agents solve the task via group chat messages." }
+};
+const VDBS = {
+  memory:   { label: "In-memory (numpy)",  call: "cosine_sim(top_k)", hint: "Brute-force cosine similarity — great for learning." },
+  chroma:   { label: "Chroma",             call: "collection.query(n_results=k)", hint: "Embedded, zero-setup vector DB." },
+  faiss:    { label: "FAISS",              call: "index.search(q, k)", hint: "Meta's local ANN library — fastest for experiments." },
+  qdrant:   { label: "Qdrant",             call: "client.search(limit=k, score_threshold)", hint: "Filterable vectors + payload indexes." },
+  pinecone: { label: "Pinecone",           call: "index.query(top_k, include_metadata)", hint: "Managed, serverless vector DB." },
+  weaviate: { label: "Weaviate",           call: "near_vector(autoLimit)", hint: "GraphQL-native with modules." },
+  pgvector: { label: "pgvector (Postgres)", call: "ORDER BY embedding <=> $1 LIMIT k", hint: "Vectors live next to your relational data." },
+  milvus:   { label: "Milvus",             call: "search(param={metric: 'COSINE'})", hint: "Scale-out, GPU-index capable." }
+};
+const LLMS = {
+  openai:    { label: "OpenAI",       models: ["gpt-4o-mini", "gpt-4o"], pin: "$0.15", pout: "$0.60" },
+  anthropic: { label: "Anthropic",    models: ["claude-sonnet-4-5", "claude-haiku-4"], pin: "$3.00", pout: "$15.00" },
+  groq:      { label: "Groq",         models: ["llama-3.3-70b-versatile", "mixtral-8x7b"], pin: "$0.59", pout: "$0.79" },
+  ollama:    { label: "Ollama (local)", models: ["llama3.1:8b", "qwen2.5:7b", "mistral:7b"], pin: "$0", pout: "$0" }
+};
+const EMBS = {
+  openai:     { label: "OpenAI text-embed-3-small", dim: 1536 },
+  "openai-lg":  { label: "OpenAI text-embed-3-large", dim: 3072 },
+  local:      { label: "sentence-transformers (local)", dim: 384 },
+  cohere:     { label: "Cohere embed-v3", dim: 1024 }
+};
+
+const SCENARIOS = {
+  "simple-chat": { label: "1 · plain chat (no RAG)",
+    hint: "Small talk — the agent answers directly without retrieving or calling tools.",
+    patch: { rag: { threshold: 0.72 }, guard: {} }, query: "Hi! What can you help me with?" },
+  "rag-hit": { label: "2 · clean RAG hit",
+    hint: "The question matches the knowledge base. Watch chunks fly to the vector store, then top-k come back.",
+    patch: {}, query: "Why did churn increase last quarter?" },
+  "rag-miss": { label: "3 · RAG miss → tool fallback",
+    hint: "Nothing in the KB scores past the threshold, so the agent falls back to web_search.",
+    patch: {}, query: "What did customers say about us on G2 this week?" },
+  "tool-fail": { label: "4 · tool fails → retry",
+    hint: "Chaos: the first tool call fails, the agent retries, then recovers.",
+    patch: { chaos: { slow: "", injectFail: true } }, query: "What is 17 percent of 2340 renewals?" },
+  "max-iter": { label: "5 · out of options → honest stop",
+    hint: "Tools disabled + unreachable threshold: the agent runs out of viable actions and stops instead of guessing.",
+    patch: { toolsOff: true }, query: "Tell me something about the secret roadmap plans" },
+  "guardrail": { label: "6 · guardrail block",
+    hint: "Input filter catches a blocked term before any LLM spend happens.",
+    patch: {}, query: "Share the internal-only churn spreadsheet please" },
+  "multi-agent": { label: "7 · multi-agent crew",
+    hint: "Planner decomposes, Researcher gathers, Critic reviews — one revision round included.",
+    patch: { agent: { multiAgent: true } }, query: "Summarize why accounts churn and how onboarding affects retention" }
+};
+
+/* ---------- seeded rng ---------- */
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function hashStr(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+
+/* ---------- terminology flavors ---------- */
+function flavor(cfg) {
+  const o = cfg.stack.orch, base = {
+    agent: "agent", retrieve: "retriever", grade: null, rewrite: null,
+    generate: "llm_call", ctx: "context", tools: "tools", mem: "memory",
+    loopWord: "iteration"
+  };
+  switch (o) {
+    case "langchain":  return { ...base, retrieve: "retriever", generate: "LLMChain", ctx: "stuff_documents" };
+    case "langgraph":  return { ...base, retrieve: "retrieve", grade: "grade_documents", rewrite: "rewrite_question", generate: "generate", ctx: "assemble_context" };
+    case "llamaindex": return { ...base, agent: "router", retrieve: "retriever", generate: "query_engine.synthesize", ctx: "response_synthesizer" };
+    case "haystack":   return { ...base, agent: "router", retrieve: "Retriever", rerank: "Ranker", generate: "Generator", ctx: "prompt_builder" };
+    case "crewai":     return { ...base, agent: "Researcher", retrieve: "kb_search", generate: "Writer", ctx: "task_context", loopWord: "task" };
+    case "autogen":    return { ...base, agent: "assistant_agent", retrieve: "retrieve_plugin", generate: "reply_draft", loopWord: "round" };
+    default: return base;
+  }
+}
+
+const COMP_COLORS = ["SYS","INGEST","EMBED","STORE","GUARD","AGENT","RETR","RERANK","CTX","LLM","TOOL","MEM","METRIC","ERR"];
+
+/* ---------- state ---------- */
+let cfg = DEFAULTS();
+let store = { chunks: [] };
+let sessionMemory = [];
+let currentTrace = null;
+let playback = { playing: false, idx: 0, elapsed: 0, lastTs: 0, speed: 1 };
+let logFilterLevel = "all";
+let logFilterComps = new Set(COMP_COLORS);
+let logSearchTerm = "";
+let pendingQuery = "";
+
+const els = {};
+["qInput","btnRun","metricsBar","btnPlay","btnStep","btnStepBack","scrubber","speedSel","btnResetRun",
+ "logStream","compFilters","logSearch","inspector","inspTitle","inspBody","inspClose",
+ "dlg","dlgTitle","dlgBody","dlgFoot","dlgClose","toast","stackBadge","scenarioChips","scenarioHint",
+ "toolList","docList","toolCount","docCount","btnAddTool","btnAddDoc","btnReindex",
+ "btnExportCfg","btnImportCfg","btnShareLink","btnCode","btnExportLog"].forEach(id => els[id] = $("#" + id));
+
+function deepMerge(base, patch) {
+  const out = Array.isArray(base) ? [...base] : { ...base };
+  for (const k of Object.keys(patch || {})) {
+    const pv = patch[k];
+    if (pv && typeof pv === "object" && !Array.isArray(pv)) out[k] = deepMerge(out[k] ?? {}, pv);
+    else out[k] = Array.isArray(pv) ? JSON.parse(JSON.stringify(pv)) : pv;
+  }
+  return out;
+}
+function toast(msg) {
+  els.toast.textContent = msg; els.toast.classList.add("show");
+  clearTimeout(toast._t); toast._t = setTimeout(() => els.toast.classList.remove("show"), 2200);
+}
+
+/* ---------- chunking (real) ---------- */
+function chunkDocs(c) {
+  const wordsPerChunk = Math.max(12, Math.round(c.rag.chunkSize / 5.2));
+  const overlapWords = Math.min(Math.round(c.rag.overlap / 5.2), Math.floor(wordsPerChunk / 2));
+  const chunks = [];
+  for (const doc of c.docs) {
+    const words = doc.body.trim().split(/\s+/);
+    let i = 0, ci = 0;
+    while (i < words.length) {
+      const take = Math.min(wordsPerChunk, words.length - i);
+      chunks.push({
+        docId: doc.id, docTitle: doc.title, idx: ci++,
+        text: words.slice(i, i + take).join(" ")
+      });
+      if (take < wordsPerChunk) break;
+      i += take - overlapWords;
+    }
+  }
+  return chunks;
+}
+
+/* ---------- fake embeddings + scoring (deterministic, keyword-aware) ---------- */
+const STOP = new Set("the a an is are was were be been being do does did what which who whom why how when where of in on at to for from with about as by it its this that these those i you we they my our your their me him her them and or but if then than so such can could will would should may might must have has had not no yes".split(" "));
+function tokenize(s) {
+  return s.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").split(/\s+/).filter(w => w.length >= 2 && !STOP.has(w));
+}
+function pseudoEmbed(text, dim, seedBase) {
+  const rnd = mulberry32(hashStr(text) ^ seedBase);
+  const v = new Float32Array(dim);
+  for (let i = 0; i < dim; i++) v[i] = rnd() * 2 - 1;
+  for (const tok of tokenize(text)) {
+    const h = hashStr(tok) % dim;
+    v[h] += 0.9; v[(h * 31 + 7) % dim] += 0.45;
+  }
+  let n = 0; for (let i = 0; i < dim; i++) n += v[i] * v[i];
+  n = Math.sqrt(n) || 1;
+  for (let i = 0; i < dim; i++) v[i] /= n;
+  return v;
+}
+function cosine(a, b) {
+  let s = 0; for (let i = 0; i < a.length; i++) s += a[i] * b[i];
+  return s;
+}
+function tokStem(w) { return w.length > 3 ? w.replace(/ies$/, "y").replace(/es$/, "").replace(/s$/, "") : w; }
+const SEM_GROUPS = [
+  ["increase", "rose", "rise", "rising", "grew", "grow", "reached", "jumped", "spike", "higher", "worse"],
+  ["quarter", "q3", "q2", "q4", "quarterly"],
+  ["churn", "cancel", "cancelled", "attrition", "left"],
+  ["customer", "customers", "accounts", "users", "clients"],
+  ["retain", "retention", "onboarding"],
+  ["billing", "pricing", "price", "cost"]
+];
+function groupHit(w, chSet) {
+  const ws = tokStem(w);
+  if (chSet.has(ws) || chSet.has(w)) return true;
+  for (const g of SEM_GROUPS) {
+    if (g.includes(w)) return g.some(m => chSet.has(tokStem(m)) || chSet.has(m));
+  }
+  return false;
+}
+function scoreChunks(query, chunks, c) {
+  const seedBase = hashStr(c.stack.embProvider) ^ (c.rag.dim << 8);
+  const qv = pseudoEmbed(query, c.rag.dim, seedBase);
+  const qTokens = tokenize(query);
+  return chunks.map(ch => {
+    const raw = Math.max(0, cosine(qv, pseudoEmbed(ch.text, c.rag.dim, seedBase)));
+    const chTokens = new Set(tokenize(ch.text).map(tokStem));
+    const matched = qTokens.filter(w => groupHit(w, chTokens)).length;
+    const groupsHit = new Set();
+    for (const w of qTokens) {
+      const g = SEM_GROUPS.find(gr => gr.includes(w) && gr.some(m => chTokens.has(tokStem(m)) || chTokens.has(m)));
+      if (g) groupsHit.add(g);
+    }
+    const groupBonus = groupsHit.size >= 2 ? 0.1 : 0;
+    const overlap = qTokens.length ? matched / qTokens.length : 0;
+    const rndJit = mulberry32(hashStr(ch.docId + ch.idx + "|" + query));
+    const score = Math.min(0.985,
+      Math.max(0.02, 0.3 + 0.68 * overlap + groupBonus + (raw - 0.02) * 0.1 + (rndJit() - 0.5) * 0.04));
+    return { ...ch, score };
+  }).sort((a, b) => b.score - a.score);
+}
+
+/* ---------- trace builder ---------- */
+function fmtT(ms) {
+  const m = Math.floor(ms / 60000), s = Math.floor((ms % 60000) / 1000), f = Math.floor(ms % 1000);
+  return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0") + "." + String(f).padStart(3, "0");
+}
+
+function buildTrace(query) {
+  const ev = [];
+  const F = flavor(cfg);
+  const rnd = mulberry32(hashStr(JSON.stringify(cfg) + "|" + query));
+  const jit = (lo, hi) => lo + rnd() * (hi - lo);
+  const slowMul = (key, base) => cfg.chaos.slow === key ? base * 4 : base;
+
+  let t = 0, id = 0;
+  const push = (comp, msg, opt = {}) => {
+    const e = { id: id++, t, comp, level: opt.level || "INFO", msg, dur: opt.dur || 0,
+                node: opt.node || null, edge: opt.edge || null, payload: opt.payload || null };
+    t += opt.gap ?? Math.max(opt.dur || 0, 30) + 40;
+    ev.push(e);
+    return e;
+  };
+
+  push("SYS", `run start — query received: "${query}"`, { node: "n-query", gap: 60 });
+
+  /* input guardrail */
+  const terms = cfg.guard.blockTerms.map(s => s.trim().toLowerCase()).filter(Boolean);
+  const hitTerm = cfg.guard.input ? terms.find(term => query.toLowerCase().includes(term)) : null;
+  if (hitTerm) {
+    push("GUARD", `input filter BLOCKED — matched term "${hitTerm}"`, { node: "n-guard-in", level: "ERR",
+      payload: { policy: "blocklist", term: hitTerm, action: "reject_before_llm" }, dur: 45 });
+    push("SYS", "no tokens spent — request rejected at the door", { level: "WARN" });
+    return finish(ev, { outcome: "blocked", iter: 0 });
+  }
+  if (cfg.guard.input) {
+    push("GUARD", "input filter passed — no blocked terms found", { node: "n-guard-in", dur: 40 });
+  }
+
+  const metrics = { tokensIn: 0, tokensOut: 0, phases: {}, iter: 0, hits: 0 };
+
+  /* multi-agent planning preamble */
+  if (cfg.agent.multiAgent) {
+    push("AGENT", "[Planner] decomposing task into subtasks", { node: "n-agent", dur: slowMul("llm", 420),
+      payload: { subtasks: ["identify churn drivers from KB", "find onboarding ↔ retention link", "draft + review"] },
+      gap: 160 });
+    metrics.tokensIn += 180; metrics.iter++;
+  }
+
+  /* ── agent loop ── */
+  const scoredAll = scoreChunks(query, store.chunks, cfg);
+  const passing = scoredAll.filter(c => c.score >= cfg.rag.threshold);
+  const topPassing = passing.slice(0, cfg.rag.topK);
+  let retrieved = false, toolUsed = null, toolObs = null, answeredFrom = null;
+  let rewriteUsed = false;
+  let stoppedEarly = false;
+  const maxIt = cfg.agent.multiAgent ? Math.max(3, cfg.agent.maxIterations) : cfg.agent.maxIterations;
+
+  for (let it = 1; it <= maxIt; it++) {
+    if (answeredFrom) break;
+    metrics.iter = it;
+    const itLabel = `${F.loopWord} ${it}/${maxIt}`;
+
+    const hasCalc = cfg.tools.some(tl => tl.on && tl.id === "calculator");
+    const calcIntent = toolWanted(query);
+    const chitchat = /^(hi|hey|hello|yo|thanks|thank you)\b|^what can you do\b|^who are you\b/i.test(query.trim()) ||
+                     tokenize(query).length <= 1;
+    const needRetrieve = !retrieved && !toolUsed && !chitchat && !(calcIntent && hasCalc);
+    const needTool = (retrieved && topPassing.length === 0 && !toolUsed && cfg.agent.fallback === "tool") ||
+                     (!retrieved && !toolUsed && calcIntent && hasCalc);
+    const directAnswer = !retrieved && !toolUsed && chitchat && !calcIntent;
+    const canFinish = (retrieved && topPassing.length > 0) ||
+                      (toolUsed && toolObs) || directAnswer ||
+                      (!needRetrieve && !needTool);
+
+    if (cfg.agent.pattern !== "graph" || F.grade) {
+      push("AGENT", `[${F.agent}] ${itLabel} — thought: ${
+        directAnswer ? "casual turn — no knowledge or tools needed → answer directly"
+        : needTool && calcIntent && !retrieved ? "pure arithmetic — compute exactly with a tool, skip retrieval"
+        : needRetrieve ? "internal knowledge may cover this → retrieve"
+        : needTool ? "retrieval empty → try a tool"
+        : canFinish && topPassing.length ? "have good context → generate"
+        : canFinish ? "enough observations → compose answer"
+        : "assess options"}`,
+        { node: "n-agent", dur: slowMul("llm", 260) + (cfg.llm.streaming ? 60 : 0),
+          payload: { thought_trace: { iteration: it, have_context: topPassing.length, tools_tried: toolUsed ? [toolUsed] : [] } } });
+    }
+
+    if (needRetrieve) {
+      push("EMBED", `embedding query (${cfg.rag.dim}-d, ${cfg.stack.embProvider})`, {
+        node: "n-embed", edge: "e-chunk-embed", dur: slowMul("embed", 90 + Math.round(jit(20, 60))),
+        payload: { model: cfg.stack.embProvider === "local" ? "BAAI/bge-small" : "text-embedding-3-small", dim: cfg.rag.dim } });
+
+      push("RETR", `${cfg.stack.vdb} search — top_k=${cfg.rag.topK}, threshold=${cfg.rag.threshold.toFixed(2)}, candidates=${store.chunks.length}`, {
+        node: "n-retr", edge: "e-vdb-retr", dur: slowMul("retr", 70 + Math.round(jit(15, 50))),
+        payload: { store: cfg.stack.vdb, call: VDBS[cfg.stack.vdb].call, candidates: store.chunks.length } });
+
+      const shown = scoredAll.slice(0, Math.max(cfg.rag.topK, 3)).map(c =>
+        `${c.docTitle}#${c.idx} → ${c.score.toFixed(3)}${c.score >= cfg.rag.threshold ? " ✓" : " ✗ below-threshold"}`);
+      push("RETR", `scored candidates: ${passing.length}/${scoredAll.length} pass threshold`, {
+        node: "n-retr", level: passing.length ? "INFO" : "WARN", dur: 30, payload: { scores: shown } });
+
+      if (topPassing.length) {
+        let ranked = topPassing;
+        if (cfg.rag.rerank) {
+          ranked = [...topPassing].sort((a, b) => (b.score + (rnd() - 0.5) * 0.02) - (a.order = 0));
+          ranked = topPassing.map((c, ix) => ({ ...c, rr: c.score + (hashStr(c.docId + c.idx) % 13) / 1300 }))
+            .sort((a, b) => b.rr - a.rr);
+          push("RERANK", `cross-encoder rerank reordered ${topPassing.length} chunks`, {
+            node: "n-rerank", dur: 140 + Math.round(jit(30, 80)),
+            payload: { before: topPassing.map(c => c.docTitle + "#" + c.idx), after: ranked.map(c => c.docTitle + "#" + c.idx) } });
+        }
+        retrieved = true;
+        answeredFrom = ranked;
+        metrics.hits = ranked.length;
+        push("CTX", `assembling prompt: system(${cfg.llm.sysPrompt.length} ch) + memory(${Math.min(sessionMemory.length, cfg.agent.memWindow)} turns) + ${ranked.length} chunks`, {
+          node: "n-ctx", edge: "e-rerank-ctx", dur: 55,
+          payload: { context_chars: ranked.reduce((s, c) => s + c.text.length, 0) } });
+        const promptPreview =
+          `<system>${cfg.llm.sysPrompt}</system>\n` +
+          sessionMemory.slice(-cfg.agent.memWindow).map(m => `user: ${m.q}\nassistant: ${m.a.slice(0, 80)}…`).join("\n") +
+          `\n<context source="${ranked[0].docTitle}">\n${ranked[0].text}\n</context>\n\nuser: ${query}`;
+        push("LLM", `${cfg.llm.model} — prompt ready (${Math.round(promptPreview.length / 4)} tok est.), temp=${cfg.llm.temperature}`, {
+          node: "n-llm", edge: "e-ctx-llm", dur: 40, payload: { prompt_preview: promptPreview.slice(0, 700) } });
+        const ansDur = slowMul("llm", 700 + Math.round(jit(200, 900)));
+        push("LLM", cfg.llm.streaming ? `streaming response… (temp ${cfg.llm.temperature})` : `generating response…`, {
+          node: "n-llm", edge: "e-llm-out", dur: ansDur });
+        const answerText = composeAnswer(query, ranked, null);
+        metrics.tokensIn += Math.round(promptPreview.length / 4);
+        metrics.phases.llm = ansDur;
+        push("SYS", `answer composed from ${ranked.length} retrieved chunk(s)`, {
+          node: "n-answer", edge: "e-out-answer", dur: 60,
+          payload: { answer: answerText } });
+      } else {
+        retrieved = true;
+        if (F.rewrite && !rewriteUsed && cfg.agent.pattern === "graph") {
+          rewriteUsed = true;
+          push("AGENT", `[${F.rewrite}] query under-specified — rewriting and re-retrieving`, {
+            node: "n-agent", level: "WARN", dur: 240,
+            payload: { rewritten: "churn increase drivers last quarter customer cancellations" } });
+          scoredAll.push(...[]);
+          const rescored = scoreChunks("churn increase drivers last quarter customer cancellations reasons", store.chunks, cfg);
+          const npass = rescored.filter(c => c.score >= cfg.rag.threshold).slice(0, cfg.rag.topK);
+          if (npass.length) {
+            topPassing.push(...npass);
+            continue;
+          }
+        }
+        if (cfg.agent.fallback === "tool") {
+          if (pickTool(query, null)) continue;
+          push("AGENT", `[${F.agent}] retrieval empty and no tool fits — out of viable actions`, {
+            node: "n-agent", level: "WARN", dur: 180 });
+          stoppedEarly = true;
+          break;
+        }
+        if (cfg.agent.fallback === "refuse") {
+          push("SYS", "no usable context — refusing rather than hallucinating", {
+            node: "n-answer", level: "WARN", edge: "e-out-answer", dur: 50,
+            payload: { answer: "I don't have reliable information about that in my knowledge base, so I won't guess." } });
+          return finish(ev, { outcome: "refused", iter: it });
+        }
+        push("LLM", "answering from parametric knowledge alone (best-effort)", {
+          node: "n-llm", level: "WARN", dur: slowMul("llm", 500),
+          payload: { warning: "no retrieved context — higher hallucination risk" } });
+        const beAns = "I don't have indexed documents covering that yet. Based on general knowledge only: " + genericTake(query);
+        push("SYS", "best-effort answer emitted (flagged low-confidence)", {
+          node: "n-answer", edge: "e-out-answer", dur: 50, payload: { answer: beAns, confidence: "low" } });
+        return finish(ev, { outcome: "best-effort", iter: it });
+      }
+    }
+
+    if (needTool) {
+      const tool = pickTool(query, toolObs);
+      if (!tool && needTool) { stoppedEarly = true; break; }
+      if (tool) {
+        toolUsed = tool.name;
+        push("TOOL", `calling ${tool.name}(…) — desc: ${tool.desc}`, {
+          node: "n-tools", edge: "e-agent-tools", dur: 35,
+          payload: { arguments: toolArgs(tool, query) } });
+        const willFail = cfg.chaos.injectFail || (tool.fail > 0 && rnd() * 100 < tool.fail);
+        const tdur = slowMul("tool", tool.lat);
+        if (willFail && !toolObs) {
+          push("ERR", `${tool.name} failed after ${tdur}ms (simulated ${willFail && cfg.chaos.injectFail ? "injected" : "flaky"} failure)`, {
+            node: "n-tools", level: "ERR", dur: tdur, payload: { error: "TimeoutError: upstream did not respond" } });
+          cfg.chaos.injectFail = false; syncChaos();
+          push("AGENT", `[${F.agent}] observing failure → retrying once with backoff`, {
+            node: "n-agent", level: "WARN", dur: 200 });
+          push("TOOL", `retry ${tool.name}(…) succeeded`, {
+            node: "n-tools", edge: "e-agent-tools", dur: tdur, payload: { attempt: 2, status: "ok" } });
+        } else {
+          push("TOOL", `${tool.name} → 200 OK`, {
+            node: "n-tools", edge: "e-agent-tools", dur: tdur, payload: { result: toolResult(tool, query) } });
+        }
+        toolObs = toolObservation(tool, query);
+        push("CTX", `wrapping tool observation into context`, { node: "n-ctx", dur: 45 });
+        const ansDur = slowMul("llm", 600 + Math.round(jit(150, 500)));
+        push("LLM", `${cfg.llm.model} synthesizing answer from tool observation`, {
+          node: "n-llm", edge: "e-ctx-llm", dur: ansDur });
+        const answerText = composeAnswer(query, [], toolObs);
+        metrics.tokensOut += Math.round(answerText.length / 4);
+        push("SYS", `answer composed from ${tool.name} observation`, {
+          node: "n-answer", edge: "e-out-answer", dur: 55, payload: { answer: answerText } });
+        answeredFrom = [];
+      }
+    }
+
+    if (directAnswer && !answeredFrom) {
+      const ansDur = slowMul("llm", 350 + Math.round(jit(80, 220)));
+      push("LLM", `${cfg.llm.model} answering directly — no retrieval, no tools`, {
+        node: "n-llm", edge: "e-ctx-llm", dur: ansDur });
+      const answerText = chitchatReply(query);
+      metrics.tokensOut += Math.round(answerText.length / 4);
+      push("SYS", "direct answer emitted — zero retrieval cost", {
+        node: "n-answer", edge: "e-out-answer", dur: 50,
+        payload: { answer: answerText, retrieval_used: false } });
+      answeredFrom = [];
+    }
+  }
+
+  if (!answeredFrom && !(topPassing.length && retrieved)) {
+    push("ERR", `stop reason: ${stoppedEarly ? "no viable action remained (retrieval empty, no applicable tool)" : "max_iterations reached (" + maxIt + ")"} — giving up honestly instead of hallucinating`, {
+      node: "n-agent", level: "ERR", dur: 60, payload: { iterations_used: metrics.iter } });
+    return finish(ev, { outcome: "max-iter", iter: metrics.iter });
+  }
+
+  /* output guardrail */
+  let finalNote = "";
+  const lastAnsEv = [...ev].reverse().find(e => e.payload && e.payload.answer);
+  if (lastAnsEv && cfg.guard.output) {
+    const red = redact(lastAnsEv.payload.answer);
+    if (red !== lastAnsEv.payload.answer) {
+      lastAnsEv.payload.answer_redacted = red;
+      finalNote = " — PII redacted";
+      push("GUARD", "output filter redacted sensitive patterns", { node: "n-guard-out", level: "WARN", dur: 40,
+        payload: { rules: ["phone-like numbers", "card-like numbers"] } });
+    } else {
+      push("GUARD", "output filter passed — nothing sensitive found", { node: "n-guard-out", dur: 35 });
+    }
+  } else if (cfg.guard.output) {
+    push("GUARD", "output filter passed", { node: "n-guard-out", dur: 35 });
+  }
+
+  /* memory */
+  if (lastAnsEv) {
+    sessionMemory.push({ q: query, a: (lastAnsEv.payload.answer_redacted || lastAnsEv.payload.answer) });
+    while (sessionMemory.length > 6) sessionMemory.shift();
+    if (cfg.agent.vecMemory) {
+      push("MEM", `persisted turn to long-term vector memory (window keeps ${cfg.agent.memWindow})`, {
+        node: "n-memory", dur: 60, payload: { turns_stored: sessionMemory.length } });
+    } else {
+      push("MEM", `appended turn to short-term window (${Math.min(sessionMemory.length, cfg.agent.memWindow)}/${cfg.agent.memWindow} kept)`, {
+        node: "n-memory", dur: 40 });
+    }
+  }
+
+  push("METRIC", `run finished — ${fmtOutcome(finalNote)}`, { node: "n-answer", dur: 20,
+    payload: { outcome: finalNote.includes("redacted") ? "answered+redacted" : "answered", iterations: metrics.iter } });
+
+  return finish(ev, { outcome: "answered" + finalNote, iter: metrics.iter });
+
+  function finish(events, meta) {
+    events.push({ id: id++, t: t + 80, comp: "METRIC", level: "INFO", msg: "__metrics__", dur: 0, meta });
+    return { events, meta };
+  }
+  function fmtOutcome(note) { return "done" + note; }
+
+  function toolWanted(q) { return /\d+\s*[+\-*x/]\s*\d+|percent of|calculate\b|\bsum\b|\btotal of/.test(q.toLowerCase()); }
+  function pickTool(q, already) {
+    const l = q.toLowerCase();
+    const avail = cfg.tools.filter(tl => tl.on);
+    if (/secret|roadmap/.test(l) && !avail.length) return null;
+    for (const tl of avail) {
+      if (tl.id === "calculator" && toolWanted(l)) return tl;
+      if (tl.id === "web_search" && /(latest|news|this week|g2|review|current|today)/.test(l)) return tl;
+      if (tl.id === "sql_query" && /(database|sql|table|records)/.test(l)) return tl;
+      if (tl.id === "code_interp" && /(plot|dataset|csv|analysis)/.test(l)) return tl;
+    }
+    if (!already && avail.length && cfg.agent.pattern !== "graph") return null;
+    return avail[0] || null;
+  }
+  function toolArgs(tl, q) {
+    if (tl.id === "calculator") return { expression: extractExpr(q) };
+    if (tl.id === "web_search") return { q: query.replace(/[?.]/g, "").slice(0, 60), freshness: "week" };
+    if (tl.id === "sql_query") return { sql: "SELECT region, COUNT(*) FROM churn_events GROUP BY region;" };
+    return { task: q.slice(0, 60) };
+  }
+  function extractExpr(q) {
+    const m = q.match(/([\d.,]+)\s*(?:%|percent)\s*of\s*([\d.,]+)/i);
+    if (m) return `${parseFloat(m[1].replace(/,/g, ""))} / 100 * ${parseFloat(m[2].replace(/,/g, ""))}`;
+    const m2 = q.match(/([\d.,]+(?:\s*[+\-*x\/]\s*[\d.,]+)+)/i);
+    return m2 ? m2[1].trim() : q.slice(0, 40);
+  }
+  function toolResult(tl, q) {
+    if (tl.id === "calculator") {
+      const ex = extractExpr(q);
+      let val = NaN;
+      try { val = Function(`"use strict";return (${ex.replace(/[^0-9.()+\-*/ ]/g, "")})`)(); } catch (_) {}
+      return Number.isFinite(val) ? Number(val.toFixed(2)) : "computed";
+    }
+    if (tl.id === "web_search") return { hits: 3, top: "G2 reviews this week praise the new dashboards; two users mention export bugs." };
+    if (tl.id === "sql_query") return { rows: 4, sample: [{ region: "APAC", churn_events: 41 }, { region: "EU", churn_events: 88 }] };
+    return { stdout: "analysis complete", runtime_ms: 820 };
+  }
+  function toolObservation(tl, q) {
+    const r = toolResult(tl, q);
+    if (tl.id === "calculator") return `Calculator says: ${JSON.stringify(r)}`;
+    if (tl.id === "web_search") return `Web results: ${r.top}`;
+    if (tl.id === "sql_query") return `SQL returned ${r.rows} rows; APAC=41, EU=88 churn events.`;
+    return `Code interpreter finished: ${JSON.stringify(r)}`;
+  }
+  function composeAnswer(q, ranked, obs) {
+    if (obs) return obs + " — synthesized into a direct answer.";
+    if (!ranked.length) return "";
+    const kw = tokenize(q);
+    const sentences = ranked.flatMap(c => c.text.split(/(?<=\.)\s+/))
+      .map(s => {
+        const sSet = new Set(tokenize(s).map(tokStem));
+        return { s, sc: kw.reduce((acc, w) => acc + (groupHit(w, sSet) ? 1 : 0), 0) };
+      })
+      .sort((a, b) => b.sc - a.sc);
+    const picked = sentences.slice(0, 3).filter(x => x.sc > 0).map(x => x.s);
+    const body = picked.length ? picked.join(" ") : ranked[0].text;
+    const srcs = [...new Set(ranked.map(c => c.docTitle))].join(", ");
+    const jitterWords = ["In short, ", "To summarize, ", "Key finding: ", ""];
+    return jitterWords[Math.floor(rnd() * jitterWords.length)] + body + ` (sources: ${srcs})`;
+  }
+  function redact(s) {
+    return s
+      .replace(/\b\d{3}[-\s]\d{3}[-\s]\d{4}\b/g, "•••-•••-••••")
+      .replace(/\b(?:\d[ -]*?){13,16}\b/g, "•••• •••• •••• ••••");
+  }
+  function genericTake(q) {
+    const kw = tokenize(q)[0] || "that";
+    return `the topic "${kw}" isn't covered by the current knowledge base — consider ingesting more documents.`;
+  }
+  function chitchatReply(q) {
+    if (/^who are you/i.test(q)) return "I'm a simulated agent: I plan, retrieve from your knowledge base, call tools when needed, and cite what I used.";
+    if (/what can you do/i.test(q)) return "Ask me anything about the indexed documents — or load a preset scenario on the left to watch retrieval misses, tool fallbacks, retries, and guardrails.";
+    return "Hey! Ask me something about the knowledge base — e.g. \"Why did churn increase last quarter?\" — and I'll show you every step behind the answer.";
+  }
+}
+
+function buildIngestTrace() {
+  const ev = []; let t = 0, id = 0;
+  const rnd = mulberry32(hashStr(JSON.stringify(cfg.docs) + cfg.rag.chunkSize + cfg.rag.overlap));
+  const push = (comp, msg, opt = {}) => {
+    ev.push({ id: id++, t, comp, level: opt.level || "INFO", msg, dur: opt.dur || 0,
+              node: opt.node || null, edge: opt.edge || null, payload: opt.payload || null });
+    t += Math.max(opt.dur || 0, 25) + 35;
+  };
+  store.chunks = chunkDocs(cfg);
+  push("INGEST", `ingestion started — ${cfg.docs.length} doc(s), chunk_size=${cfg.rag.chunkSize}, overlap=${cfg.rag.overlap}`,
+    { node: "n-docs", dur: 40, payload: { strategy: "sliding window (words)" } });
+  for (let di = 0; di < cfg.docs.length; di++) {
+    const dchunks = store.chunks.filter(c => c.docId === cfg.docs[di].id);
+    push("INGEST", `"${cfg.docs[di].title}" → ${dchunks.length} chunk(s)`, {
+      node: "n-docs", edge: "e-docs-chunk", dur: 90 + Math.round(rnd() * 60),
+      payload: { chunk_boundaries: dchunks.map(c => c.text.slice(0, 42) + "…") } });
+    push("EMBED", `embedding ${dchunks.length} chunk(s) → ${cfg.rag.dim}-d vectors (${cfg.stack.embProvider})`, {
+      node: "n-embed", edge: "e-chunk-embed", dur: 160 + Math.round(rnd() * 120) });
+    push("STORE", `upsert ${dchunks.length} vector(s) → ${cfg.stack.vdb} [${VDBS[cfg.stack.vdb].call}]`, {
+      node: "n-vdb", edge: "e-embed-vdb", dur: 110 + Math.round(rnd() * 80),
+      payload: { collection: "kb_main", total_chunks: store.chunks.length } });
+  }
+  push("STORE", `index ready — ${store.chunks.length} vectors total`, { node: "n-vdb", dur: 30 });
+  return { events: ev, meta: { outcome: "ingested", iter: 0 } };
+}
+
+/* ---------- pipeline SVG ---------- */
+const NODES = [
+  { id: "n-docs",    x: 28,  y: 40,  w: 112, h: 46, label: "Documents",    sub: "knowledge base", insp: "docs" },
+  { id: "n-chunk",   x: 196, y: 40,  w: 108, h: 46, label: "Chunker",      sub: "",               insp: "chunks" },
+  { id: "n-embed",   x: 360, y: 40,  w: 118, h: 46, label: "Embedder",     sub: "",               insp: "embed" },
+  { id: "n-vdb",     x: 534, y: 34,  w: 148, h: 58, label: "Vector Store", sub: "",               insp: "store" },
+  { id: "n-query",   x: 28,  y: 172, w: 100, h: 46, label: "User Query",   sub: "",               insp: null },
+  { id: "n-guard-in",x: 176, y: 172, w: 116, h: 46, label: "Guardrail in", sub: "blocklist",      insp: null },
+  { id: "n-agent",   x: 340, y: 152, w: 152, h: 86, label: "Agent",        sub: "",               insp: "agent" },
+  { id: "n-memory",  x: 340, y: 274, w: 152, h: 42, label: "Memory",       sub: "",               insp: "memory" },
+  { id: "n-tools",   x: 552, y: 138, w: 156, h: 156,label: "Tools",        sub: "",               insp: "tools" },
+  { id: "n-retr",    x: 60,  y: 372, w: 116, h: 46, label: "Retriever",    sub: "",               insp: "retr" },
+  { id: "n-rerank",  x: 228, y: 372, w: 104, h: 46, label: "Reranker",     sub: "",               insp: null },
+  { id: "n-ctx",     x: 384, y: 372, w: 122, h: 46, label: "Context asm",  sub: "prompt builder", insp: "ctx" },
+  { id: "n-llm",     x: 558, y: 364, w: 134, h: 62, label: "LLM",          sub: "",               insp: "llm" },
+  { id: "n-guard-out",x: 744,y: 372, w: 112, h: 46, label: "Guardrail out",sub: "pii redact",     insp: null },
+  { id: "n-answer",  x: 812, y: 240, w: 140, h: 56, label: "Answer",       sub: "",               insp: "answer" }
+];
+const EDGES = [
+  { id: "e-docs-chunk", from: "n-docs",  to: "n-chunk" },
+  { id: "e-chunk-embed",from: "n-chunk", to: "n-embed" },
+  { id: "e-embed-vdb",  from: "n-embed", to: "n-vdb" },
+  { id: "e-vdb-retr",   from: "n-vdb",   to: "n-retr", bend: true },
+  { id: "e-q-guard",    from: "n-query", to: "n-guard-in" },
+  { id: "e-guard-agent",from: "n-guard-in", to: "n-agent" },
+  { id: "e-agent-tools",from: "n-agent", to: "n-tools", bidir: true },
+  { id: "e-agent-mem",  from: "n-agent", to: "n-memory", bidir: true },
+  { id: "e-agent-retr", from: "n-agent", to: "n-retr", bend: true },
+  { id: "e-retr-rerank",from: "n-retr",  to: "n-rerank" },
+  { id: "e-rerank-ctx", from: "n-rerank",to: "n-ctx" },
+  { id: "e-ctx-llm",    from: "n-ctx",   to: "n-llm" },
+  { id: "e-llm-loop",   from: "n-llm",   to: "n-agent", bend: true, dashed: true },
+  { id: "e-llm-out",    from: "n-llm",   to: "n-guard-out" },
+  { id: "e-out-answer", from: "n-guard-out", to: "n-answer", bend: true }
+];
+
+function buildSVG() {
+  const svg = $("#pipe");
+  const mk = (tag, attrs, parent) => {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    (parent || svg).appendChild(el); return el;
+  };
+  svg.innerHTML = "";
+  mk("text", { x: 28, y: 26, class: "lane-label" }).textContent = "INGESTION LANE";
+  mk("text", { x: 28, y: 160, class: "lane-label" }).textContent = "QUERY + AGENT LANE";
+
+  for (const ed of EDGES) {
+    const a = NODES.find(n => n.id === ed.from), b = NODES.find(n => n.id === ed.to);
+    const ax = a.x + a.w, ay = a.y + a.h / 2, bx = b.x, by = b.y + b.h / 2;
+    let d;
+    if (ed.bend) {
+      const midY = (ay + by) / 2;
+      d = `M ${ax} ${ay} C ${ax + 60} ${ay}, ${ax + 60} ${midY}, ${(ax + bx) / 2} ${midY} S ${bx - 60} ${by}, ${bx} ${by}`;
+    } else {
+      const mx = (ax + bx) / 2;
+      d = `M ${ax} ${ay} C ${mx} ${ay}, ${mx} ${by}, ${bx} ${by}`;
+    }
+    const p = mk("path", { d, class: "edge-path", id: ed.id });
+    if (ed.dashed) p.setAttribute("stroke-dasharray", "4 4");
+    const marker = mk("marker", { id: "arr-" + ed.id, viewBox: "0 0 10 10", refX: 9, refY: 5,
+      markerWidth: 6, markerHeight: 6, orient: "auto-start-reverse" }, defs());
+    mk("path", { d: "M 0 0 L 10 5 L 0 10 z", fill: "var(--dim)" }, marker);
+    p.setAttribute("marker-end", `url(#arr-${ed.id})`);
+  }
+  function defs() {
+    let d = svg.querySelector("defs");
+    if (!d) d = mk("defs", {});
+    return d;
+  }
+
+  for (const nd of NODES) {
+    const g = mk("g", { class: "node clickable", id: nd.id, transform: `translate(${nd.x},${nd.y})` });
+    mk("rect", { class: "box", width: nd.w, height: nd.h, rx: 10 }, g);
+    mk("text", { class: "nlabel", x: nd.w / 2, y: nd.sub ? nd.h / 2 + 1 : nd.h / 2 + 4 }, g).textContent = nd.label;
+    if (nd.sub) mk("text", { class: "nsub", x: nd.w / 2, y: nd.h / 2 + 15 }, g).textContent = nd.sub;
+    if (nd.id === "n-vdb") {
+      mk("rect", { class: "badge-rect", x: nd.w - 34, y: -9, width: 34, height: 16, rx: 5 }, g);
+      mk("text", { class: "badge", x: nd.w - 17, y: 2.5, "text-anchor": "middle" }, g).textContent = "0 vec";
+    }
+    if (nd.id === "n-agent") {
+      mk("rect", { class: "badge-rect", x: nd.w - 44, y: -9, width: 44, height: 16, rx: 5 }, g);
+      mk("text", { class: "badge", x: nd.w - 22, y: 2.5, "text-anchor": "middle" }, g).textContent = "iter 0/0";
+    }
+    if (nd.id === "n-tools") {
+      mk("rect", { class: "badge-rect", x: -10, y: -9, width: 30, height: 16, rx: 5 }, g);
+      mk("text", { class: "badge", x: 5, y: 2.5, "text-anchor": "middle" }, g).textContent = "0 on";
+    }
+    g.addEventListener("click", () => openInspector(nd.insp, nd.label));
+  }
+  refreshStaticLabels();
+}
+function refreshStaticLabels() {
+  const F = flavor(cfg);
+  const set = (id, label, sub) => {
+    const g = document.getElementById(id); if (!g) return;
+    const texts = g.querySelectorAll("text");
+    texts[0].textContent = label;
+    if (texts[1] && texts[1].classList.contains("nsub")) texts[1].textContent = sub;
+  };
+  set("n-agent", F.agent === "agent" ? (cfg.agent.multiAgent ? "Agent team" : "Agent") : F.agent,
+    cfg.agent.multiAgent ? "planner·research·critic" : cfg.agent.pattern === "react" ? "ReAct loop" :
+    cfg.agent.pattern === "plan-execute" ? "plan → execute" : "conditional edges");
+  set("n-retr", F.retrieve, cfg.stack.vdb === "pgvector" ? "<=> operator" : "");
+  set("n-llm", cfg.llm.model.split("/").pop().slice(0, 18), `temp ${cfg.llm.temperature}`);
+  set("n-vdb", cfg.stack.vdb === "memory" ? "Vector Store" : cfg.stack.vdb, VDBS[cfg.stack.vdb].call.split("(")[0]);
+  set("n-rerank", cfg.rag.rerank ? "Reranker" : "Reranker", cfg.rag.rerank ? "cross-encoder" : "off");
+  document.getElementById("n-rerank").classList.toggle("dimmed", !cfg.rag.rerank);
+  const vdbG = document.getElementById("n-vdb");
+  vdbG.querySelector(".badge").textContent = store.chunks.length + " vec";
+  const agentG = document.getElementById("n-agent");
+  agentG.querySelector(".badge").textContent = "iter 0/" + cfg.agent.maxIterations;
+  const toolsG = document.getElementById("n-tools");
+  toolsG.querySelector(".badge").textContent = cfg.tools.filter(t => t.on).length + " on";
+  const subs = cfg.tools.filter(t => t.on).slice(0, 4).map(t => t.name);
+  const toolSub = toolsG.querySelectorAll("text"); toolSub[1].textContent = subs.join(" ");
+  $("#stackBadge").textContent = `${cfg.stack.orch} · ${cfg.stack.vdb}`;
+}
+
+/* ---------- inspector ---------- */
+const INSPECTORS = {
+  docs:    () => ({ title: "Knowledge base", body: cfg.docs.map(d => `${d.title}\n  ${d.body.length} chars`).join("\n") }),
+  chunks:  () => ({ title: `Chunks (${store.chunks.length})`, body: store.chunks.slice(0, 12).map(c => `[${c.docTitle}#${c.idx}] ${c.text.slice(0, 90)}…`).join("\n") }),
+  store:   () => ({ title: `Vector store — ${cfg.stack.vdb}`, body: `call: ${VDBS[cfg.stack.vdb].call}\nvectors: ${store.chunks.length} × ${cfg.rag.dim}-d\nmetric: cosine` }),
+  agent:   () => ({ title: `Agent — ${flavor(cfg).agent}`, body: `pattern: ${cfg.agent.pattern}${cfg.agent.multiAgent ? " + multi-agent" : ""}\nmax_iterations: ${cfg.agent.maxIterations}\nfallback: ${cfg.agent.fallback}\nsession_turns: ${sessionMemory.length}` }),
+  tools:   () => ({ title: "Tools registry", body: cfg.tools.map(t => `${t.on ? "●" : "○"} ${t.name} — lat ${t.lat}ms, fail ${t.fail}%\n   ${t.desc}`).join("\n") }),
+  memory:  () => ({ title: "Memory", body: sessionMemory.length ? sessionMemory.map((m, i) => `turn ${i + 1}\n  q: ${m.q}\n  a: ${m.a.slice(0, 100)}…`).join("\n") : "(empty — run a query first)" }),
+  retr:    () => ({ title: "Last retrieval", body: lastScores.length ? lastScores.slice(0, 6).map(c => `${c.score.toFixed(3)} ${c.score >= cfg.rag.threshold ? "✓" : "✗"} ${c.docTitle}#${c.idx}`).join("\n") : "(no retrieval yet this session)" }),
+  ctx:     () => ({ title: "Last assembled context", body: lastCtx || "(not assembled yet)" }),
+  llm:     () => ({ title: `LLM — ${cfg.llm.model}`, body: `provider: ${cfg.stack.llmProvider}\ntemperature: ${cfg.llm.temperature}\nmax_tokens: ${cfg.llm.maxTokens}\nstreaming: ${cfg.llm.streaming}\nprice: in ${LLMS[cfg.stack.llmProvider].pin}/1M · out ${LLMS[cfg.stack.llmProvider].pout}/1M\n\nsystem:\n${cfg.llm.sysPrompt}` }),
+  answer:  () => ({ title: "Last answer", body: lastAnswer || "(no answer yet)" })
+};
+let lastScores = [], lastCtx = "", lastAnswer = "";
+function openInspector(kind, label) {
+  if (!kind) return;
+  const fn = INSPECTORS[kind]; if (!fn) return;
+  const { title, body } = fn();
+  els.inspTitle.textContent = title;
+  els.inspBody.innerHTML = escHtml(body);
+  els.inspector.classList.add("open");
+  els.inspector.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+els.inspClose.addEventListener("click", () => els.inspector.classList.remove("open"));
+function escHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* ---------- logging ---------- */
+function logRow(ev) {
+  if (ev.msg === "__metrics__") { updateMetrics(ev.meta); return; }
+  if (!logFilterComps.has(ev.comp)) return;
+  if (logFilterLevel !== "all" && ev.level !== logFilterLevel) return;
+  if (logSearchTerm && !ev.msg.toLowerCase().includes(logSearchTerm)) return;
+  const empty = els.logStream.querySelector(".log-empty");
+  if (empty) empty.remove();
+  const row = document.createElement("div");
+  row.className = "log-row lv-" + ev.level;
+  row.dataset.idx = ev.id;
+  row.title = "Click to rewind the trace to this step";
+  const durHtml = ev.dur ? `<span class="log-dur">${ev.dur}ms</span>` : "";
+  const payHtml = ev.payload ? `
+    <details class="pay"><summary>▸ payload</summary><pre>${escHtml(typeof ev.payload === "string" ? ev.payload : JSON.stringify(ev.payload, null, 2))}</pre></details>` : "";
+  row.innerHTML = `<span class="log-t">${fmtT(ev.t)}</span><span class="log-tag tag-${ev.comp}">${ev.comp}</span>` +
+    `<span class="log-msg">${escHtml(ev.msg)}${payHtml}</span>${durHtml}`;
+  els.logStream.appendChild(row);
+  if (autoscroll) els.logStream.scrollTop = els.logStream.scrollHeight;
+  while (els.logStream.children.length > 400) els.logStream.firstChild.remove();
+}
+let autoscroll = true;
+els.logStream.addEventListener("scroll", () => {
+  autoscroll = els.logStream.scrollTop + els.logStream.clientHeight >= els.logStream.scrollHeight - 30;
+});
+els.logStream.addEventListener("click", (e) => {
+  if (e.target.closest("details") || e.target.closest("summary")) return;
+  const row = e.target.closest(".log-row");
+  if (!row || !currentTrace) return;
+  stepTo(Math.min(parseInt(row.dataset.idx, 10) + 1, currentTrace.events.length));
+});
+els.logSearch.addEventListener("input", (e) => {
+  logSearchTerm = e.target.value.toLowerCase(); rebuildLog();
+});
+document.querySelectorAll("[data-lvl]").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("[data-lvl]").forEach(x => x.classList.remove("on"));
+  b.classList.add("on"); logFilterLevel = b.dataset.lvl; rebuildLog();
+}));
+COMP_COLORS.forEach(c => {
+  const b = document.createElement("button");
+  b.className = "chip on"; b.textContent = c.toLowerCase();
+  b.addEventListener("click", () => {
+    if (logFilterComps.has(c)) { logFilterComps.delete(c); b.classList.remove("on"); }
+    else { logFilterComps.add(c); b.classList.add("on"); }
+    rebuildLog();
+  });
+  els.compFilters.appendChild(b);
+});
+function rebuildLog() {
+  els.logStream.innerHTML = "";
+  if (!currentTrace) return;
+  for (let i = 0; i < playback.idx && i < currentTrace.events.length; i++) logRow(currentTrace.events[i]);
+}
+
+/* ---------- metrics ---------- */
+function updateMetrics(meta) {
+  if (!meta) return;
+  const price = LLMS[cfg.stack.llmProvider];
+  const tin = 420 + meta.iter * 160, tout = 140;
+  const cost = (tin / 1e6) * parseFloat(price.pin.replace("$", "")) + (tout / 1e6) * parseFloat(price.pout.replace("$", ""));
+  const hitRate = store.chunks.length ? Math.round((meta.outcome.startsWith("answered") && lastScores.length ? lastScores.filter(c => c.score >= cfg.rag.threshold).length : 0) / Math.max(store.chunks.length, 1) * 100) : 0;
+  const cards = [
+    ["outcome", meta.outcome, meta.outcome.startsWith("answered") ? "good" : meta.outcome === "blocked" ? "" : "badm"],
+    ["iterations", meta.iter + "/" + cfg.agent.maxIterations, ""],
+    ["kb coverage", hitRate + "%", hitRate > 30 ? "good" : "badm"],
+    ["est. tokens", "~" + (tin + tout), ""],
+    ["est. cost", cost === 0 ? "$0 (local)" : "$" + cost.toFixed(5), cost === 0 ? "good" : ""],
+    ["vectors", store.chunks.length, ""]
+  ];
+  els.metricsBar.innerHTML = cards.map(([k, v, cls]) =>
+    `<span class="metric ${cls}">${k}: <b>${escHtml(String(v))}</b></span>`).join("");
+}
+
+/* ---------- playback engine ---------- */
+function setNode(id, cls, ms) {
+  const g = document.getElementById(id); if (!g) return;
+  g.classList.remove("active", "done", "error");
+  void g.getBoundingClientRect();
+  g.classList.add(cls === "pulse" ? "active" : cls);
+  clearTimeout(g._t);
+  g._t = setTimeout(() => g.classList.remove("active", "done", "error"), Math.max(ms, 500));
+}
+function flashEdge(id, ms) {
+  const p = document.getElementById(id); if (!p) return;
+  p.classList.add("edge-active");
+  const svg = $("#pipe");
+  const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  dot.setAttribute("r", 4.5); dot.setAttribute("fill", "var(--accent)");
+  svg.appendChild(dot);
+  const len = p.getTotalLength(), t0 = performance.now(), realMs = Math.max(ms / playback.speed, 240);
+  (function step(now) {
+    const k = Math.min((now - t0) / realMs, 1);
+    const pt = p.getPointAtLength(len * k);
+    dot.setAttribute("cx", pt.x); dot.setAttribute("cy", pt.y);
+    dot.setAttribute("opacity", k < 0.08 ? k / 0.08 : k > 0.92 ? (1 - k) / 0.08 : 1);
+    if (k < 1) requestAnimationFrame(step); else dot.remove();
+  })(performance.now());
+  setTimeout(() => p.classList.remove("edge-active"), realMs + 60);
+}
+
+function applyEventVisual(ev) {
+  logRow(ev);
+  if (ev.node) {
+    const cls = ev.level === "ERR" ? "error" : "active";
+    setNode(ev.node, cls, ev.dur / playback.speed);
+  }
+  if (ev.edge) flashEdge(ev.edge, ev.dur || 300);
+  if (ev.comp === "RETR" && ev.payload && ev.payload.scores) lastScores = lastScoresThisRun();
+  syncBadges(ev);
+}
+function lastScoresThisRun() {
+  if (!store.chunks.length || !pendingQuery) return [];
+  return scoreChunks(pendingQuery, store.chunks, cfg);
+}
+function syncBadges(ev) {
+  const m = ev.msg.match(/iter (\d+)\/(\d+)/) || (ev.msg.includes("thought:") ? null : null);
+  if (m) document.querySelector("#n-agent .badge").textContent = `iter ${m[1]}/${m[2]}`;
+}
+
+function resetRunVisual() {
+  document.querySelectorAll(".node").forEach(n => n.classList.remove("active", "done", "error"));
+  els.logStream.innerHTML = '<div class="log-empty">Press play to replay the trace.</div>';
+  playback.idx = 0; playback.elapsed = 0;
+  els.scrubber.value = 0;
+}
+function tick(now) {
+  if (!playback.playing || !currentTrace) return;
+  const dt = now - playback.lastTs; playback.lastTs = now;
+  playback.elapsed += dt;
+  const events = currentTrace.events;
+  while (playback.idx < events.length &&
+         events[playback.idx].t <= playback.elapsed * playback.speed) {
+    applyEventVisual(events[playback.idx]);
+    playback.idx++;
+    els.scrubber.value = playback.idx;
+  }
+  if (playback.idx >= events.length) {
+    playback.playing = false;
+    els.btnPlay.textContent = "▶";
+    document.querySelectorAll(".node.active").forEach(n => { n.classList.remove("active"); n.classList.add("done"); });
+    return;
+  }
+  requestAnimationFrame(tick);
+}
+els.btnPlay.addEventListener("click", () => togglePlay());
+function togglePlay() {
+  if (!currentTrace) return;
+  if (playback.idx >= currentTrace.events.length) resetRunVisual();
+  playback.playing = !playback.playing;
+  els.btnPlay.textContent = playback.playing ? "⏸" : "▶";
+  if (playback.playing) { playback.lastTs = performance.now(); requestAnimationFrame(tick); }
+}
+function stepTo(k, highlight) {
+  if (!currentTrace) return;
+  playback.playing = false; els.btnPlay.textContent = "▶";
+  k = Math.max(0, Math.min(k, currentTrace.events.length));
+  els.logStream.innerHTML = "";
+  document.querySelectorAll(".node").forEach(n => n.classList.remove("active", "done", "error"));
+  for (let i = 0; i < k && i < currentTrace.events.length; i++) {
+    const ev = currentTrace.events[i];
+    if (ev.msg !== "__metrics__") logRow(ev);
+    if (ev.node) setNodeInstant(ev.node, ev.level === "ERR" ? "error" : "done");
+  }
+  const prev = currentTrace.events[Math.max(0, k - 1)];
+  if (prev && prev.msg !== "__metrics__" && highlight !== false) {
+    if (prev.edge) flashEdge(prev.edge, prev.dur || 300);
+    if (prev.node) setNode(prev.node, prev.level === "ERR" ? "error" : "active", 1100);
+    els.logStream.scrollTop = els.logStream.scrollHeight;
+  }
+  playback.idx = k;
+  playback.elapsed = k > 0 ? currentTrace.events[Math.min(k - 1, currentTrace.events.length - 1)].t : 0;
+  els.scrubber.value = k;
+}
+function setNodeInstant(id, cls) {
+  const g = document.getElementById(id);
+  if (g) g.classList.add(cls);
+}
+els.btnStep.addEventListener("click", () => stepTo(playback.idx + 1));
+els.btnStepBack.addEventListener("click", () => {
+  if (!currentTrace || playback.idx <= 0) return;
+  stepTo(playback.idx - 1);
+});
+els.scrubber.addEventListener("input", (e) => stepTo(parseInt(e.target.value, 10)));
+document.addEventListener("keydown", (e) => {
+  if (/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return;
+  if (e.key === "ArrowRight") { e.preventDefault(); stepTo(playback.idx + 1); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); stepTo(playback.idx - 1); }
+  else if (e.key === " ") { e.preventDefault(); togglePlay(); }
+});
+els.speedSel.addEventListener("change", (e) => { playback.speed = parseFloat(e.target.value); });
+els.btnResetRun.addEventListener("click", () => { playback.playing = false; els.btnPlay.textContent = "▶"; resetRunVisual(); });
+
+/* ---------- run orchestration ---------- */
+function ensureIndexed(force) {
+  const want = chunkDocs(cfg).length;
+  if (force || store.chunks.length !== want) {
+    currentTrace = buildIngestTrace();
+    currentTrace.events.forEach(applyEventVisualInstant);
+    playback.idx = currentTrace.events.length;
+    els.scrubber.max = currentTrace.events.length; els.scrubber.value = playback.idx;
+    playback.playing = false; els.btnPlay.textContent = "▶";
+    return true;
+  }
+  return false;
+}
+function applyEventVisualInstant(ev) {
+  if (ev.msg === "__metrics__") return;
+  logRow(ev);
+  if (ev.node) setNode(ev.node, "active", 400);
+}
+els.btnRun.addEventListener("click", doRun);
+els.qInput.addEventListener("keydown", e => { if (e.key === "Enter") doRun(); });
+function doRun() {
+  const q = els.qInput.value.trim() || SCENARIOS[cfg.scenario]?.query || "Why did churn increase last quarter?";
+  pendingQuery = q;
+  ensureIndexed(false);
+  lastScores = lastScoresThisRun();
+  playback.playing = false; els.btnPlay.textContent = "▶";
+  currentTrace = buildTrace(q);
+  els.scrubber.max = currentTrace.events.length; els.scrubber.value = 0;
+  resetRunVisual();
+  els.scrubber.max = currentTrace.events.length;
+  togglePlay();
+}
+
+/* ---------- scenario presets ---------- */
+function renderScenarios() {
+  els.scenarioChips.innerHTML = "";
+  for (const [key, sc] of Object.entries(SCENARIOS)) {
+    const b = document.createElement("button");
+    b.className = "chip" + (cfg.scenario === key ? " on" : "");
+    b.textContent = sc.label;
+    b.addEventListener("click", () => applyScenario(key));
+    els.scenarioChips.appendChild(b);
+  }
+  els.scenarioHint.textContent = SCENARIOS[cfg.scenario]?.hint || "";
+}
+function applyScenario(key) {
+  const sc = SCENARIOS[key];
+  cfg.scenario = key;
+  const base = DEFAULTS();
+  cfg = deepMerge(cfg, {});
+  const restored = { ...DEFAULTS(), stack: cfg.stack, llm: cfg.llm, docs: cfg.docs, scenario: key };
+  const patched = deepMerge(restored, sc.patch || {});
+  if (patched.toolsOff) { patched.tools.forEach(t => t.on = false); delete patched.toolsOff; }
+  cfg = patched;
+  sessionMemory = [];
+  syncAllInputs(); renderScenarios(); refreshStaticLabels();
+  els.qInput.value = sc.query;
+  ensureIndexed(true);
+  toast("Scenario loaded: " + sc.label);
+  doRun();
+}
+
+/* ---------- config binding ---------- */
+const ORCH_KEYS = Object.keys(ORCHESTRATORS), VDB_KEYS = Object.keys(VDBS),
+      LLM_KEYS = Object.keys(LLMS), EMB_KEYS = Object.keys(EMBS);
+const BINDS = [
+  ["cOrch", "stack.orch", "sel", ORCH_KEYS], ["cVdb", "stack.vdb", "sel", VDB_KEYS],
+  ["cLlmProv", "stack.llmProvider", "sel", LLM_KEYS], ["cEmbProv", "stack.embProvider", "sel", EMB_KEYS],
+  ["cModel", "llm.model", "text"], ["cTemp", "llm.temperature", "range"], ["oTemp", null],
+  ["cMaxTok", "llm.maxTokens", "range"], ["cStream", "llm.streaming", "chk"],
+  ["cSysPrompt", "llm.sysPrompt", "ta"],
+  ["cChunk", "rag.chunkSize", "range"], ["cOverlap", "rag.overlap", "range"],
+  ["cTopk", "rag.topK", "range"], ["cThr", "rag.threshold", "range"],
+  ["cDim", "rag.dim", "range"], ["cRerank", "rag.rerank", "chk"],
+  ["cPattern", "agent.pattern", "sel"], ["cIter", "agent.maxIterations", "range"],
+  ["cMemWin", "agent.memWindow", "num"], ["cVecMem", "agent.vecMemory", "chk"],
+  ["cFallback", "agent.fallback", "sel"], ["cMulti", "agent.multiAgent", "chk"],
+  ["cGuardIn", "guard.input", "chk"], ["cBlockTerms", "guard.blockTerms", "csv"],
+  ["cGuardOut", "guard.output", "chk"],
+  ["cSlow", "chaos.slow", "sel"], ["cInjectFail", "chaos.injectFail", "chk"]
+];
+
+function getPath(obj, path) { return path.split(".").reduce((o, k) => o?.[k], obj); }
+function setPath(obj, path, val) {
+  const ks = path.split("."); let o = obj;
+  for (let i = 0; i < ks.length - 1; i++) o = o[ks[i]] = o[ks[i]] ?? {};
+  o[ks.at(-1)] = val;
+}
+function initSelects() {
+  const fill = (id, map) => {
+    const sel = $("#" + id); sel.innerHTML = "";
+    for (const [k, v] of Object.entries(map)) {
+      const op = document.createElement("option"); op.value = k; op.textContent = v.label ?? k; sel.appendChild(op);
+    }
+  };
+  fill("cOrch", ORCHESTRATORS); fill("cVdb", VDBS); fill("cLlmProv", LLMS); fill("cEmbProv", EMBS);
+}
+function syncAllInputs() {
+  for (const [id, path, kind] of BINDS) {
+    const el = $("#" + id); if (!el || !path) continue;
+    const v = getPath(cfg, path);
+    if (kind === "chk") el.checked = !!v;
+    else if (kind === "csv") el.value = Array.isArray(v) ? v.join(", ") : v;
+    else if (el.type === "range") { el.value = v; const o = $("#o" + id.slice(1)); if (o) o.value = fmtRange(id, v); }
+    else el.value = v;
+  }
+  renderTools(); renderDocs();
+  $("#toolCount").textContent = cfg.tools.filter(t => t.on).length + " on";
+  $("#docCount").textContent = cfg.docs.length + " docs";
+  $("#stackHint").textContent = ORCHESTRATORS[cfg.stack.orch].hint + " " + VDBS[cfg.stack.vdb].hint;
+  refreshStaticLabels();
+  $("#stackBadge").textContent = `${cfg.stack.orch} · ${cfg.stack.vdb}`;
+}
+function fmtRange(id, v) {
+  const map = { Temp: v.toFixed(2), MaxTok: v, Chunk: v + " ch", Overlap: v, Topk: "k=" + v, Thr: (+v).toFixed(2), Dim: v + "d", Iter: v };
+  return map[id] ?? String(v);
+}
+for (const [id, path, kind] of BINDS) {
+  const el = $("#" + id); if (!el || !path) continue;
+  const handler = () => {
+    let v;
+    if (kind === "chk") v = el.checked;
+    else if (kind === "csv") v = el.value.split(",").map(s => s.trim()).filter(Boolean);
+    else if (el.type === "range") {
+      v = (id === "cTemp" || id === "cThr") ? parseFloat(el.value) : parseInt(el.value, 10);
+      const o = $("#o" + id.slice(1)); if (o) o.value = fmtRange(id, v);
+    } else v = el.value;
+    setPath(cfg, path, v);
+    onConfigChanged(id);
+  };
+  el.addEventListener(kind === "chk" || el.tagName === "SELECT" ? "change" : "input", handler);
+}
+function onConfigChanged(id) {
+  if (id === "cOrch" || id === "cPattern" || id === "cMulti") { syncAllInputs(); return; }
+  if (id === "cLlmProv") {
+    const prov = LLMS[cfg.stack.llmProvider];
+    if (!prov.models.includes(cfg.llm.model)) cfg.llm.model = prov.models[0];
+    syncAllInputs(); return;
+  }
+  if (id === "cEmbProv") { cfg.rag.dim = EMBS[cfg.stack.embProvider].dim; syncAllInputs(); ensureIndexed(true); return; }
+  if (["cChunk","cOverlap","cTopk","cThr","cDim","cRerank"].includes(id)) { refreshStaticLabels(); return; }
+  if (id === "cIter") { refreshStaticLabels(); return; }
+  if (id === "cSlow" || id === "cInjectFail") { syncChaos(); return; }
+  refreshStaticLabels();
+}
+function syncChaos() {
+  $("#cInjectFail").checked = cfg.chaos.injectFail;
+  $("#cSlow").value = cfg.chaos.slow || "";
+}
+function syncAllAndIndex() { syncAllInputs(); }
+
+/* ---------- tools editor ---------- */
+function renderTools() {
+  els.toolList.innerHTML = "";
+  for (const t of cfg.tools) {
+    const div = document.createElement("div");
+    div.className = "tool-item";
+    div.innerHTML = `
+      <div class="tool-head">
+        <label class="switch"><input type="checkbox" ${t.on ? "checked" : ""} data-tid="${t.id}"><span></span></label>
+        <code>${escHtml(t.name)}</code>
+        <button class="btn small danger" style="margin-left:auto" data-del="${t.id}">✕</button>
+      </div>
+      <input type="text" class="full" value="${escHtml(t.desc)}" data-tdesc="${t.id}">
+      <div class="tool-grid">
+        <div><label>latency ms</label><input type="number" value="${t.lat}" data-tlat="${t.id}"></div>
+        <div><label>fail %</label><input type="number" value="${t.fail}" data-tfail="${t.id}"></div>
+      </div>`;
+    els.toolList.appendChild(div);
+  }
+  els.toolList.onchange = (e) => {
+    const tid = e.target.dataset.tid || e.target.dataset.del;
+    const tool = cfg.tools.find(t => t.id === tid || t.id === e.target.dataset.del);
+    if (e.target.dataset.del) { cfg.tools = cfg.tools.filter(t => t.id !== e.target.dataset.del); }
+    else if (!tool) return;
+    else if (e.target.type === "checkbox") tool.on = e.target.checked;
+    else if (e.target.dataset.tdesc) tool.desc = e.target.value;
+    else if (e.target.dataset.tlat) tool.lat = parseInt(e.target.value, 10) || 100;
+    else if (e.target.dataset.tfail) tool.fail = Math.max(0, Math.min(100, parseInt(e.target.value, 10) || 0));
+    syncToolCounts(); refreshStaticLabels();
+  };
+}
+function syncToolCounts() {
+  $("#toolCount").textContent = cfg.tools.filter(t => t.on).length + " on";
+}
+els.btnAddTool.addEventListener("click", () => {
+  const n = cfg.tools.length + 1;
+  cfg.tools.push({ id: "custom_" + n, name: "custom_tool_" + n, desc: "Describe what this tool does for the planner.", lat: 500, fail: 5, on: true });
+  renderTools(); syncToolCounts(); refreshStaticLabels();
+});
+
+/* ---------- docs editor ---------- */
+function renderDocs() {
+  els.docList.innerHTML = "";
+  for (const d of cfg.docs) {
+    const det = document.createElement("details");
+    det.className = "doc-item";
+    const words = d.body.trim().split(/\s+/).length;
+    det.innerHTML = `
+      <summary><span>${escHtml(d.title)}</span><span class="doc-meta">${words}w · ~${chunkCountFor(d)} ch</span>
+        <button class="btn small danger" data-ddel="${d.id}">✕</button></summary>
+      <input type="text" class="full" value="${escHtml(d.title)}" data-dtitle="${d.id}">
+      <textarea rows="4" data-dbody="${d.id}">${escHtml(d.body)}</textarea>`;
+    els.docList.appendChild(det);
+  }
+  els.docList.onchange = (e) => {
+    if (e.target.dataset.ddel) {
+      cfg.docs = cfg.docs.filter(d => d.id !== e.target.dataset.ddel);
+      renderDocs(); ensureIndexed(true); return;
+    }
+    const d = cfg.docs.find(x => x.id === (e.target.dataset.dtitle || e.target.dataset.dbody));
+    if (!d) return;
+    if (e.target.dataset.dtitle) d.title = e.target.value;
+    if (e.target.dataset.dbody) d.body = e.target.value;
+    renderDocs(); ensureIndexed(true);
+  };
+  els.docList.onclick = (e) => { if (e.target.dataset.ddel) e.preventDefault(); };
+}
+function chunkCountFor(d) { return chunkDocs({ ...cfg, docs: [d] }).length; }
+els.btnAddDoc.addEventListener("click", () => {
+  cfg.docs.push({ id: "d" + Date.now(), title: "New-Document.md", body: "Paste or write your document content here. It gets chunked and embedded like everything else." });
+  renderDocs(); ensureIndexed(true);
+});
+els.btnReindex.addEventListener("click", () => { ensureIndexed(true); toast("Knowledge base re-ingested"); });
+
+/* ---------- export / import / share / code ---------- */
+els.btnExportCfg.addEventListener("click", () => {
+  const json = JSON.stringify(cfg, null, 2);
+  showModal("Export configuration",
+    `<p class="hint" style="margin-bottom:10px">Save this JSON and re-import it anywhere (or hand it to your agent).</p>
+     <pre id="cfgJson">${escHtml(json)}</pre>`,
+    [
+      ["copy", () => { navigator.clipboard.writeText(json); toast("Config copied"); }],
+      ["download .json", () => download("switchyard-config.json", json)]
+    ]);
+});
+els.btnImportCfg.addEventListener("click", () => {
+  showModal("Import configuration",
+    `<input type="file" id="impFile" accept=".json" style="margin-bottom:10px;color:var(--muted)">
+     <textarea id="impText" rows="10" placeholder='paste config JSON here…'></textarea>`,
+    [["apply", () => {
+      const raw = $("#impFile")?.files?.[0];
+      if (raw) { raw.text().then(txt => applyImport(txt)); }
+      else applyImport($("#impText").value);
+    }]]);
+});
+function applyImport(txt) {
+  try {
+    const parsed = JSON.parse(txt);
+    cfg = deepMerge(DEFAULTS(), parsed);
+    sessionMemory = [];
+    syncAllInputs(); renderScenarios(); ensureIndexed(true);
+    closeModal(); toast("Config imported ✓");
+  } catch (e) { toast("Invalid JSON: " + e.message); }
+}
+els.btnShareLink.addEventListener("click", () => {
+  const enc = btoa(encodeURIComponent(JSON.stringify(cfg)));
+  const url = location.origin + location.pathname + "#cfg=" + enc;
+  history.replaceState(null, "", url);
+  navigator.clipboard.writeText(url);
+  toast("Shareable link copied — config travels in the URL hash");
+});
+els.btnCode.addEventListener("click", () => {
+  showModal(`Code scaffold — ${ORCHESTRATORS[cfg.stack.orch].label} × ${VDBS[cfg.stack.vdb].label}`,
+    `<p class="hint" style="margin-bottom:10px">Starter scaffold generated from your current settings — adapt credentials, models and prompts before running.</p>
+     <pre>${escHtml(codeScaffold())}</pre>`,
+    [["copy", () => { navigator.clipboard.writeText(codeScaffold()); toast("Scaffold copied"); }]]);
+});
+$("#btnResetAll").addEventListener("click", () => {
+  cfg = DEFAULTS(); sessionMemory = []; store.chunks = [];
+  syncAllInputs(); renderScenarios(); ensureIndexed(true);
+  resetRunVisual(); currentTrace = null; els.scrubber.max = 0;
+  toast("Reset to defaults");
+});
+
+function showModal(title, bodyHtml, buttons) {
+  els.dlgTitle.textContent = title;
+  els.dlgBody.innerHTML = bodyHtml;
+  els.dlgFoot.innerHTML = "";
+  for (const [lbl, fn] of buttons) {
+    const b = document.createElement("button");
+    b.className = "btn" + (lbl !== "close" ? " accent" : ""); b.textContent = lbl;
+    b.addEventListener("click", fn); els.dlgFoot.appendChild(b);
+  }
+  const close = document.createElement("button");
+  close.className = "btn"; close.textContent = "close";
+  close.addEventListener("click", closeModal); els.dlgFoot.appendChild(close);
+  els.dlg.showModal();
+}
+function closeModal() { els.dlg.close(); }
+els.dlgClose.addEventListener("click", closeModal);
+function download(name, text) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
+  a.download = name; a.click(); URL.revokeObjectURL(a.href);
+}
+els.btnExportLog.addEventListener("click", () => {
+  if (!currentTrace) return toast("No trace yet — run something");
+  const lines = ["# switchyard trace", `# config: ${JSON.stringify(cfg)}`, ""];
+  els.logStream.querySelectorAll(".log-row").forEach(r => {
+    lines.push(r.textContent.replace(/\s+/g, " ").trim());
+  });
+  download("switchyard-trace.txt", lines.join("\n"));
+  toast("Trace exported");
+});
+
+function codeScaffold() {
+  const o = cfg.stack.orch, v = cfg.stack.vdb, lp = cfg.stack.llmProvider, ep = cfg.stack.embProvider;
+  const head = `# Generated by Switchyard (${o} × ${v}) — starter scaffold, adapt before running.
+# pip install langchain langgraph langchain-community ${v === "chroma" ? "chromadb" : v === "qdrant" ? "qdrant-client" : v === "pinecone" ? "pinecone" : v === "weaviate" ? "weaviate-client" : v === "pgvector" ? "psycopg[binary]" : v === "faiss" ? "faiss-cpu" : "pymilvus"} langchain-openai`;
+  const vdbInit = {
+    memory:   `vs = InMemoryVectorStore(embeddings)`,
+    chroma:   `vs = Chroma(collection_name="kb_main", embedding_function=embeddings, persist_directory="./kb")`,
+    faiss:    `vs = FAISS.from_documents(docs, embeddings)`,
+    qdrant:   `vs = Qdrant.from_documents(docs, embeddings, url="http://localhost:6333", collection_name="kb_main")`,
+    pinecone: `pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])\nvs = PineconeVectorStore.from_documents(docs, embeddings, index_name="kb-main")`,
+    weaviate: `vs = WeaviateVectorStore.from_documents(docs, embeddings, index_name="KbMain")`,
+    pgvector: `conn = os.environ["PG_CONNECTION_STRING"]\nvs = PGVector.from_documents(docs, embeddings, connection_string=conn, collection_name="kb_main")`,
+    milvus:   `vs = Milvus.from_documents(docs, embeddings, connection_args={"uri": "http://localhost:19530"}, collection_name="kb_main")`
+  }[v];
+  const embLine = ep === "local"
+    ? `from langchain_huggingface import HuggingFaceEmbeddings\nembeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")`
+    : `embeddings = OpenAIEmbeddings(model="${ep === "openai-lg" ? "text-embedding-3-large" : "text-embedding-3-small"}")`;
+  const llmLine = lp === "anthropic"
+    ? `from langchain_anthropic import ChatAnthropic\nllm = ChatAnthropic(model="${cfg.llm.model}", temperature=${cfg.llm.temperature}, max_tokens=${cfg.llm.maxTokens})`
+    : lp === "ollama"
+    ? `from langchain_ollama import ChatOllama\nllm = ChatOllama(model="${cfg.llm.model}", temperature=${cfg.llm.temperature})`
+    : `llm = ChatOpenAI(model="${cfg.llm.model}", temperature=${cfg.llm.temperature}, max_tokens=${cfg.llm.maxTokens})`;
+
+  const common = `from langchain_core.prompts import ChatPromptTemplate
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+splitter = RecursiveCharacterTextSplitter(chunk_size=${cfg.rag.chunkSize}, chunk_overlap=${cfg.rag.overlap})
+docs = splitter.create_documents([open(p).read() for p in DOC_PATHS])
+${embLine}
+${vdbInit}
+retriever = vs.as_retriever(search_kwargs={"k": ${cfg.rag.topK}})
+${llmLine}`;
+
+  if (o === "langgraph") {
+    return `${head}
+"""Graph: retrieve → grade → (rewrite → retrieve | generate), matching the simulator."""
+import os
+from typing import TypedDict
+from langgraph.graph import StateGraph, END
+${common}
+
+class State(TypedDict):
+    question: str
+    documents: list
+    generation: str
+
+GRADE_PROMPT = ChatPromptTemplate.from_messages([
+    ("system", "Grade whether the document answers the question. Reply yes or no."),
+    ("human", "Question: {question}\\nDocument: {document}"),
+])
+
+def retrieve(state):
+    docs = retriever.invoke(state["question"])
+    return {"documents": docs}
+
+def grade(state):
+    kept = []
+    for d in state["documents"]:
+        verdict = llm.invoke(GRADE_PROMPT.format_messages(question=state["question"], document=d.page_content))
+        if "yes" in verdict.content.lower():
+            kept.append(d)
+    return {"documents": kept}
+
+def rewrite(state):
+    return {"question": llm.invoke(f"Rewrite for search: {state['question']}").content}
+
+def decide(state):
+    return "generate" if state["documents"] else "rewrite"
+
+def generate(state):
+    context = "\\n\\n".join(d.page_content for d in state["documents"])
+    prompt = f"""${cfg.llm.sysPrompt}
+
+Context:
+{context}
+
+Question: {state['question']}"""
+    return {"generation": llm.invoke(prompt).content}
+
+g = StateGraph(State)
+g.add_node("retrieve", retrieve)
+g.add_node("grade_documents", grade)
+g.add_node("rewrite_question", rewrite)
+g.add_node("generate", generate)
+g.set_entry_point("retrieve")
+g.add_edge("retrieve", "grade_documents")
+g.add_conditional_edges("grade_documents", decide, {"generate": "generate", "rewrite": "rewrite_question"})
+g.add_edge("rewrite_question", "retrieve")
+g.add_edge("generate", END)
+app = g.compile()
+
+if __name__ == "__main__":
+    print(app.invoke({"question": "Why did churn increase last quarter?"})["generation"])`;
+  }
+  if (o === "langchain") {
+    return `${head}
+"""Classic chain: retriever → stuff documents → LLM."""
+${common}
+
+prompt = ChatPromptTemplate.from_template("""${cfg.llm.sysPrompt}
+
+Context:
+{context}
+
+Question: {question}""")
+
+def format_docs(docs):
+    return "\\n\\n".join(d.page_content for d in docs)
+
+chain = (
+    {"context": retriever | format_docs, "question": lambda x: x["question"]}
+    | prompt
+    | llm
+)
+
+if __name__ == "__main__":
+    print(chain.invoke({"question": "Why did churn increase last quarter?"}))`;
+  }
+  if (o === "crewai") {
+    return `${head.replace("langchain langgraph langchain-community", "crewai")}
+"""Crew: Researcher gathers, Writer drafts, QA reviews — mirroring multi-agent mode."""
+import os
+from crewai import Agent, Task, Crew
+
+researcher = Agent(role="Researcher", goal="Find facts in the KB for: {topic}",
+    backstory="Precision analyst.", allow_delegation=False, verbose=True)
+writer = Agent(role="Writer", goal="Draft a grounded answer", backstory="Clear, cites sources.", verbose=True)
+qa = Agent(role="QA Reviewer", goal="Flag unsupported claims", backstory="Skeptical reviewer.", verbose=True)
+
+t1 = Task(description="Search the knowledge base about {topic}. Return bullet facts.",
+    expected_output="Bullet list with sources", agent=researcher)
+t2 = Task(description="Write the answer from the research only.", expected_output="Short grounded answer", agent=writer)
+t3 = Task(description="Verify every claim against the research; list unsupported ones.",
+    expected_output="Verdict + issues", agent=qa)
+
+crew = Crew(agents=[researcher, writer, qa], tasks=[t1, t2, t3], verbose=True)
+print(crew.kickoff(inputs={"topic": "why churn increased last quarter"}))`;
+  }
+  if (o === "haystack") {
+    return `${head.replace("langchain langgraph langchain-community", "haystack-ai")}
+"""Haystack declarative pipeline."""
+from haystack import Pipeline
+from haystack.components.retrievers.in_memory import InMemoryEmbeddingRetriever
+from haystack.components.writers import DocumentWriter
+from haystack.components.embedders import SentenceTransformersDocumentEmbedder, SentenceTransformersTextEmbedder
+from haystack.components.generators.chat import OpenAIChatGenerator
+from haystack.dataclasses import ChatMessage
+
+index = Pipeline()
+index.add_component("embed", SentenceTransformersDocumentEmbedder())
+index.add_component("write", DocumentWriter(vs))  # swap store per your vectordb
+index.connect("embed", "write")
+
+query = Pipeline()
+query.add_component("embed", SentenceTransformersTextEmbedder())
+query.add_component("retrieve", InMemoryEmbeddingRetriever(vs, top_k=${cfg.rag.topK}))
+query.connect("embed", "retrieve")
+
+msgs = [ChatMessage.from_user("${cfg.llm.sysPrompt}\\nContext: {documents}\\nQ: why did churn rise?")]
+gen = OpenAIChatGenerator(model="${cfg.llm.model}")
+print(gen.run(msgs))`;
+  }
+  if (o === "llamaindex") {
+    return `${head.replace("langchain langgraph langchain-community", "llama-index")}
+"""LlamaIndex query engine over a vector index."""
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, Settings
+from llama_index.core.node_parser import SentenceSplitter
+Settings.node_parser = SentenceSplitter(chunk_size=${cfg.rag.chunkSize}, chunk_overlap=${cfg.rag.overlap})
+
+docs = SimpleDirectoryReader("./kb_docs").load_data()
+index = VectorStoreIndex.from_documents(docs)
+qe = index.as_query_engine(similarity_top_k=${cfg.rag.topK}, response_mode="compact")
+
+resp = qe.query("Why did churn increase last quarter?")
+print(resp)` ;
+  }
+  return `${head.replace("langchain langgraph langchain-community", "pyautogen")}
+"""AutoGen group chat mirroring the simulator's agents."""
+import autogen
+config_list = [{"model": "${cfg.llm.model}", "api_key": os.environ["OPENAI_API_KEY"]}]
+
+assistant = autogen.AssistantAgent("assistant", llm_config={"config_list": config_list, "temperature": ${cfg.llm.temperature}})
+user_proxy = autogen.UserProxyAgent("user_proxy", human_input_mode="NEVER",
+    code_execution_config={"work_dir": "scratch"})
+
+@user_proxy.register_for_execution()
+def kb_search(question: str) -> str:
+    """Search the internal knowledge base."""
+    return "..."  # wire your ${v} retriever here
+
+user_proxy.initiate_chat(assistant, message="Why did churn increase last quarter? Use kb_search.")`;
+}
+
+/* ---------- boot ---------- */
+initSelects();
+buildSVG();
+(function bootFromHash() {
+  const m = location.hash.match(/cfg=(.+)$/);
+  if (m) {
+    try {
+      cfg = deepMerge(DEFAULTS(), JSON.parse(decodeURIComponent(atob(m[1]))));
+      toast("Loaded shared config from URL");
+    } catch (_) {}
+  }
+})();
+syncAllInputs();
+renderScenarios();
+ensureIndexed(true);
+resetRunVisual();
+currentTrace = null; els.scrubber.max = 0; els.metricsBar.innerHTML = "";
+els.qInput.value = SCENARIOS["rag-hit"].query;
+window.__sim = { get cfg() { return cfg; }, get store() { return store; } };
+</script>
+</body>
+</html>

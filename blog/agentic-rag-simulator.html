@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Switchyard: Watch What Happens Inside an Agentic AI + RAG Pipeline · Abhishek Kumar Maurya</title>
+<meta name="description" content="Most RAG tutorials show you the happy path and stop there. But the real learning — the part that makes you useful when a pipeline misbehaves in production — is in what happens around the LLM call: …">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --code-dim: #948c81;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --code-dim: #8b847a;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-back { font-size: 14px; color: var(--muted); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  .reader h1 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .reader .post-meta {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
+    margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- section headers ---------- */
+  .reader h2 {
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 46px 0 18px;
+    padding: 10px 14px 10px 14px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
+    scroll-margin-top: 76px;
+  }
+  .reader h3 {
+    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 30px 0 12px; color: var(--accent-ink);
+  }
+  .reader h4 {
+    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
+  }
+  .reader h4::before {
+    content: "▹ "; color: var(--accent); font-weight: 600;
+  }
+
+  /* ---------- body copy ---------- */
+  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader .post-image {
+    display: block; max-width: 100%; height: auto;
+    margin: 28px auto; border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .reader strong { color: var(--ink); font-weight: 600; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- lists ---------- */
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader li { margin-bottom: 6px; }
+  .reader li::marker { color: var(--accent); font-weight: 500; }
+
+  /* ---------- inline code ---------- */
+  .reader code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 5px;
+    padding: 1.5px 6px;
+  }
+
+  /* ---------- code blocks (terminal) ---------- */
+  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
+  .reader pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    position: relative;
+  }
+  .reader pre.code code {
+    display: block; padding: 18px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--code-ink); font-size: 13px; line-height: 1.65;
+  }
+  .reader pre.code[data-lang] { padding-top: 32px; }
+  .reader pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--code-dim);
+    border-bottom: 1px solid var(--code-border);
+  }
+
+  /* ---------- diagrams ---------- */
+  .reader pre.diagram {
+    background: var(--accent-soft);
+    border: 1px dashed var(--accent-line);
+    text-align: center;
+  }
+  .reader pre.diagram::before {
+    content: "Diagram";
+    display: block;
+    text-align: left;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .reader pre.diagram code {
+    display: block; padding: 16px 18px 20px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--ink); font-size: 12.5px; line-height: 1.55;
+    white-space: pre; text-align: center;
+  }
+
+  /* ---------- blockquotes ---------- */
+  .reader blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: var(--muted); font-style: italic; margin: 0 0 18px;
+  }
+
+  /* ---------- tables ---------- */
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
+  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+
+  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .reader-foot a { color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 768px) {
+    nav, main { padding-left: 24px; padding-right: 24px; }
+    main { padding-top: 40px; }
+    .nav-links a:not(.nav-back) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark" aria-label="Back to portfolio">
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
+    </a>
+    <div class="nav-links">
+      <a href="./">Blog</a>
+      <a href="../" class="nav-back">← Home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>Switchyard: Watch What Happens Inside an Agentic AI + RAG Pipeline</h1>
+    <div class="post-meta"><span>Aug 24, 2026</span><span>·</span><span>6 min read</span><span>·</span><a href="./">All posts</a></div>
+    <h2><a href="/sims/agentic-rag.html">▶ Open Switchyard</a></h2>
+<p>Most RAG tutorials show you the happy path and stop there. But the real learning — the part that makes you useful when a pipeline misbehaves in production — is in what happens <em>around</em> the LLM call: chunking decisions, similarity scores falling below a threshold, an agent burning iterations, a tool timing out and getting retried. So I built <strong>Switchyard</strong> — an interactive harness where you configure every one of those knobs and watch the consequences animate in real time, with a time-series log of every internal step. Like a rail yard for AI workflows: you see every car get switched onto its track.</p>
+<hr>
+<h2>🧭 What It Is</h2>
+<p>A single self-contained HTML page — no install, no API keys, no data leaves your browser:</p>
+<ul><li><strong>Configure everything</strong>: orchestrator framework, vector database, LLM/embedding providers, chunking, retrieval thresholds, agent loop pattern, guardrails, tools, and the knowledge base itself.</li><li><strong>Watch data flow</strong>: an animated pipeline where packets travel between components as each step executes.</li><li><strong>Read the trace</strong>: a timestamped log of every internal event — embeddings, ANN searches, reranking, tool calls, retries, guardrail verdicts — with expandable payloads and per-step latency.</li><li><strong>Export your work</strong>: download the config as JSON, share it in a URL, or generate a starter code scaffold for your chosen framework.</li></ul>
+<p><strong><a href="/sims/agentic-rag.html">Launch Switchyard →</a></strong></p>
+<hr>
+<h2>🗺️ The Pipeline At A Glance</h2>
+<p>Switchyard draws two lanes, because agentic RAG really has two distinct flows:</p>
+<pre class="diagram"><code>INGESTION (runs whenever the KB changes)
+  Documents ──▶ Chunker ──▶ Embedder ──▶ Vector Store
+
+QUERY + AGENT LOOP (runs per question)
+  Query ──▶ Input Guardrail ──▶ Agent ◀──▶ Tools
+                                 │    ▲──── Memory
+                                 ▼    │ (loop back)
+                             Retriever ──▶ Vector Store ──▶ Reranker
+                                 
+  Retriever ──▶ Context Assembly ──▶ LLM ──▶ Output Guardrail ──▶ Answer</code></pre>
+<p>Every box is clickable during or after a run — the inspector shows you the actual chunks stored, the similarity scores, the assembled prompt, or the memory contents.</p>
+<hr>
+<h2>🎛️ Everything Is Configurable</h2>
+<h3>The stack selector</h3>
+<p>Pick an orchestrator and vector DB and the whole simulation speaks their vocabulary — node names, log lines, even the exported code scaffold change:</p>
+<table><thead><tr><th>Orchestrator</th><th>Flavor</th></tr></thead><tbody><tr><td><strong>LangChain</strong></td><td>chains: retriever → stuff_documents → LLMChain</td></tr><tr><td><strong>LangGraph</strong></td><td>state machine: retrieve → grade_documents → rewrite_question → generate, with conditional edges</td></tr><tr><td><strong>LlamaIndex</strong></td><td>query engine over an index, response synthesizer</td></tr><tr><td><strong>Haystack</strong></td><td>declarative pipeline components</td></tr><tr><td><strong>CrewAI</strong></td><td>role-playing crew: Researcher → Writer → QA Reviewer</td></tr><tr><td><strong>AutoGen</strong></td><td>conversable agents in group chat</td></tr></tbody></table>
+<p>Vector DBs from in-memory numpy (best for learning) through Chroma, FAISS, Qdrant, Pinecone, Weaviate, pgvector, and Milvus — the log shows the actual call shape each one uses (<code>collection.query(n_results=k)</code>, <code>ORDER BY embedding &amp;lt;=&amp;gt; $1 LIMIT k</code>, …).</p>
+<h3>The knobs that actually matter</h3>
+<p>These aren't decorative sliders — they change outcomes deterministically:</p>
+<ul><li><strong>Chunk size / overlap</strong> → watch chunk boundaries recompute live on ingestion.</li><li><strong>Top-K / similarity threshold</strong> → raise the threshold until nothing passes, then watch the agent's fallback strategy kick in.</li><li><strong>Reranker toggle</strong> → see candidate order change before context assembly.</li><li><strong>Agent pattern</strong> → ReAct, Plan-and-Execute, or an explicit state graph (which adds a <code>rewrite_question</code> retry on empty retrieval).</li><li><strong>Max iterations + fallback policy</strong> → fall back to a tool, answer best-effort, or refuse.</li><li><strong>Guardrails</strong> → blocklist terms stop requests before any tokens are spent; output filter redacts sensitive patterns.</li><li><strong>Tools</strong> → enable/disable, edit descriptions, set latency and failure rates.</li><li><strong>Chaos controls</strong> → slow any component 4× or fail the next tool call on purpose.</li></ul>
+<hr>
+<h2>🎬 Seven Scenarios Worth Running</h2>
+<p>Presets load a config + query so you can see each failure mode honestly handled:</p>
+<ol start="1"><li><strong>Plain chat</strong> — no retrieval needed; the agent answers directly.</li><li><strong>Clean RAG hit</strong> — chunks fly into the store, top-k comes back above threshold, answer cites sources.</li><li><strong>RAG miss → tool fallback</strong> — every candidate scores below threshold; the agent pivots to web search.</li><li><strong>Tool fails → retry</strong> — injected failure, backoff, successful retry, answer still lands.</li><li><strong>Out of options → honest stop</strong> — tools disabled plus an unreachable threshold: retrieval misses, no tool fits, and the agent stops with a visible stop reason instead of guessing.</li><li><strong>Guardrail block</strong> — a blocked term gets caught at the door; zero LLM spend.</li><li><strong>Multi-agent crew</strong> — Planner decomposes, Researcher gathers, Critic reviews with a revision round.</li></ol>
+<p>My favorite exercise: run scenario 2, then drag the similarity threshold up a few notches and re-run the same query. Watching the exact moment the answer path changes teaches more than three blog posts.</p>
+<hr>
+<h2>📜 Reading the Time-Series Log</h2>
+<p>The right panel streams every event with millisecond timestamps, component tags, severity, latency, and expandable payloads:</p>
+<pre class="code" data-lang="text"><code>00:00.060  SYS     run start — query received: &quot;Why did churn increase last quarter?&quot;
+00:00.105  GUARD   input filter passed — no blocked terms found
+00:00.370  AGENT   [agent] iteration 1/5 — thought: internal knowledge may cover this → retrieve
+00:00.512  EMBED   embedding query (1536-d, openai)
+00:00.640  RETR    chroma search — top_k=3, threshold=0.72, candidates=9
+00:00.700  RETR    scored candidates: 3/9 pass threshold
+                   ▸ payload  Q3-Churn-Report.txt#0 → 0.847 ✓
+                              Onboarding-Playbook.md#2 → 0.511 ✗ below-threshold
+00:00.910  RERANK  cross-encoder rerank reordered 3 chunks
+00:01.010  CTX     assembling prompt: system(112 ch) + memory(0 turns) + 3 chunks
+00:01.080  LLM     gpt-4o-mini — prompt ready (~380 tok est.), temp=0.3
+00:01.900  GUARD   output filter passed — nothing sensitive found
+00:02.000  METRIC  run finished — done</code></pre>
+<p>Filter by component or level, search messages, pin auto-scroll, and export the whole trace as text — handy for comparing two configurations side by side.</p>
+<p>The metrics strip summarizes each run: outcome, iterations used, knowledge-base coverage, estimated tokens, estimated cost (local models correctly cost $0), and total vectors indexed.</p>
+<hr>
+<h2>📤 Make Your Configuration Reusable</h2>
+<p>Three exports, all from the footer chips:</p>
+<ul><li><strong>⬇ export config</strong> — the full setup as JSON (copy or download).</li><li><strong>🔗 share link</strong> — encodes the entire config in the URL hash; send it to a colleague and they land on your exact setup.</li><li><strong>⌨ code scaffold</strong> — generates a starter script for your selected orchestrator × vector DB combination with your chunk sizes, top-k, temperature, and model names already filled in. It's a scaffold, not magic — adapt credentials and prompts before running.</li></ul>
+<p>And the mirror image: <strong>⬆ import config</strong> accepts pasted JSON or a file, so a teammate's shared link or downloaded config drops straight into your session.</p>
+<hr>
+<h2>💡 What Simulating Teaches That Docs Don't</h2>
+<ul><li><strong>Retrieval quality is a threshold negotiation.</strong> Top-K and similarity thresholds trade recall against noise, and the &quot;right&quot; values move per query — watching scores land makes that visceral.</li><li><strong>Agents are loop policies, not magic.</strong> Thought → action → observation, bounded by max iterations and a fallback rule. Every agent bug is visible as a bad decision inside that loop.</li><li><strong>Failure handling is the product.</strong> Retry-with-backoff, refuse-rather-than-hallucinate, and guardrail short-circuits are what separate a demo from a system.</li><li><strong>Cost lives outside the answer.</strong> Embedding calls, re-ranking, and burned iterations all spend tokens before a single word streams out.</li></ul>
+<hr>
+<p><em>Built as a single dependency-free HTML file — view source, fork it, break it. Switchyard lives at</em> <strong><a href="/sims/agentic-rag.html">sims/agentic-rag.html</a></strong>.</p>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
