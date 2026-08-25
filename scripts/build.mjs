@@ -45,11 +45,12 @@ function checkEvidence() {
 /* Outputs                                                             */
 /* ------------------------------------------------------------------ */
 
-function buildPortfolio() {
+function buildPortfolio(latest) {
   const tpl = readFileSync(P("templates/portfolio.html"), "utf8");
   const repo = JSON.parse(JSON.stringify(REPO));
   repo.flagship = repo.flagship.map((f) => (f.dive ? { ...f, dive: f.dive.replace(/\.md$/i, ".html") } : f));
   repo.deepDives = repo.deepDives.map((d) => ({ ...d, file: d.file.replace(/\.md$/i, ".html") }));
+  repo.latest = latest || null;
   return render(tpl, [repo]);
 }
 
@@ -119,7 +120,7 @@ function buildBlog() {
     let excerpt = "";
     for (const l of excerptLines) {
       const t = l.trim();
-      if (t === "" || /^(#{1,6}\s|```|[-*_]{3,}\s*$|\|)/.test(t)) continue;
+      if (t === "" || /^(#{1,6}\s|```|[-*_]{3,}\s*$|\|)/.test(t) || /^!\[/.test(t)) continue;
       const plain = stripMd(t);
       if (!plain) continue;
       if (plain.length >= 60 && !/^(author|date|target role|reading time):/i.test(plain)) { excerpt = plain; break; }
@@ -134,9 +135,11 @@ function buildBlog() {
     const slug = file.replace(/\.md$/i, "");
 
     const scope = { name: REPO.basics.name, slug, title, excerpt, updated, read, featured: featured.has(file), content: mdToHtml(body) };
+    const image = (scope.content.match(/<img class="post-image" src="([^"]+)"/) || [])[1] || "";
     posts.push({
       slug, title, excerpt, updated, read,
       featured: featured.has(file),
+      image,
       mtime,
       html: render(postTpl, [scope]),
     });
@@ -360,7 +363,7 @@ const verifyOnly = process.argv.includes("--verify");
 checkEvidence();
 const blog = buildBlog();
 const jobs = [
-  ["index.html", buildPortfolio()],
+  ["index.html", buildPortfolio(blog.posts[0])],
   ["resume/index.html", buildCvPage()],
   ["blog/index.html", blog.index],
   ...blog.posts.map((p) => [`blog/${p.slug}.html`, p.html]),

@@ -138,6 +138,20 @@
   .patent-note { margin-top: 8px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); max-width: 72ch; }
 
   .dive-link { margin-top: 14px; font-size: 14px; }
+  .feat-card {
+    display: grid; grid-template-columns: minmax(220px, 360px) 1fr; gap: 24px; align-items: center;
+    border: 1px solid var(--line); background: var(--surface); border-radius: 16px;
+    padding: 18px; text-decoration: none; color: inherit;
+    transition: border-color .25s var(--ease), transform .25s var(--ease);
+  }
+  .feat-card:hover { border-color: var(--dim); transform: translateY(-2px); }
+  .feat-img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); display: block; }
+  .feat-meta { font-family: var(--font-mono); font-size: 12px; color: var(--dim); margin-bottom: 8px; }
+  .feat-card h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .feat-card p { color: var(--muted); font-size: 14.5px; line-height: 1.6; max-width: 70ch; }
+  .feat-cta { display: inline-block; margin-top: 12px; font-size: 14px; font-weight: 500; color: var(--muted); transition: color .2s var(--ease); }
+  .feat-card:hover .feat-cta { color: var(--ink); }
+  @media (max-width: 760px) { .feat-card { grid-template-columns: 1fr; gap: 14px; } }
   .dive-link a { color: var(--muted); font-weight: 500; }
   .dive-link a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
   a.pill.dive-link { color: var(--muted); font-weight: 500; }
@@ -207,6 +221,23 @@
     </div>
   </div>
 </div>
+
+
+<section id="featured">
+  <div class="wrap">
+    <div class="sec-head rise"><span class="num">00</span><h2>Latest writing</h2></div>
+    <a class="feat-card reveal" href="blog/agentic-rag-simulator.html">
+      <img class="feat-img" src="/assets/switchyard-sim.png" alt="Screenshot: Switchyard: Watch What Happens Inside an Agentic AI + RAG Pipeline" loading="lazy">
+      <div class="feat-body">
+        <div class="feat-meta">featured post · Aug 25, 2026 · 6 min read</div>
+        <h3>Switchyard: Watch What Happens Inside an Agentic AI + RAG Pipeline</h3>
+        <p>Most RAG tutorials show you the happy path and stop there. But the real learning — the part that makes you useful when a pipeline misbehaves in production — is in what happens around the LLM call: …</p>
+        <span class="feat-cta">Read the post →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
 
 <section id="work">
   <div class="wrap">
