@@ -14,6 +14,9 @@
 {{#if image}}<meta property="og:image" content="{{image}}">{{/if}}
 {{#if imageType}}<meta property="og:image:type" content="{{imageType}}">{{/if}}
 <meta name="twitter:card" content="{{#if image}}summary_large_image{{else}}summary{{/if}}">
+<meta name="twitter:title" content="{{title}}">
+<meta name="twitter:description" content="{{excerpt}}">
+{{#if image}}<meta name="twitter:image" content="{{image}}">{{/if}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
