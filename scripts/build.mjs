@@ -146,6 +146,8 @@ function buildBlog() {
     };
     const image = (scope.content.match(/<img class="post-image" src="([^"]+)"/) || [])[1] || "";
     scope.image = image ? (/^https?:\/\//i.test(image) ? image : SITE_URL + (image.startsWith("/") ? "" : "/") + image) : "";
+    const ext = (image.match(/\.([a-z0-9]+)(?:$|[?#])/i) || [])[1];
+    scope.imageType = ext ? `image/${ext === "jpg" ? "jpeg" : ext}` : "";
     posts.push({
       slug, title, excerpt, updated, read,
       featured: featured.has(file),
