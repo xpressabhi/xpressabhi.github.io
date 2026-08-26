@@ -16,6 +16,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { render, stripMd, mdToHtml } from "./lib/engine.mjs";
 import { evidenceCoverage } from "./lib/evidence.mjs";
@@ -71,6 +72,17 @@ function buildCvPage() {
 /* ------------------------------------------------------------------ */
 /* Blog: deep-dives/*.md → blog/*.html (static posts + index)          */
 /* ------------------------------------------------------------------ */
+
+function lastCommitSec(file) {
+  try {
+    const out = execFileSync("git", ["log", "-1", "--format=%ct", "--", `deep-dives/${file}`], {
+      cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    return out ? Number(out) : null;
+  } catch {
+    return null;
+  }
+}
 
 function buildBlog() {
   const postTpl = readFileSync(P("templates/blog-post.html"), "utf8");
@@ -131,7 +143,8 @@ function buildBlog() {
 
     const words = Math.max(1, body.split(/\s+/).length);
     const read = Math.max(1, Math.round(words / 200)) + " min read";
-    const mtime = statSync(P("deep-dives", file)).mtimeMs;
+    const commitTs = lastCommitSec(file);
+    const mtime = (commitTs ?? Math.floor(statSync(P("deep-dives", file)).mtimeMs / 1000)) * 1000;
     const updated = new Date(mtime).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     const slug = file.replace(/\.md$/i, "");
 
@@ -407,13 +420,20 @@ if (!existsSync(P("resume/abhishek-maurya-cv.pdf"))) {
   console.warn("⚠ resume/abhishek-maurya-cv.pdf not found — the CV page embeds this file and will show a blank viewer. Run `npm run build:pdf`.");
 }
 
-writeFileSync("/Users/amaurya/Documents/GitHub/xpressabhi/README.md", buildProfileReadme());
-console.log("✓ ../xpressabhi/README.md");
-
-writeFileSync("/Users/amaurya/Documents/GitHub/career-ops/cv.md", buildCareerOpsCv());
-console.log("✓ ../career-ops/cv.md");
-
-writeFileSync("/Users/amaurya/Documents/GitHub/career-os/data/files/abhishek_maurya_2026.md", buildCareerOsResume());
-console.log("✓ ../career-os/data/files/abhishek_maurya_2026.md");
+const siblingJobs = [
+  ["../xpressabhi/README.md", buildProfileReadme()],
+  ["../career-ops/cv.md", buildCareerOpsCv()],
+  ["../career-os/data/files/abhishek_maurya_2026.md", buildCareerOsResume()],
+];
+for (const [rel, content] of siblingJobs) {
+  const dest = P(rel);
+  if (!existsSync(dirname(dest))) {
+    console.warn(`⚠ skipped ${rel} — sibling repo not checked out here`);
+    continue;
+  }
+  mkdirSync(dirname(dest), { recursive: true });
+  writeFileSync(dest, content);
+  console.log(`✓ ${rel}`);
+}
 
 if (wantPdf) await renderPdf(buildCvPage());
