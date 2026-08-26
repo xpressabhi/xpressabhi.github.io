@@ -27,6 +27,7 @@ const EVIDENCE = (() => {
 })();
 const P = (...p) => join(ROOT, ...p);
 const OUT = (...p) => join(ROOT, "output", ...p);
+const SITE_URL = "https://xpressabhi.github.io";
 
 function checkEvidence() {
   const { covered, missing } = evidenceCoverage(REPO, EVIDENCE);
@@ -134,8 +135,17 @@ function buildBlog() {
     const updated = new Date(mtime).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     const slug = file.replace(/\.md$/i, "");
 
-    const scope = { name: REPO.basics.name, slug, title, excerpt, updated, read, featured: featured.has(file), content: mdToHtml(body) };
+    const url = `${SITE_URL}/blog/${slug}.html`;
+    const enc = encodeURIComponent;
+    const scope = {
+      name: REPO.basics.name, slug, title, excerpt, updated, read,
+      featured: featured.has(file), content: mdToHtml(body),
+      url,
+      shareX: `https://twitter.com/intent/tweet?text=${enc(title)}&url=${enc(url)}`,
+      shareLinkedIn: `https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}`,
+    };
     const image = (scope.content.match(/<img class="post-image" src="([^"]+)"/) || [])[1] || "";
+    scope.image = image ? (/^https?:\/\//i.test(image) ? image : SITE_URL + (image.startsWith("/") ? "" : "/") + image) : "";
     posts.push({
       slug, title, excerpt, updated, read,
       featured: featured.has(file),

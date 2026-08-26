@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ServiceNow Table Builder: Overview & Core Capabilities · Abhishek Kumar Maurya</title>
 <meta name="description" content="The ServiceNow Table Builder is an all-in-one, modern low-code developer interface built into the ServiceNow platform. It consolidates multiple scattered data management tasks—such as creating data…">
+<link rel="canonical" href="https://xpressabhi.github.io/blog/table-builder.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Abhishek Kumar Maurya">
+<meta property="og:title" content="ServiceNow Table Builder: Overview & Core Capabilities">
+<meta property="og:description" content="The ServiceNow Table Builder is an all-in-one, modern low-code developer interface built into the ServiceNow platform. It consolidates multiple scattered data management tasks—such as creating data…">
+<meta property="og:url" content="https://xpressabhi.github.io/blog/table-builder.html">
+
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -85,7 +93,7 @@
   }
   .reader .post-meta {
     font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
-    margin-bottom: 36px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+    margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 6px 12px;
   }
   .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
   .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
@@ -122,6 +130,28 @@
   .reader em { color: var(--ink); }
   .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
   .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- share row ---------- */
+  .share {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin: 0 0 48px; padding: 12px 16px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface);
+  }
+  .share-label {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--dim); margin-right: 6px;
+  }
+  .share a, .share button {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--muted);
+    background: transparent; border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 14px; cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .share a:hover, .share button:hover { color: var(--ink); border-color: var(--dim); }
+  .share button[data-copied] {
+    color: var(--accent-ink); border-color: var(--accent-line); background: var(--accent-soft);
+  }
   .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
 
   /* ---------- lists ---------- */
@@ -230,6 +260,13 @@
   <article class="reader">
     <h1>ServiceNow Table Builder: Overview & Core Capabilities</h1>
     <div class="post-meta"><span>Aug 12, 2026</span><span>·</span><span>2 min read</span><span>·</span><a href="./">All posts</a></div>
+    <div class="share">
+      <span class="share-label">Share</span>
+      <a href="https://twitter.com/intent/tweet?text=ServiceNow%20Table%20Builder%3A%20Overview%20%26%20Core%20Capabilities&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Ftable-builder.html" data-share="x">X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Ftable-builder.html" data-share="linkedin">LinkedIn</a>
+      <button type="button" data-share="copy">Copy link</button>
+      <button type="button" data-share="native" hidden>Share…</button>
+    </div>
     <h2><a href="https://www.servicenow.com/docs/r/application-development/form-builder-glide-family-release/tb-landing-page.html" target="_blank" rel="noopener">Table Builder</a></h2>
 <p>The <strong>ServiceNow Table Builder</strong> is an all-in-one, modern low-code developer interface built into the ServiceNow platform. It consolidates multiple scattered data management tasks—such as creating database schemas, altering dictionary fields, configuring visual form layouts, and declaring dynamic display rules—into a single, unified visual design canvas.</p>
 <hr>
@@ -254,6 +291,54 @@
     <a href="../">← Home</a>
   </div>
 </main>
+
+<script>
+  (function () {
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var url = canonical ? canonical.href : location.href;
+    function legacyCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    function flashCopied(btn) {
+      var label = btn.textContent;
+      btn.textContent = "Link copied ✓";
+      btn.setAttribute("data-copied", "");
+      setTimeout(function () { btn.textContent = label; btn.removeAttribute("data-copied"); }, 2000);
+    }
+    var copyBtn = document.querySelector("button[data-share='copy']");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          flashCopied(copyBtn);
+        }
+        function doLegacy() { legacyCopy(url); finish(); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(finish, doLegacy);
+          setTimeout(finish, 600);
+        } else {
+          doLegacy();
+        }
+      });
+    }
+    var nativeBtn = document.querySelector("button[data-share='native']");
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener("click", function () {
+        navigator.share({ title: document.title, url: url }).catch(function () {});
+      });
+    }
+  })();
+</script>
 
 <script>
   (function () {
