@@ -22,7 +22,25 @@ import { render, stripMd, mdToHtml } from "./lib/engine.mjs";
 import { evidenceCoverage } from "./lib/evidence.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
+function getVariantName() {
+  const args = process.argv;
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a.startsWith("--variant=")) return a.split("=")[1].trim();
+    if (a === "--variant" && args[i + 1] && !args[i + 1].startsWith("--")) return args[i + 1].trim();
+  }
+  return null;
+}
+const VARIANT = getVariantName();
 const REPO = JSON.parse(readFileSync(join(ROOT, "data/profile.json"), "utf8"));
+const VARIANT_REPO = (() => {
+  if (!VARIANT) return null;
+  const cand = join(ROOT, `data/variants/${VARIANT}.json`);
+  try { return JSON.parse(readFileSync(cand, "utf8")); } catch (e) {
+    console.error(`✗ variant "${VARIANT}" not found at ${cand}: ${e.message}`);
+    process.exit(1);
+  }
+})();
 const EVIDENCE = (() => {
   try { return JSON.parse(readFileSync(join(ROOT, "data/evidence.json"), "utf8")); } catch { return { claims: {} }; }
 })();
@@ -56,11 +74,11 @@ function buildPortfolio(latest) {
   return render(tpl, [repo]);
 }
 
-function buildCvPage() {
+function buildCvPage(repo = REPO) {
   const tpl = readFileSync(P("templates/cv.html"), "utf8");
-  const cv = { ...REPO };
-  const discontinued = REPO.projects.filter((p) => p.status === "discontinued");
-  const live = REPO.projects.filter((p) => p.status !== "discontinued");
+  const cv = { ...repo };
+  const discontinued = repo.projects.filter((p) => p.status === "discontinued");
+  const live = repo.projects.filter((p) => p.status !== "discontinued");
   cv.projects = live.concat(
     discontinued.length
       ? [{ name: discontinued.map((p) => p.name).join(" · "), status: "discontinued", description: "earlier projects, kept for reference", url: "" }]
@@ -347,7 +365,7 @@ function month(w) { return MONTHS[w] || w; }
 /* PDF via Playwright                                                  */
 /* ------------------------------------------------------------------ */
 
-async function renderPdf(cvHtml) {
+async function renderPdf(cvHtml, outPath = P("resume/abhishek-maurya-cv.pdf")) {
   let playwright;
   const candidates = [
     join(ROOT, "node_modules/playwright"),
@@ -372,10 +390,10 @@ async function renderPdf(cvHtml) {
   const page = await browser.newPage();
   await page.setContent(cvHtml, { waitUntil: "networkidle" });
   await page.emulateMedia({ media: "print" });
-  mkdirSync(P("resume"), { recursive: true });
-  await page.pdf({ path: P("resume/abhishek-maurya-cv.pdf"), preferCSSPageSize: true });
+  mkdirSync(dirname(outPath), { recursive: true });
+  await page.pdf({ path: outPath, preferCSSPageSize: true });
   await browser.close();
-  console.log("✓ resume/abhishek-maurya-cv.pdf");
+  console.log(`✓ ${outPath.replace(ROOT + "/", "")}`);
   return true;
 }
 
@@ -386,6 +404,11 @@ async function renderPdf(cvHtml) {
 const wantPdf = process.argv.includes("--pdf");
 const verifyOnly = process.argv.includes("--verify");
 checkEvidence();
+if (VARIANT && VARIANT_REPO) {
+  // Variant evidence check (non-strict, just warning)
+  const { missing: variantMissing } = evidenceCoverage(VARIANT_REPO, EVIDENCE);
+  if (variantMissing.length) console.warn(`⚠ variant "${VARIANT}": ${variantMissing.length} claim(s) without provenance (ok for tailored CV)`);
+}
 const blog = buildBlog();
 const jobs = [
   ["index.html", buildPortfolio(blog.posts[0])],
@@ -394,16 +417,35 @@ const jobs = [
   ...blog.posts.map((p) => [`blog/${p.slug}.html`, p.html]),
 ];
 
+// Variant CV (isolated, never overwrites main)
+let variantHtml = null;
+let variantRel = null;
+let variantPdfPath = null;
+if (VARIANT && VARIANT_REPO) {
+  variantHtml = buildCvPage(VARIANT_REPO);
+  variantRel = `resume/${VARIANT}/index.html`;
+  variantPdfPath = P(`resume/${VARIANT}/abhishek-maurya-cv.pdf`);
+}
+
 if (verifyOnly) {
   mkdirSync(OUT(), { recursive: true });
   for (const [rel, html] of jobs) {
     mkdirSync(dirname(OUT(rel)), { recursive: true });
     writeFileSync(OUT(rel), html);
   }
-  const leftover = jobs
-    .map(([, html]) => html.match(/\{\{[#/]?[\w.@\s"|]+?\}\}/g) || [])
+  if (variantHtml) {
+    mkdirSync(dirname(OUT(variantRel)), { recursive: true });
+    writeFileSync(OUT(variantRel), variantHtml);
+  }
+  const allHtml = variantHtml ? [...jobs.map(([, h]) => h), variantHtml] : jobs.map(([, h]) => h);
+  const leftover = allHtml
+    .map((html) => html.match(/\{\{[#/]?[\w.@\s"|]+?\}\}/g) || [])
     .flat();
   const pdf = await renderPdf(buildCvPage());
+  if (variantHtml) {
+    const vpdf = await renderPdf(variantHtml, OUT(variantRel.replace("index.html", "abhishek-maurya-cv.pdf")));
+    console.log("variant PDF rendered:", vpdf);
+  }
   console.log("unresolved tokens:", [...new Set(leftover)]);
   console.log("PDF rendered:", pdf);
   process.exit(0);
@@ -414,6 +456,13 @@ for (const [rel, html] of jobs) {
   mkdirSync(dirname(dest), { recursive: true });
   writeFileSync(dest, html);
   console.log(`✓ ${rel}`);
+}
+
+if (variantHtml) {
+  const dest = P(variantRel);
+  mkdirSync(dirname(dest), { recursive: true });
+  writeFileSync(dest, variantHtml);
+  console.log(`✓ ${variantRel} (variant: ${VARIANT})`);
 }
 
 if (!existsSync(P("resume/abhishek-maurya-cv.pdf"))) {
@@ -436,4 +485,7 @@ for (const [rel, content] of siblingJobs) {
   console.log(`✓ ${rel}`);
 }
 
-if (wantPdf) await renderPdf(buildCvPage());
+if (wantPdf) {
+  await renderPdf(buildCvPage());
+  if (variantHtml) await renderPdf(variantHtml, variantPdfPath);
+}

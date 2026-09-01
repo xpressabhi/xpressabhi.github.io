@@ -1,10 +1,10 @@
 {
-  "$comment": "SINGLE SOURCE OF TRUTH. Edit only this file. Run `npm run build` in this repo to regenerate portfolio (index.html), CV (resume/index.html + resume/abhishek-maurya-cv.pdf), GitHub profile README (../xpressabhi/README.md), and career-ops CV (../career-ops/cv.md).",
+  "$comment": "Variant for Postman Senior Engineer, IAM (Hyderabad). Isolated from main profile.json. Tailored headline/summary/skills/experience for IAM: backend, distributed systems, reliability/observability, IAM-governance framing. Facts from data/profile.json only — no invented metrics.",
   "basics": {
     "name": "Abhishek Kumar Maurya",
-    "headline": "Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms",
-    "tagline": "16+ years of building web applications, agentic AI workflows, and developer platforms",
-    "shortSummary": "16+ years across agentic AI, frontend, and platform architecture. Systems adopted by 20+ teams at ServiceNow.",
+    "headline": "Staff Software Engineer — Backend, Distributed Systems & Identity Platform Engineering",
+    "tagline": "16+ years building backend and distributed platforms — now focused on reliability, scalability, and identity foundations",
+    "shortSummary": "16+ years building backend and distributed systems at enterprise scale. Hyderabad-based, leading a 9-person team on platform reliability and governance.",
     "yearsExperience": "16+",
     "location": "Hyderabad, India",
     "timezone": "IST",
@@ -24,75 +24,64 @@
       "url": "https://patents.google.com/patent/US20150046358"
     }
   },
-  "summary": "Software engineer with 16+ years of experience building AI agents, MCP-driven workflows, and scalable developer platforms. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams), leads a 9-person engineering team, and has deep roots in frontend architecture, system design, developer productivity, and enterprise reliability.",
+  "summary": "Staff Software Engineer with 16+ years building backend and distributed systems at enterprise scale (Hyderabad). I design, build, and operate reliable platform services on the critical path — most recently the Agentic Developer Platform at ServiceNow, serving 20+ teams and 7 pilot squads with governance, telemetry, and production support. Strengths: backend engineering (Node.js, Java, Python), distributed systems and microservices patterns, databases/REST APIs, and operational excellence — reliability, scalability, observability, testing, and incident response — leading 2–3-engineer workstreams within a 9-person team and owning projects end-to-end from ambiguous problem to production.",
   "capabilityCards": [
     {
       "wide": true,
-      "title": "Agentic AI & MCP",
-      "blurb": "Designed and shipped MCP-driven agentic workflows integrated into the engineering lifecycle, adopted by 20+ teams with roughly 95% less research and debugging effort.",
+      "title": "Backend & Distributed Systems",
+      "blurb": "Design and operate backend services on the critical path for 20+ teams — focus on reliability, scalability, observability, and end-to-end ownership from ambiguous problem to production.",
       "tags": [
-        "MCP",
-        "Claude Code",
-        "Build Agent",
-        "Tool orchestration",
-        "Self-healing loops"
+        "Node.js",
+        "Java",
+        "Python",
+        "Distributed systems",
+        "Microservices",
+        "REST APIs"
       ]
     },
     {
-      "title": "Local LLM inference",
-      "blurb": "Run MLX-optimized models (Qwen, Gemma, DeepSeek) locally on Apple silicon via Ollama, plus memory-efficient loaders like turbo-fieldfare that stream model portions on demand — Gemma 4 26B under 2GB RAM. Took VLMs end-to-end on-device: Qwen2-VL-2B on llama.cpp/GGUF via Metal across a quantization ladder on iPhone, with sub-second TTFT from architecture and resolution levers.",
+      "title": "Reliability & Operational Excellence",
+      "blurb": "Platform governance, telemetry, and production readiness — lifted legacy coverage 20%→90%, cut external defects by 90%, and reduced case resolution time by 90%. Incident response, RCA, and long-term fixes.",
       "tags": [
-        "Ollama",
-        "MLX",
-        "turbo-fieldfare",
-        "Apple silicon",
-        "Memory-efficient inference",
-        "llama.cpp",
-        "GGUF quantization",
-        "On-device inference"
+        "Reliability",
+        "Observability",
+        "Incident response",
+        "SLO/SLA"
       ]
     },
     {
-      "title": "Developer platforms",
-      "blurb": "Founded the Agentic Developer Platform: multi-team bootstrap and governance infrastructure for agents, skills, and MCP servers.",
-      "tags": [
-        "Multi-team",
-        "Governance",
-        "Telemetry"
-      ]
-    },
-    {
-      "title": "Frontend architecture",
-      "blurb": "Architected scalable React and TypeScript systems powering low-code tools like Table Builder and Workspace Builder.",
-      "tags": [
-        "React",
-        "TypeScript",
-        "Low-code"
-      ]
-    },
-    {
-      "title": "System design",
-      "blurb": "Metadata-aware, multi-model architectures and design patterns built to hold up across teams, tenants, and releases.",
-      "tags": [
-        "Scalable systems",
-        "Design patterns"
-      ]
-    },
-    {
-      "wide": true,
-      "title": "Quality & reliability",
-      "blurb": "Enterprise testing strategy with Jest, React Testing Library, and Playwright; performance optimization and WCAG/ARIA accessibility. Lifted legacy coverage from 20% to 90%.",
+      "title": "Quality & Testing",
+      "blurb": "Enterprise testing strategy with Jest, React Testing Library, and Playwright; performance optimization and WCAG/ARIA accessibility.",
       "tags": [
         "Jest",
         "RTL",
         "Playwright",
-        "WCAG/ARIA",
         "Performance"
       ]
     },
     {
-      "title": "Technical leadership",
-      "blurb": "Lead a 9-person engineering team, run technical hiring and high-bar architectural reviews, and mentor engineers in AI-first development practices.",
+      "title": "System Design",
+      "blurb": "Metadata-aware, multi-model architectures and design patterns built to hold up across teams, tenants, and releases.",
+      "tags": [
+        "Scalable systems",
+        "Design patterns",
+        "Metadata-driven"
+      ]
+    },
+    {
+      "wide": true,
+      "title": "Platform Governance & Security Mindset",
+      "blurb": "Human-in-loop approval gates, ACL-aware generation, SELECT-only/read-only guardrails, and telemetry — building security-sensitive platform foundations.",
+      "tags": [
+        "Governance",
+        "ACLs",
+        "Guardrails",
+        "Telemetry"
+      ]
+    },
+    {
+      "title": "Technical Leadership",
+      "blurb": "Lead a 9-person engineering team, run technical hiring and high-bar architectural reviews, and lead 2–3-engineer workstreams with clear task breakdown and code reviews.",
       "tags": [
         "Hiring",
         "Mentoring",
@@ -101,80 +90,64 @@
     }
   ],
   "skills": {
-    "Architecture": [
-      "System design",
-      "Scalable frontend architecture",
-      "Design patterns",
-      "Developer productivity",
-      "Metadata-driven development"
-    ],
-    "AI & Agentic Engineering": [
-      "AI agents",
-      "MCP workflows",
-      "Claude Code",
-      "Harness",
-      "LLM APIs (Anthropic, OpenAI, Gemini)",
-      "Amazon Bedrock",
-      "Now Assist for Creator",
-      "Now Assist",
-      "LangChain / LangGraph",
-      "Prompt engineering",
-      "Agent workflows",
-      "Tool orchestration",
-      "Multi-model systems",
-      "REAct agents",
-      "Planning pattern (think first, then execute)",
-      "Multi-agent orchestration",
-      "Local LLM inference (Ollama, MLX)",
-      "On-device inference (iOS/Metal)",
-      "llama.cpp / GGUF",
-      "Model quantization (GGUF ladders, imatrix)",
-      "Vision-language models",
-      "LoRA fine-tuning (MLX)",
-      "LLM evals (golden sets, LLM-as-judge, majority voting)",
-      "RAG / keyword retrieval (BM25, FTS5)"
-    ],
-    "Frontend & Platform": [
-      "JavaScript (ES6+)",
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Redux Toolkit",
-      "RTK Query",
+    "Backend & Data": [
       "Node.js",
-      "Webpack",
-      "Vite",
-      "PWA"
+      "Java",
+      "Python",
+      "JavaScript (ES6+)",
+      "REST APIs",
+      "Distributed systems",
+      "Microservices",
+      "Databases",
+      "MongoDB",
+      "SQLite",
+      "Oracle Database",
+      "SQL / PLSQL"
     ],
     "Reliability & Quality": [
       "Jest",
       "React Testing Library",
       "Playwright",
       "Performance optimization",
-      "WCAG / ARIA accessibility"
+      "WCAG / ARIA accessibility",
+      "Testing, monitoring, and incident response"
     ],
-    "Backend & Data": [
-      "Python",
-      "FastAPI",
-      "SQLite",
-      "Java",
-      "REST APIs",
-      "MongoDB",
-      "Meteor",
-      "Oracle Database",
-      "Oracle ODI",
-      "SQL / PLSQL"
+    "Observability": [
+      "Sentry",
+      "LogRocket",
+      "Datadog",
+      "Sumo Logic",
+      "Telemetry",
+      "Logging & monitoring"
+    ],
+    "Architecture": [
+      "System design",
+      "Scalable architecture",
+      "Design patterns",
+      "Distributed systems",
+      "Microservices at scale",
+      "Data modeling",
+      "Metadata-driven development"
     ],
     "CI/CD & Tooling": [
       "GitHub Actions",
       "Jenkins",
       "Docker"
     ],
-    "Observability": [
-      "Sentry",
-      "LogRocket",
-      "Datadog",
-      "Sumo Logic"
+    "Frontend & Platform": [
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Redux Toolkit",
+      "RTK Query",
+      "Webpack",
+      "Vite"
+    ],
+    "AI & Agentic Engineering": [
+      "MCP workflows",
+      "LLM APIs (Anthropic, OpenAI, Gemini)",
+      "Agent workflows",
+      "Tool orchestration"
     ]
   },
   "impactMetrics": [
@@ -282,24 +255,24 @@
       "start": "Oct 2023",
       "end": "Present",
       "stack": [
-        "AI Agents",
-        "MCP",
-        "Harness",
-        "JavaScript",
-        "Java",
-        "React",
         "Node.js",
-        "Python"
+        "Java",
+        "Python",
+        "JavaScript",
+        "React",
+        "MCP",
+        "REST APIs",
+        "Distributed systems"
       ],
       "highlights": [
-        "Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.",
-        "Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains; built on the planning pattern (think first, then execute) and led its metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
-        "Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks on a multi-agent orchestration pattern and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.",
-        "ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.",
-        "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests on the REAct agentic framework — documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
-        "Architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; API and template contributions to the App Template Framework (ATFr).",
-        "Lead a 9-person engineering team as tech lead: mentoring, technical hiring, and high-bar architectural reviews; ran cross-team onboarding sessions enabling teams to set up ADP skills, agents, rules, and MCP servers in a single session.",
-        "Drive performance optimization and WCAG/ARIA accessibility compliance; established enterprise testing strategy with Jest, React Testing Library, and Playwright."
+        "Design, build, and evolve backend systems for a multi-team platform on the critical path for 20+ teams (7 pilot squads) — own projects end-to-end: clarify requirements, drive technical design, implement solutions, manage rollout, and support production.",
+        "Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for MCP servers, agents, and skills; built in 4 weeks on a multi-agent orchestration pattern and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.",
+        "Improved reliability, scalability, observability, and operational readiness: telemetry and governance with cost/adoption metrics — reduced case task resolution time by 90%, cut automation development from days to hours on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.",
+        "Contributed to Build Agent in ServiceNow Studio — metadata-aware, multi-model platform across 35+ metadata types and 11 domains; enforced security guardrails, human-in-loop approval gates, and ACL-aware generation (tables, business rules, ACLs, UI layouts) with self-healing via the Automated Test Framework.",
+        "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis and CAB-ready deployment manifests on the REAct agentic framework — documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
+        "Lead a 9-person engineering team as tech lead; lead execution for 2–3-engineer workstreams including task breakdown, technical guidance, and code reviews — plus mentoring, technical hiring, and high-bar architectural reviews; enabled teams to set up ADP skills, agents, rules, and MCP servers in a single cross-team onboarding session.",
+        "Drove production quality, observability, and operational excellence: established enterprise testing strategy with Jest, React Testing Library, and Playwright; performance optimization and WCAG/ARIA accessibility; debugged production issues, participated in incident response, root-cause analysis, and long-term fixes.",
+        "Partnered with Product, Design, and Engineering to scope, build, test, and launch platform improvements; make sound trade-offs between speed, quality, and long-term maintainability in a fast-moving environment and communicate reasoning clearly to cross-functional stakeholders."
       ]
     },
     {
@@ -389,8 +362,8 @@
         "SQL/PLSQL"
       ],
       "highlights": [
-        "Developed and improved Plan Copy and Benefits Relationships systems using Java, Oracle Database, Oracle ODI, and SQL/PLSQL.",
-        "Completed the Benefit Plan Copy project, reducing test-to-production HRMS data setup time by 80%."
+        "Built and operated reliability- and security-sensitive HRMS production systems (Plan Copy, Benefits Relationships) on Java, Oracle Database, Oracle ODI, and SQL/PLSQL — including patented approach for importing tested objects into production (US20150046358).",
+        "Completed the Benefit Plan Copy project, reducing test-to-production HRMS data setup time by 80% while preserving production integrity."
       ]
     }
   ],
