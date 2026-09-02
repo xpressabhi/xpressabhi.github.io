@@ -408,6 +408,12 @@
       "status": "live"
     },
     {
+      "name": "Revision",
+      "url": "https://github.com/xpressabhi/revision",
+      "description": "Local-first Tauri desktop app for principal-level interview prep — FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
+      "status": "live"
+    },
+    {
       "name": "selftest.in",
       "url": "https://selftest.in",
       "description": "Self-testing and government job preparation app powered by the Gemini API",
@@ -496,6 +502,10 @@
     {
       "title": "Workspace Builder",
       "file": "workspace-builder.md"
+    },
+    {
+      "title": "Revision — a local-first FSRS-5 desktop app with drag and air gestures",
+      "file": "revision.md"
     }
   ]
 }

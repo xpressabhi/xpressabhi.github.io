@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revision — a local-first FSRS-5 desktop app with drag and air gestures · Abhishek Kumar Maurya</title>
+<meta name="description" content="Revision is a local-first desktop app for principal-level interview prep — DSA, system design concepts and use cases, AI concepts and use cases, behavioral — with FSRS-5 scheduling, a keyboard-firs…">
+<link rel="canonical" href="https://xpressabhi.github.io/blog/revision.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Abhishek Kumar Maurya">
+<meta property="og:title" content="Revision — a local-first FSRS-5 desktop app with drag and air gestures">
+<meta property="og:description" content="Revision is a local-first desktop app for principal-level interview prep — DSA, system design concepts and use cases, AI concepts and use cases, behavioral — with FSRS-5 scheduling, a keyboard-firs…">
+<meta property="og:url" content="https://xpressabhi.github.io/blog/revision.html">
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Revision — a local-first FSRS-5 desktop app with drag and air gestures">
+<meta name="twitter:description" content="Revision is a local-first desktop app for principal-level interview prep — DSA, system design concepts and use cases, AI concepts and use cases, behavioral — with FSRS-5 scheduling, a keyboard-firs…">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdfcfc;
+    --surface: #f5f3f1;
+    --ink: #171512;
+    --muted: #777169;
+    --dim: #a59f97;
+    --faint: #b1b0b0;
+    --line: #e5e5e5;
+    --accent: #b45309;
+    --accent-ink: #9a3412;
+    --accent-soft: rgba(180, 83, 9, 0.08);
+    --accent-line: rgba(180, 83, 9, 0.3);
+    --code-bg: #201d19;
+    --code-border: #36322b;
+    --code-ink: #e9e3d8;
+    --code-dim: #948c81;
+    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110;
+      --surface: #1e1c19;
+      --ink: #f0ece6;
+      --muted: #b4ada4;
+      --dim: #8a847c;
+      --faint: #6f6a63;
+      --line: #2c2925;
+      --accent: #e0924f;
+      --accent-ink: #e7b078;
+      --accent-soft: rgba(224, 146, 79, 0.1);
+      --accent-line: rgba(224, 146, 79, 0.32);
+      --code-bg: #16130f;
+      --code-border: #2c2822;
+      --code-ink: #eae4da;
+      --code-dim: #8b847a;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav {
+    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
+  .mark-sq {
+    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  }
+  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-back { font-size: 14px; color: var(--muted); }
+
+  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
+
+  .reader h1 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .reader .post-meta {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
+    margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- section headers ---------- */
+  .reader h2 {
+    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
+    margin: 46px 0 18px;
+    padding: 10px 14px 10px 14px;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
+    scroll-margin-top: 76px;
+  }
+  .reader h3 {
+    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
+    margin: 30px 0 12px; color: var(--accent-ink);
+  }
+  .reader h4 {
+    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
+  }
+  .reader h4::before {
+    content: "▹ "; color: var(--accent); font-weight: 600;
+  }
+
+  /* ---------- body copy ---------- */
+  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
+  .reader .post-image {
+    display: block; max-width: 100%; height: auto;
+    margin: 28px auto; border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .reader strong { color: var(--ink); font-weight: 600; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
+  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* ---------- share row ---------- */
+  .share {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin: 0 0 48px; padding: 12px 16px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--surface);
+  }
+  .share-label {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--dim); margin-right: 6px;
+  }
+  .share a, .share button {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--muted);
+    background: transparent; border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 14px; cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .share a:hover, .share button:hover { color: var(--ink); border-color: var(--dim); }
+  .share button[data-copied] {
+    color: var(--accent-ink); border-color: var(--accent-line); background: var(--accent-soft);
+  }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+
+  /* ---------- lists ---------- */
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader li { margin-bottom: 6px; }
+  .reader li::marker { color: var(--accent); font-weight: 500; }
+
+  /* ---------- inline code ---------- */
+  .reader code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 5px;
+    padding: 1.5px 6px;
+  }
+
+  /* ---------- code blocks (terminal) ---------- */
+  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
+  .reader pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    position: relative;
+  }
+  .reader pre.code code {
+    display: block; padding: 18px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--code-ink); font-size: 13px; line-height: 1.65;
+  }
+  .reader pre.code[data-lang] { padding-top: 32px; }
+  .reader pre.code[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--code-dim);
+    border-bottom: 1px solid var(--code-border);
+  }
+
+  /* ---------- diagrams ---------- */
+  .reader pre.diagram {
+    background: var(--accent-soft);
+    border: 1px dashed var(--accent-line);
+    text-align: center;
+  }
+  .reader pre.diagram::before {
+    content: "Diagram";
+    display: block;
+    text-align: left;
+    padding: 6px 16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .reader pre.diagram code {
+    display: block; padding: 16px 18px 20px;
+    background: none; border: 0; border-radius: 0;
+    color: var(--ink); font-size: 12.5px; line-height: 1.55;
+    white-space: pre; text-align: center;
+  }
+
+  /* ---------- blockquotes ---------- */
+  .reader blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 18px;
+    color: var(--muted); font-style: italic; margin: 0 0 18px;
+  }
+
+  /* ---------- tables ---------- */
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
+  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+
+  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
+  .reader-foot a { color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+  @media (max-width: 768px) {
+    nav, main { padding-left: 24px; padding-right: 24px; }
+    main { padding-top: 40px; }
+    .nav-links a:not(.nav-back) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark" aria-label="Back to portfolio">
+      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
+    </a>
+    <div class="nav-links">
+      <a href="./">Blog</a>
+      <a href="../" class="nav-back">← Home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>Revision — a local-first FSRS-5 desktop app with drag and air gestures</h1>
+    <div class="post-meta"><span>Sep 2, 2026</span><span>·</span><span>9 min read</span><span>·</span><a href="./">All posts</a></div>
+    <div class="share">
+      <span class="share-label">Share</span>
+      <a href="https://twitter.com/intent/tweet?text=Revision%20%E2%80%94%20a%20local-first%20FSRS-5%20desktop%20app%20with%20drag%20and%20air%20gestures&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Frevision.html" data-share="x">X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Frevision.html" data-share="linkedin">LinkedIn</a>
+      <button type="button" data-share="copy">Copy link</button>
+      <button type="button" data-share="native" hidden>Share…</button>
+    </div>
+    <p>Revision is a local-first desktop app for principal-level interview prep — DSA, system design concepts and use cases, AI concepts and use cases, behavioral — with FSRS-5 scheduling, a keyboard-first review loop, and grading by drag or air gesture.</p>
+<p>Source: <a href="https://github.com/xpressabhi/revision" target="_blank" rel="noopener">github.com/xpressabhi/revision</a> · Releases: <a href="https://github.com/xpressabhi/revision/releases/latest" target="_blank" rel="noopener">v0.4.0</a> (macOS .dmg + Windows .exe/.msi, each under 25 MB) · Stack: Tauri 2 + React 19 + TypeScript + Vite 7 + KaTeX, SQLite <code>revision.db</code> with a <code>localStorage</code> fallback for the browser preview. No cloud, no account.</p>
+<hr>
+<h2>What it is</h2>
+<p>One SQLite file (<code>revision.db</code> via <code>tauri-plugin-sql</code>, or <code>localStorage</code> keys like <code>revision_cards</code> in the browser) — everything else is derived. A single <strong>Revision</strong> deck with tag trees (<code>dsa</code>, <code>sd-concepts</code>, <code>sd-use-cases</code>, <code>ai-concepts</code>, <code>ai-use-cases</code>, <code>behavioral</code>, <code>bookmark</code> …) replaces the usual multi-deck model. The shell is a 3-pane glass layout — collapsible sidebar (decks, smart filters, tag graph), central canvas, inspector — with four themes, command bar (<code>⌘K</code>), quick capture (<code>⌘⇧K</code>), cloze deletions and KaTeX, a 53-week heatmap and retention forecasts.</p>
+<p>The review queue is opinionated: <strong>learning (10 m step) → due → new</strong> (new cards capped at 20 per session), scoped by tag group or <code>⌘K</code> smart filters. Hidden card → flip (Space / Enter / click / flick); shown card → grade <code>1–4</code> (or a gesture) with live FSRS intervals on the grading bar.</p>
+<pre class="diagram"><code>Sidebar (tag tree)        Canvas (Dashboard / Review / Browse / Analytics)      Inspector (FSRS + hints)
+─────────────             ──────────────────────────────────────────            ───────────────
+Due · New · Learning      Review: flip-wrap → grade bar → session stats         Retrievability, interval
+                          Browse: search + filters + inline edit                predictions per grade
+                          Analytics: streak heatmap · forecast                  cloze/hint controls</code></pre>
+<hr>
+<h2>Decision 1: FSRS-5 you can see</h2>
+<p>Anki's SM-2 works until it doesn't — stability collapses silently, difficulty never moves, and intervals feel arbitrary. Revision uses an FSRS-5-inspired scheduler (<code>src/lib/fsrs.ts</code>) — the same family of models behind modern Anki — offline, deterministic, per-card.</p>
+<ul><li><strong>Weights:</strong> 19 published FSRS-5 defaults (<code>W</code> in <code>src/lib/fsrs.ts:16</code>), operating on per-card <code>stability</code> / <code>difficulty</code> / <code>retrievability</code>. No server, no training job — the math runs on <code>card_state.stability</code> and <code>card_state.difficulty</code>.</li><li><strong>Retrievability:</strong> <code>R(t) = (1 + 19/81 · t/S)^-0.5</code> (<code>src/lib/fsrs.ts:31</code>) and <code>intervalDays(S, 0.9)</code> — days until <code>R(t)</code> decays to the desired retention — drive every prediction.</li><li><strong>Live predictions:</strong> <code>predictIntervals(state, desiredRetention)</code> (<code>src/lib/fsrs.ts:137</code>) recomputes all four grades on every card, rendered on the grading bar before you commit. Hovering a zone shows the delta — &quot;Good → 6d · R at due 89%&quot;.</li><li><strong>Desired retention 80–95%</strong> (<code>SettingsView</code>) — slide it and the intervals move. Again restarts at the 10-minute learning step (<code>src/lib/fsrs.ts:22</code>); Good/Hard/Easy project long-term intervals scaled by <code>1.3×</code> for Easy.</li><li><strong>Inspector honesty:</strong> current <code>R(t)</code> today (<code>cardRetrievability</code>, <code>src/lib/fsrs.ts:169</code>), per-grade curves, and the forest-vs-tree view in Analytics so you can see whether you're carrying too much new material.</li></ul>
+<p>The product point is transparency. You never grade blind — the bar tells you what each button costs before you press it.</p>
+<hr>
+<h2>Decision 2: drag as the grading language</h2>
+<p>Keyboard-first was non-negotiable (Space reveal, <code>1–4</code> grade, <code>G</code> cloze, <code>H</code> hints, <code>⇧G</code> undo, <code>⌃→</code> skip, <code>⌘K</code> palette — <code>src/App.tsx:222</code>), but grading <code>1–4</code> on a laptop all day is finger gymnastics. The grading gesture makes the card itself the control.</p>
+<p><code>useDragGesture</code> (<code>src/lib/gestures.ts:31</code>) is a pointer-drag layer on <code>.flip-wrap</code> in <code>ReviewView.tsx:58</code>:</p>
+<table><thead><tr><th>Constant</th><th>Value</th><th>Why</th></tr></thead><tbody><tr><td>Deadzone</td><td>6 px</td><td>ignore micro-jitter</td></tr><tr><td>Tap</td><td>&lt;10 px &amp; &lt;260 ms</td><td>flip on click/tap</td></tr><tr><td>Flip threshold</td><td>64 px</td><td>short flick before reveal</td></tr><tr><td>Grade threshold</td><td>118 px</td><td>deliberate commit once shown</td></tr><tr><td>Max dist</td><td>260 px</td><td>clamp so the card never leaves the stage</td></tr><tr><td>Fly-out</td><td>230 ms (170 ms for flip)</td><td>tilt → fly, then callback</td></tr></tbody></table>
+<ul><li><strong>Hidden card:</strong> a short flick in any direction flips to reveal; a tap flips back.</li><li><strong>Shown card:</strong> grab and the card follows the pointer with a <code>rotate(x * 0.045deg)</code> tilt (<code>src/lib/gestures.ts:161</code>), directional badges light live (<code>swipe-badge lit</code> in <code>ReviewView.tsx:283</code>), release past the glow to fly out and grade, release short to spring back with no effect. Links and buttons inside the card are excluded via <code>[data-no-gesture]</code> and <code>a/button</code> guard (<code>src/lib/gestures.ts:73</code>); touch vertical swipes scroll instead of grading.</li><li><strong>Gesture map:</strong> the compact d-pad at the top-right of the card (<code>GesturePad</code>, <code>ReviewView.tsx:250</code>) is both legend and control — center = tap/pinch to flip, arrows = grade. Clicking an arrow grades directly, which saved a lot of onboarding.</li></ul>
+<p>The mapping is fixed and always visible:</p>
+<table><thead><tr><th>Direction</th><th>Grade</th><th>Key</th><th>Meaning</th></tr></thead><tbody><tr><td>← left</td><td>Again (1)</td><td>reset</td><td>10 m step, stability collapses</td></tr><tr><td>→ right</td><td>Good (3)</td><td>normal</td><td>FSRS interval</td></tr><tr><td>↑ up</td><td>Easy (4)</td><td>bonus</td><td>1.3× interval</td></tr><tr><td>↓ down</td><td>Hard (2)</td><td>penalty</td><td>shorter growth</td></tr></tbody></table>
+<p>Hover highlights on the map, plus <code>g-swipe</code> arrows on each grade zone (<code>ReviewView.tsx:218</code>), keep the mapping in peripheral vision — you learn it in about three cards.</p>
+<hr>
+<h2>Decision 3: air gestures, fully on-device</h2>
+<p>Drag proved the interaction; the camera proves it can leave the pointer behind. Air gestures are opt-in (<code>Settings → Gestures</code>, <code>recall_air_gestures</code> in <code>localStorage</code> — <code>src/App.tsx:194</code>) and run <strong>entirely locally</strong> — no upload, no API key.</p>
+<ul><li><strong>MediaPipe HandLandmarker</strong>, WASM + <code>hand_landmarker.task</code> (~7.8 MB) <strong>committed under <code>public/mediapipe/</code></strong> (<code>AGENTS.md:43</code>) so the app works offline after install. The <code>@mediapipe/tasks-vision</code> bundle is dynamic-imported only when camera mode turns on — cold start pays nothing.</li><li><strong><code>HandOverlay.tsx</code></strong> — <code>getUserMedia</code> + detect loop with PiP preview, landmark skeleton, and a status chip (<code>tracking</code> / <code>camera denied</code> / <code>no camera</code> / <code>timeout</code>). The timeout watchdog (10 s) handles headless/CI where <code>getUserMedia</code> hangs — the overlay says so and the app degrades to keyboard/drag.</li><li><strong><code>HandGestureDetector</code> in <code>src/lib/handGestures.ts:24</code></strong> — a synthetic-testable classifier over normalized landmarks:</li></ul>
+<ul><li><strong>Pinch = flip</strong> — thumb tip 4 vs index tip 8 distance under 0.055, while middle/ring/pinky stay over 0.11 away from the thumb; edge-triggered with a 600 ms cooldown (<code>src/lib/handGestures.ts:62</code>).</li><li><strong>Swipe = grade</strong> — palm centroid history over a 110 ms window, axis-locked, requires 0.085 initial move and 0.3 total travel on the dominant axis before firing, with a 900 ms cooldown and a 0.1 reset distance to prevent chatter (<code>src/lib/handGestures.ts:17-20</code>). Same <code>← Again · → Good · ↑ Easy · ↓ Hard</code> map as drag.</li></ul>
+<p>macOS camera permission is wired at the bundle level (<code>src-tauri/Info.plist</code> + <code>Entitlements.plist</code>, referenced in <code>tauri.conf.json: bundle.macOS.entitlements</code> — <code>src/AGENTS.md:37</code>). A noisy classifier is worse than no classifier — the cooldowns and reset-distance logic eliminated the false-grade burst that plagued early builds.</p>
+<hr>
+<h2>Decision 4: activity-aware sessions (v0.4.0)</h2>
+<p>Spaced repetition only works if every recorded grade is real recall. Leaving a card answer exposed while you answer Slack breaks that.</p>
+<p><code>src/lib/session.ts</code> and <code>src/App.tsx:478</code> add a small state machine around the review loop:</p>
+<pre class="diagram"><code>reviewing  ──(idle ≥ staleMin)──► stale: hide answer, pause pomo, show banner
+   ▲                                    │
+   └── any key/click/swipe ─── Resume ──┘
+   └────── Restart queue ── re-derive queue from current DB
+   └────── End ── back to dashboard
+   └────── auto-end after 15 m idle (toggleable)</code></pre>
+<ul><li><strong>Threshold:</strong> <code>StaleThreshold = 0 | 1 | 3 | 5 | 10</code> minutes (<code>src/lib/session.ts:1</code>), default 3 m — <code>Off</code> disables it. Sweep runs every 5 s (<code>SWEEP_MS</code>, <code>src/lib/session.ts:5</code>).</li><li><strong>Window-aware:</strong> <code>visibilitychange</code> + <code>blur</code>/<code>focus</code> in <code>src/App.tsx:543</code> — return after <code>≥ staleMin</code> from another app triggers the same treatment instantly, so the exposed answer never counts as recall.</li><li><strong>Resume is a no-op grade</strong> — <code>touch()</code> on any activity (<code>src/App.tsx:482</code>) resets <code>lastTouchRef</code>, <code>resume()</code> clears <code>stale</code> without grading the hidden card. The banner copy is explicit: &quot;your queue and progress are untouched until you resume.&quot;</li></ul>
+<p>Fifteen minutes auto-ends the session (<code>AUTO_END_DEFAULT_MIN</code>, <code>src/lib/session.ts:4</code>) because the queue should be re-derived anyway. Burying and suspending still work per card (<code>B</code>/<code>S</code> — <code>src/App.tsx:455</code>), independent of staleness.</p>
+<hr>
+<h2>Decision 5: shipping small</h2>
+<p>The app could have been Electron + cloud sync + a design-system landing page. The constraint was the opposite: one file, no account, works on a fresh Mac with no network.</p>
+<ul><li><strong>Tauri 2 + SQLite</strong> (<code>src/lib/db.ts:29</code> lazy-imports <code>tauri-plugin-sql</code>, <code>Database.load</code> of <code>sqlite:revision.db</code>; browser fallback in <code>src/lib/db.browser.ts</code> kept in sync on schema changes). Migrations are explicit — single <strong>Revision</strong> deck (<code>src/lib/db.ts:54</code>), FSRS columns <code>stability</code>/<code>difficulty</code> added via <code>ALTER TABLE</code> when missing (<code>src/lib/db.ts:127</code>), legacy <code>interval</code> backfilled to <code>stability</code> (<code>src/lib/db.ts:164</code>).</li><li><strong>Single-deck + tags</strong> (<code>src/lib/derive.ts: buildTagTree</code>, <code>src/lib/db.ts:38</code> <code>deckNameToTag</code>) — CSV import maps old decks to tags so old data migrates without a prompt (<code>src/lib/db.ts:434</code>).</li><li><strong>Release pipeline:</strong> GitHub Actions <code>.github/workflows/release.yml</code> builds a matrix (macOS arm64 + x64 + Windows) on every <code>v*</code> tag. Version lives in three manifests — <code>package.json</code>, <code>src-tauri/tauri.conf.json</code>, <code>src-tauri/Cargo.toml</code> (<code>AGENTS.md:21</code>) — and README links + asset sizes are hardcoded per version (<code>AGENTS.md:30</code>). All installers stay ≤ 25 MB (<code>README.md:22</code>).</li><li><strong>Tray, widget, launch-at-login:</strong> <code>Due X • New Y</code> tray menu (<code>App.tsx:123</code> <code>invoke</code> of <code>update_tray</code>), in-app 340×190 widget window plus a WidgetKit Desktop widget (<code>src-tauri/RevisionWidget/</code>, <code>scripts/build-widget.sh</code>), <code>tauri-plugin-autostart</code> behind a Settings toggle.</li></ul>
+<p>The boring truth: the commit discipline (<code>feat:</code>/<code>fix:</code>) and the &quot;no comments unless asked&quot; repo rule matter more for ship cadence than any framework choice.</p>
+<hr>
+<h2>What I kept out</h2>
+<ul><li><strong>Cloud sync</strong> — one SQLite file is the backup story (<code>Export CSV</code> + <code>revision.db</code> location in <code>docs/USER_GUIDE.md:75</code>). Sync is a distributed-systems product, not a feature flag.</li><li><strong>A second deck table</strong> — tags compose better for cross-cutting filters (stuck cards under 80% <code>R</code>, due-today across all tracks).</li><li><strong>An LLM evaluator for answers</strong> — FSRS already measures recall over time; judging &quot;was that a good explanation?&quot; belongs in the inspector hints, not the grade.</li><li><strong>Fancier hand tracking</strong> — one hand, one detector instance. Multi-hand added nothing except CPU.</li></ul>
+<hr>
+<h2>Honesty as a feature (borrowed from SpendIQ)</h2>
+<p>The system prompt problem shows up here too: an agent that grades itself should not invent its own difficulty curve. Every interval is derived from <code>predictIntervals</code> before you press, retrievability is shown at due time, and analytics split new/learning/review so you can see when you're flooding the future. The <a href="https://github.com/xpressabhi/revision/blob/main/docs/USER_GUIDE.md" target="_blank" rel="noopener">user guide</a> documents step-away handling, the <a href="https://github.com/xpressabhi/revision/blob/main/docs/DEVELOPMENT.md" target="_blank" rel="noopener">development doc</a> documents the three-manifest release rule, and the <a href="https://github.com/xpressabhi/revision/blob/main/CHANGELOG.md" target="_blank" rel="noopener">changelog</a> is the source of truth for what shipped when.</p>
+<hr>
+<h2>Stack &amp; links</h2>
+<p>Python wasn't needed here — just web and Rust glue:</p>
+<p><strong>Stack:</strong> Tauri 2 · React 19 · TypeScript 5.8 (strict) · Vite 7 · KaTeX · MediaPipe Tasks Vision · <code>tauri-plugin-sql</code> · <code>tauri-plugin-autostart</code> · Swift + XcodeGen (WidgetKit)</p>
+<p>Browse the code at <a href="https://github.com/xpressabhi/revision" target="_blank" rel="noopener">github.com/xpressabhi/revision</a>, grab the <a href="https://github.com/xpressabhi/revision/releases/latest" target="_blank" rel="noopener">latest release</a>, or run the browser preview with <code>npm run dev</code> at <code>http://localhost:1420</code> — it uses <code>localStorage</code> so you can try everything without installing the app. If you're hiring for frontend architecture, app shell design, or local-first tooling, my email is in the profile.</p>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var url = canonical ? canonical.href : location.href;
+    function legacyCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    function flashCopied(btn) {
+      var label = btn.textContent;
+      btn.textContent = "Link copied ✓";
+      btn.setAttribute("data-copied", "");
+      setTimeout(function () { btn.textContent = label; btn.removeAttribute("data-copied"); }, 2000);
+    }
+    var copyBtn = document.querySelector("button[data-share='copy']");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          flashCopied(copyBtn);
+        }
+        function doLegacy() { legacyCopy(url); finish(); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(finish, doLegacy);
+          setTimeout(finish, 600);
+        } else {
+          doLegacy();
+        }
+      });
+    }
+    var nativeBtn = document.querySelector("button[data-share='native']");
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener("click", function () {
+        navigator.share({ title: document.title, url: url }).catch(function () {});
+      });
+    }
+  })();
+</script>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
