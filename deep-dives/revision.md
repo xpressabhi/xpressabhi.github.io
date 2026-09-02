@@ -12,6 +12,8 @@ One SQLite file (`revision.db` via `tauri-plugin-sql`, or `localStorage` keys li
 
 The review queue is opinionated: **learning (10 m step) → due → new** (new cards capped at 20 per session), scoped by tag group or `⌘K` smart filters. Hidden card → flip (Space / Enter / click / flick); shown card → grade `1–4` (or a gesture) with live FSRS intervals on the grading bar.
 
+![Dashboard — due today, streak heatmap, smart study queues](/assets/revision/dashboard.png)
+
 ```
 Sidebar (tag tree)        Canvas (Dashboard / Review / Browse / Analytics)      Inspector (FSRS + hints)
 ─────────────             ──────────────────────────────────────────            ───────────────
@@ -33,6 +35,8 @@ Anki's SM-2 works until it doesn't — stability collapses silently, difficulty 
 - **Inspector honesty:** current `R(t)` today (`cardRetrievability`, `src/lib/fsrs.ts:169`), per-grade curves, and the forest-vs-tree view in Analytics so you can see whether you're carrying too much new material.
 
 The product point is transparency. You never grade blind — the bar tells you what each button costs before you press it.
+
+![Analytics — retention forecast, heatmap, grade distribution](/assets/revision/analytics.png)
 
 ---
 
@@ -65,6 +69,10 @@ The mapping is fixed and always visible:
 | ↓ down | Hard (2) | penalty | shorter growth |
 
 Hover highlights on the map, plus `g-swipe` arrows on each grade zone (`ReviewView.tsx:218`), keep the mapping in peripheral vision — you learn it in about three cards.
+
+![Review — front of card with the gesture map (← Again · → Good · ↑ Easy · ↓ Hard)](/assets/revision/review-hidden.png)
+
+![Review — answer side with the FSRS prediction grading bar](/assets/revision/review-shown.png)
 
 ---
 
@@ -112,6 +120,9 @@ The app could have been Electron + cloud sync + a design-system landing page. Th
 
 - **Tauri 2 + SQLite** (`src/lib/db.ts:29` lazy-imports `tauri-plugin-sql`, `Database.load` of `sqlite:revision.db`; browser fallback in `src/lib/db.browser.ts` kept in sync on schema changes). Migrations are explicit — single **Revision** deck (`src/lib/db.ts:54`), FSRS columns `stability`/`difficulty` added via `ALTER TABLE` when missing (`src/lib/db.ts:127`), legacy `interval` backfilled to `stability` (`src/lib/db.ts:164`).
 - **Single-deck + tags** (`src/lib/derive.ts: buildTagTree`, `src/lib/db.ts:38` `deckNameToTag`) — CSV import maps old decks to tags so old data migrates without a prompt (`src/lib/db.ts:434`).
+
+![Browse — search, filters, inline edit](/assets/revision/browse.png)
+
 - **Release pipeline:** GitHub Actions `.github/workflows/release.yml` builds a matrix (macOS arm64 + x64 + Windows) on every `v*` tag. Version lives in three manifests — `package.json`, `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` (`AGENTS.md:21`) — and README links + asset sizes are hardcoded per version (`AGENTS.md:30`). All installers stay ≤ 25 MB (`README.md:22`).
 - **Tray, widget, launch-at-login:** `Due X • New Y` tray menu (`App.tsx:123` `invoke` of `update_tray`), in-app 340×190 widget window plus a WidgetKit Desktop widget (`src-tauri/RevisionWidget/`, `scripts/build-widget.sh`), `tauri-plugin-autostart` behind a Settings toggle.
 
