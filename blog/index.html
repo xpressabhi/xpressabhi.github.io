@@ -14,11 +14,11 @@
   })();
 </script>
 <style>
-  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #616161; --faint: #9a9a9a; --line: #ececea; color-scheme: light dark; }
+  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #616161; --faint: #9a9a9a; --line: #ececea; --accent: #035aa7; --ok: #1a7f37; color-scheme: light dark; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #a8a8a8; --faint: #6e6e6e; --line: #232323; }
+    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #a8a8a8; --faint: #6e6e6e; --line: #232323; --accent: #5f91e8; --ok: #3fb950; }
   }
-  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #a8a8a8; --faint: #6e6e6e; --line: #232323; color-scheme: dark; }
+  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #a8a8a8; --faint: #6e6e6e; --line: #232323; --accent: #5f91e8; --ok: #3fb950; color-scheme: dark; }
   :root[data-theme="light"] { color-scheme: light; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -26,25 +26,27 @@
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
     font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased;
   }
-  ::selection { background: var(--ink); color: var(--bg); }
+  ::selection { background: var(--accent); color: #fff; }
   a { color: inherit; }
   .wrap { max-width: 700px; margin: 0 auto; padding: 0 24px; }
   header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
   nav { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
-  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
   .nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
   .nav-links a { color: var(--muted); text-decoration: none; }
   .nav-links a:hover { color: var(--ink); }
   .theme-btn { font: inherit; font-size: 12.5px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
   .theme-btn:hover { color: var(--ink); border-color: var(--faint); }
   .blog-head { padding: 56px 0 0; }
-  .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin-bottom: 10px; }
+  .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: 0 0 7px; }
   .blog-head h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 650; letter-spacing: -0.03em; }
   .blog-sub { margin-top: 10px; font-size: 16px; color: var(--muted); max-width: 56ch; }
   .posts { margin-top: 32px; border-top: 1px solid var(--line); padding-bottom: 32px; }
   a.post { display: block; padding: 22px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
   a.post:hover h2 { text-decoration: underline; text-underline-offset: 3px; }
   .post-meta { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--faint); }
+  .post-meta .feat { color: var(--ok); font-weight: 600; }
   a.post h2 { font-size: 19px; font-weight: 650; letter-spacing: -0.015em; margin: 6px 0 4px; line-height: 1.35; }
   .post-excerpt { color: var(--muted); font-size: 14.5px; }
   footer { border-top: 1px solid var(--line); padding: 24px 0 40px; font-size: 13.5px; color: var(--faint); }
@@ -60,7 +62,7 @@
 
 <header>
   <nav>
-    <a href="../" class="mark">Abhishek Maurya</a>
+    <a href="../" class="mark"><span class="dot"></span>Abhishek Maurya</a>
     <div class="nav-links">
       <a href="../#work">Work</a>
       <a href="../#experience">Experience</a>
@@ -74,7 +76,7 @@
 
 <main class="wrap">
   <div class="blog-head">
-    <div class="kicker">Writing · Deep dives</div>
+    <div class="kicker"><span class="dot"></span>Writing · Deep dives · status: online</div>
     <h1>Blog</h1>
     <p class="blog-sub">Long-form technical writeups — AI agents, MCP workflows, and developer platforms.</p>
   </div>
@@ -106,13 +108,13 @@
     </a>
     
     <a class="post" href="build-agent.html">
-      <div class="post-meta">Featured · Aug 18, 2026 · 7 min read</div>
+      <div class="post-meta"><span class="feat">● Featured · </span>Aug 18, 2026 · 7 min read</div>
       <h2>ServiceNow Build Agent Architecture</h2>
       <p class="post-excerpt">The ServiceNow Build Agent is an autonomous, AI-driven developer companion integrated natively into the ServiceNow AI Platform. It enables creators and engineers to design, build, test, and deploy …</p>
     </a>
     
     <a class="post" href="ala-app-summary-agent.html">
-      <div class="post-meta">Featured · Aug 18, 2026 · 5 min read</div>
+      <div class="post-meta"><span class="feat">● Featured · </span>Aug 18, 2026 · 5 min read</div>
       <h2>ServiceNow ALA: Release Lifecycle Documentation AI Agent</h2>
       <p class="post-excerpt">The Release Lifecycle Documentation AI Agent is an autonomous governance tool integrated into the ServiceNow platform under the Application Lifecycle Analytics (ALA) framework. Powered by the Now A…</p>
     </a>
@@ -130,7 +132,7 @@
     </a>
     
     <a class="post" href="servicenow-project-portfolio.html">
-      <div class="post-meta">Featured · Aug 14, 2026 · 10 min read</div>
+      <div class="post-meta"><span class="feat">● Featured · </span>Aug 14, 2026 · 10 min read</div>
       <h2>ServiceNow Project Portfolio: Technical Writeup</h2>
       <p class="post-excerpt">Over my tenure at ServiceNow, I have architected and delivered six major platform capabilities spanning AI-assisted development, low-code/no-code tooling, and internal developer productivity infras…</p>
     </a>
@@ -142,7 +144,7 @@
     </a>
     
     <a class="post" href="sn-claude-skills.html">
-      <div class="post-meta">Featured · Aug 12, 2026 · 5 min read</div>
+      <div class="post-meta"><span class="feat">● Featured · </span>Aug 12, 2026 · 5 min read</div>
       <h2>Technical Specification: Agentic Developer Platform (ADP)</h2>
       <p class="post-excerpt">The Agentic Developer Platform (ADP) is a unified, multi-team automation framework designed to bootstrap, govern, and scale AI-assisted engineering workflows across the enterprise. Built and scaled…</p>
     </a>

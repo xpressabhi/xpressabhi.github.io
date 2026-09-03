@@ -26,11 +26,11 @@
   })();
 </script>
 <style>
-  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #525252; --faint: #9a9a9a; --line: #ececea; --code-bg: #f6f6f4; color-scheme: light dark; }
+  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #525252; --faint: #9a9a9a; --line: #ececea; --code-bg: #f6f6f4; --accent: #035aa7; --ok: #1a7f37; color-scheme: light dark; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; }
+    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; }
   }
-  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; color-scheme: dark; }
+  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; color-scheme: dark; }
   :root[data-theme="light"] { color-scheme: light; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -42,7 +42,8 @@
   a { color: inherit; }
   header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
   nav { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
-  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: 0 0 7px; }
   .nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
   .nav-links a { color: var(--muted); text-decoration: none; }
   .nav-links a:hover { color: var(--ink); }
@@ -87,7 +88,7 @@
 
 <header>
   <nav>
-    <a href="../" class="mark">Abhishek Maurya</a>
+    <a href="../" class="mark"><span class="dot"></span>Abhishek Maurya</a>
     <div class="nav-links">
       <a href="../#work">Work</a>
       <a href="../#experience">Experience</a>
@@ -104,7 +105,7 @@
     <h1>How We Turned Claude Code Into a Self-Improving AI Engineering Platform for Our Entire Organization</h1>
     <div class="post-meta"><span>Aug 14, 2026</span><span> · </span><span>16 min read</span><span> · </span><a href="./">All posts</a></div>
     <div class="share">
-      <span>Share:</span>
+      <span><span class="dot" style="display:inline-block;vertical-align:1px;margin-right:6px"></span>Share:</span>
       <a href="https://twitter.com/intent/tweet?text=How%20We%20Turned%20Claude%20Code%20Into%20a%20Self-Improving%20AI%20Engineering%20Platform%20for%20Our%20Entire%20Organization&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fclaude-code-self-improving-platform.html">X</a>
       <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fclaude-code-self-improving-platform.html">LinkedIn</a>
       <button type="button" data-share="copy">Copy link</button>
