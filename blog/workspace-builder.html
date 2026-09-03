@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ServiceNow Workspace Builder: Overview & Core Capabilities · Abhishek Kumar Maurya</title>
+<title>ServiceNow Workspace Builder: Overview & Core Capabilities · Abhishek Maurya</title>
 <meta name="description" content="The ServiceNow Workspace Builder is a dedicated, no-code visualization tool integrated within the ServiceNow platform. It allows citizen developers and business analysts to design, configure, and c…">
 <link rel="canonical" href="https://xpressabhi.github.io/blog/workspace-builder.html">
 <meta property="og:type" content="article">
-<meta property="og:site_name" content="Abhishek Kumar Maurya">
+<meta property="og:site_name" content="Abhishek Maurya">
 <meta property="og:title" content="ServiceNow Workspace Builder: Overview & Core Capabilities">
 <meta property="og:description" content="The ServiceNow Workspace Builder is a dedicated, no-code visualization tool integrated within the ServiceNow platform. It allows citizen developers and business analysts to design, configure, and c…">
 <meta property="og:url" content="https://xpressabhi.github.io/blog/workspace-builder.html">
@@ -17,245 +17,78 @@
 <meta name="twitter:title" content="ServiceNow Workspace Builder: Overview & Core Capabilities">
 <meta name="twitter:description" content="The ServiceNow Workspace Builder is a dedicated, no-code visualization tool integrated within the ServiceNow platform. It allows citizen developers and business analysts to design, configure, and c…">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
 <style>
-  :root {
-    --bg: #fdfcfc;
-    --surface: #f5f3f1;
-    --ink: #171512;
-    --muted: #777169;
-    --dim: #a59f97;
-    --faint: #b1b0b0;
-    --line: #e5e5e5;
-    --accent: #b45309;
-    --accent-ink: #9a3412;
-    --accent-soft: rgba(180, 83, 9, 0.08);
-    --accent-line: rgba(180, 83, 9, 0.3);
-    --code-bg: #201d19;
-    --code-border: #36322b;
-    --code-ink: #e9e3d8;
-    --code-dim: #948c81;
-    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #525252; --faint: #9a9a9a; --line: #ececea; --code-bg: #f6f6f4; color-scheme: light dark; }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #121110;
-      --surface: #1e1c19;
-      --ink: #f0ece6;
-      --muted: #b4ada4;
-      --dim: #8a847c;
-      --faint: #6f6a63;
-      --line: #2c2925;
-      --accent: #e0924f;
-      --accent-ink: #e7b078;
-      --accent-soft: rgba(224, 146, 79, 0.1);
-      --accent-line: rgba(224, 146, 79, 0.32);
-      --code-bg: #16130f;
-      --code-border: #2c2822;
-      --code-ink: #eae4da;
-      --code-dim: #8b847a;
-    }
+    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; }
   }
+  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; color-scheme: dark; }
+  :root[data-theme="light"] { color-scheme: light; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--bg); color: var(--ink);
-    font-family: var(--font-display); font-size: 16px; line-height: 1.65;
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
+    font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased;
   }
   ::selection { background: var(--ink); color: var(--bg); }
-  a { color: inherit; text-decoration: none; }
-
-  header {
-    position: sticky; top: 0; z-index: 10;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-  }
-  nav {
-    max-width: 860px; margin: 0 auto; padding: 0 32px; height: 56px;
-    display: flex; align-items: center; justify-content: space-between; gap: 24px;
-  }
-  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
-  .mark-sq {
-    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
-    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-  }
-  .nav-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
-  .nav-links a { color: var(--muted); }
+  a { color: inherit; }
+  header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  nav { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+  .nav-links a { color: var(--muted); text-decoration: none; }
   .nav-links a:hover { color: var(--ink); }
-  .nav-back { font-size: 14px; color: var(--muted); }
-
-  main { max-width: 860px; margin: 0 auto; padding: 56px 32px 96px; }
-
-  .reader h1 {
-    font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em;
-    line-height: 1.15; margin-bottom: 14px;
-  }
-  .reader .post-meta {
-    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
-    margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 6px 12px;
-  }
-  .reader .post-meta a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
-  .reader .post-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
-
-  /* ---------- section headers ---------- */
-  .reader h2 {
-    font-size: 21px; font-weight: 600; letter-spacing: -0.01em;
-    margin: 46px 0 18px;
-    padding: 10px 14px 10px 14px;
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    background: linear-gradient(90deg, var(--accent-soft), transparent 72%);
-    scroll-margin-top: 76px;
-  }
-  .reader h3 {
-    font-size: 16.5px; font-weight: 600; letter-spacing: -0.005em;
-    margin: 30px 0 12px; color: var(--accent-ink);
-  }
-  .reader h4 {
-    font-size: 15px; font-weight: 600; margin: 22px 0 8px;
-  }
-  .reader h4::before {
-    content: "▹ "; color: var(--accent); font-weight: 600;
-  }
-
-  /* ---------- body copy ---------- */
-  .reader p { color: var(--muted); margin-bottom: 16px; max-width: 72ch; }
-  .reader .post-image {
-    display: block; max-width: 100%; height: auto;
-    margin: 28px auto; border-radius: 12px;
-    border: 1px solid var(--line);
-  }
-  .reader strong { color: var(--ink); font-weight: 600; }
+  .theme-btn { font: inherit; font-size: 12.5px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+  .theme-btn:hover { color: var(--ink); border-color: var(--faint); }
+  main { max-width: 700px; margin: 0 auto; padding: 52px 24px 80px; }
+  .reader h1 { font-size: clamp(28px, 4vw, 38px); font-weight: 650; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px; }
+  .reader .post-meta { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; color: var(--faint); margin-bottom: 16px; }
+  .reader .post-meta a { color: var(--muted); }
+  .share { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 36px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+  .share a, .share button { color: var(--muted); background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .share a:hover, .share button:hover { color: var(--ink); }
+  .reader h2 { font-size: 21px; font-weight: 650; letter-spacing: -0.015em; margin: 40px 0 12px; padding-top: 20px; border-top: 1px solid var(--line); scroll-margin-top: 76px; }
+  .reader h3 { font-size: 16.5px; font-weight: 650; margin: 28px 0 8px; }
+  .reader h4 { font-size: 15px; font-weight: 650; margin: 22px 0 8px; }
+  .reader p { color: var(--muted); margin-bottom: 16px; }
+  .reader strong { color: var(--ink); font-weight: 650; }
   .reader em { color: var(--ink); }
-  .reader a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-line); }
-  .reader a:hover { color: var(--accent); text-decoration-color: var(--accent); }
-
-  /* ---------- share row ---------- */
-  .share {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-    margin: 0 0 48px; padding: 12px 16px;
-    border: 1px solid var(--line); border-radius: 12px;
-    background: var(--surface);
-  }
-  .share-label {
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--dim); margin-right: 6px;
-  }
-  .share a, .share button {
-    font-family: var(--font-mono); font-size: 12.5px; color: var(--muted);
-    background: transparent; border: 1px solid var(--line); border-radius: 999px;
-    padding: 5px 14px; cursor: pointer;
-    transition: color 150ms ease, border-color 150ms ease;
-  }
-  .share a:hover, .share button:hover { color: var(--ink); border-color: var(--dim); }
-  .share button[data-copied] {
-    color: var(--accent-ink); border-color: var(--accent-line); background: var(--accent-soft);
-  }
-  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
-
-  /* ---------- lists ---------- */
-  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 24px; }
+  .reader a { color: var(--ink); text-underline-offset: 3px; }
+  .reader .post-image { display: block; max-width: 100%; height: auto; margin: 24px auto; border: 1px solid var(--line); border-radius: 8px; }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 22px; }
   .reader li { margin-bottom: 6px; }
-  .reader li::marker { color: var(--accent); font-weight: 500; }
-
-  /* ---------- inline code ---------- */
-  .reader code {
-    font-family: var(--font-mono); font-size: 0.85em;
-    color: var(--accent-ink);
-    background: var(--accent-soft);
-    border: 1px solid var(--accent-line);
-    border-radius: 5px;
-    padding: 1.5px 6px;
-  }
-
-  /* ---------- code blocks (terminal) ---------- */
-  .reader pre { margin: 0 0 20px; border-radius: 12px; overflow-x: auto; }
-  .reader pre.code {
-    background: var(--code-bg);
-    border: 1px solid var(--code-border);
-    position: relative;
-  }
-  .reader pre.code code {
-    display: block; padding: 18px;
-    background: none; border: 0; border-radius: 0;
-    color: var(--code-ink); font-size: 13px; line-height: 1.65;
-  }
-  .reader pre.code[data-lang] { padding-top: 32px; }
-  .reader pre.code[data-lang]::before {
-    content: attr(data-lang);
-    position: absolute; top: 0; left: 0; right: 0;
-    padding: 6px 16px;
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--code-dim);
-    border-bottom: 1px solid var(--code-border);
-  }
-
-  /* ---------- diagrams ---------- */
-  .reader pre.diagram {
-    background: var(--accent-soft);
-    border: 1px dashed var(--accent-line);
-    text-align: center;
-  }
-  .reader pre.diagram::before {
-    content: "Diagram";
-    display: block;
-    text-align: left;
-    padding: 6px 16px;
-    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--accent);
-    border-bottom: 1px solid var(--accent-line);
-  }
-  .reader pre.diagram code {
-    display: block; padding: 16px 18px 20px;
-    background: none; border: 0; border-radius: 0;
-    color: var(--ink); font-size: 12.5px; line-height: 1.55;
-    white-space: pre; text-align: center;
-  }
-
-  /* ---------- blockquotes ---------- */
-  .reader blockquote {
-    border-left: 3px solid var(--accent);
-    background: var(--accent-soft);
-    border-radius: 0 8px 8px 0;
-    padding: 10px 18px;
-    color: var(--muted); font-style: italic; margin: 0 0 18px;
-  }
-
-  /* ---------- tables ---------- */
+  .reader code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+  .reader pre { margin: 0 0 20px; border-radius: 8px; overflow-x: auto; background: var(--code-bg); border: 1px solid var(--line); }
+  .reader pre code { display: block; padding: 16px; background: none; border: 0; border-radius: 0; font-size: 13px; line-height: 1.65; }
+  .reader pre.diagram { text-align: center; border-style: dashed; }
+  .reader pre.diagram code { text-align: center; }
+  .reader blockquote { border-left: 2px solid var(--ink); padding: 4px 16px; color: var(--muted); font-style: italic; margin: 0 0 18px; }
   .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
   .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
-  .reader th { background: var(--accent-soft); color: var(--ink); font-weight: 600; border-bottom: 2px solid var(--accent-line); }
-  .reader tbody tr:nth-child(even) { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
-
-  .reader-foot { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
-  .reader-foot a { color: var(--muted); }
-  .reader-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-
-  @media (max-width: 768px) {
-    nav, main { padding-left: 24px; padding-right: 24px; }
-    main { padding-top: 40px; }
-    .nav-links a:not(.nav-back) { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { transition-duration: 0.01ms !important; }
-  }
+  .reader th { color: var(--ink); font-weight: 650; }
+  .reader-foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); }
+  @media (max-width: 640px) { main { padding-top: 36px; } }
 </style>
 </head>
 <body>
 
 <header>
   <nav>
-    <a href="../" class="mark" aria-label="Back to portfolio">
-      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
-    </a>
+    <a href="../" class="mark">Abhishek Maurya</a>
     <div class="nav-links">
       <a href="./">Blog</a>
-      <a href="../" class="nav-back">← Home</a>
+      <a href="../">Home</a>
+      <button type="button" class="theme-btn" data-theme-btn>◐ System</button>
     </div>
   </nav>
 </header>
@@ -263,11 +96,11 @@
 <main>
   <article class="reader">
     <h1>ServiceNow Workspace Builder: Overview & Core Capabilities</h1>
-    <div class="post-meta"><span>Aug 12, 2026</span><span>·</span><span>2 min read</span><span>·</span><a href="./">All posts</a></div>
+    <div class="post-meta"><span>Aug 12, 2026</span><span> · </span><span>2 min read</span><span> · </span><a href="./">All posts</a></div>
     <div class="share">
-      <span class="share-label">Share</span>
-      <a href="https://twitter.com/intent/tweet?text=ServiceNow%20Workspace%20Builder%3A%20Overview%20%26%20Core%20Capabilities&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fworkspace-builder.html" data-share="x">X</a>
-      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fworkspace-builder.html" data-share="linkedin">LinkedIn</a>
+      <span>Share:</span>
+      <a href="https://twitter.com/intent/tweet?text=ServiceNow%20Workspace%20Builder%3A%20Overview%20%26%20Core%20Capabilities&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fworkspace-builder.html">X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fworkspace-builder.html">LinkedIn</a>
       <button type="button" data-share="copy">Copy link</button>
       <button type="button" data-share="native" hidden>Share…</button>
     </div>
@@ -295,6 +128,29 @@
 
 <script>
   (function () {
+    var btn = document.querySelector("[data-theme-btn]");
+    if (!btn) return;
+    function current() { return document.documentElement.getAttribute("data-theme") || "system"; }
+    function label(t) { return t === "light" ? "○ Light" : t === "dark" ? "● Dark" : "◐ System"; }
+    function paint() {
+      btn.textContent = label(current());
+      btn.setAttribute("aria-label", "Color theme: " + current() + ". Activate to change.");
+    }
+    btn.addEventListener("click", function () {
+      var next = { system: "light", light: "dark", dark: "system" }[current()] || "system";
+      try {
+        if (next === "system") localStorage.removeItem("theme");
+        else localStorage.setItem("theme", next);
+      } catch (e) {}
+      if (next === "system") document.documentElement.removeAttribute("data-theme");
+      else document.documentElement.setAttribute("data-theme", next);
+      paint();
+    });
+    paint();
+  })();
+</script>
+<script>
+  (function () {
     var canonical = document.querySelector('link[rel="canonical"]');
     var url = canonical ? canonical.href : location.href;
     function legacyCopy(text) {
@@ -310,8 +166,7 @@
     function flashCopied(btn) {
       var label = btn.textContent;
       btn.textContent = "Link copied ✓";
-      btn.setAttribute("data-copied", "");
-      setTimeout(function () { btn.textContent = label; btn.removeAttribute("data-copied"); }, 2000);
+      setTimeout(function () { btn.textContent = label; }, 2000);
     }
     var copyBtn = document.querySelector("button[data-share='copy']");
     if (copyBtn) {

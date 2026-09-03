@@ -169,7 +169,7 @@ function buildBlog() {
     const url = `${SITE_URL}/blog/${slug}.html`;
     const enc = encodeURIComponent;
     const scope = {
-      name: REPO.basics.name, slug, title, excerpt, updated, read,
+      name: (REPO.basics.shortName || REPO.basics.name), slug, title, excerpt, updated, read,
       featured: featured.has(file), content: mdToHtml(body),
       url,
       shareX: `https://twitter.com/intent/tweet?text=${enc(title)}&url=${enc(url)}`,
@@ -189,7 +189,7 @@ function buildBlog() {
   }
 
   posts.sort((a, b) => b.mtime - a.mtime);
-  const index = render(indexTpl, [{ name: REPO.basics.name, email: REPO.basics.email, posts }]);
+  const index = render(indexTpl, [{ name: (REPO.basics.shortName || REPO.basics.name), email: REPO.basics.email, posts }]);
   return { posts, index };
 }
 
@@ -205,7 +205,7 @@ function buildProfileReadme() {
     .filter((p) => p.status === "live")
     .map((p) => `- [${p.name}](${p.url}) — ${p.description}`)
     .join("\n");
-  return `# ${b.name} 👋
+  return `# ${(b.shortName || b.name)} 👋
 
 Staff Software Engineer at **ServiceNow** — founded the **MCP-driven Agentic Developer Platform** used by **20+ teams** (Claude Code · MCP servers · agents · skills). AI Agents, MCP & agentic platform engineering. Ex-Rippling | Ex-Reputation | Ex-Oracle. NIT Trichy (MCA), ${b.yearsExperience} years of software development from ${b.location}.
 

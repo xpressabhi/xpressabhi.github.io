@@ -2,6 +2,7 @@
   "$comment": "SINGLE SOURCE OF TRUTH. Edit only this file. Run `npm run build` in this repo to regenerate portfolio (index.html), CV (resume/index.html + resume/abhishek-maurya-cv.pdf), GitHub profile README (../xpressabhi/README.md), and career-ops CV (../career-ops/cv.md).",
   "basics": {
     "name": "Abhishek Kumar Maurya",
+    "shortName": "Abhishek Maurya",
     "headline": "Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms",
     "tagline": "16+ years of building web applications, agentic AI workflows, and developer platforms",
     "shortSummary": "16+ years across agentic AI, frontend, and platform architecture. Systems adopted by 20+ teams at ServiceNow.",

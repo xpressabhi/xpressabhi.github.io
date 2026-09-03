@@ -3,276 +3,160 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blog · Abhishek Kumar Maurya</title>
+<title>Blog · Abhishek Maurya</title>
 <meta name="description" content="Long-form technical writeups on AI agents, MCP workflows, and developer platforms.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
 <style>
-  :root {
-    --bg: #fdfcfc;
-    --surface: #f5f3f1;
-    --ink: #171512;
-    --muted: #777169;
-    --dim: #7a746c;
-    --faint: #b1b0b0;
-    --line: #e5e5e5;
-    --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #616161; --faint: #9a9a9a; --line: #ececea; color-scheme: light dark; }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #121110;
-      --surface: #1e1c19;
-      --ink: #f0ece6;
-      --muted: #b4ada4;
-      --dim: #8a847c;
-      --faint: #6f6a63;
-      --line: #2c2925;
-    }
+    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #a8a8a8; --faint: #6e6e6e; --line: #232323; }
   }
+  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #a8a8a8; --faint: #6e6e6e; --line: #232323; color-scheme: dark; }
+  :root[data-theme="light"] { color-scheme: light; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--bg); color: var(--ink);
-    font-family: var(--font-display); font-size: 16px; line-height: 1.6;
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
+    font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased;
   }
   ::selection { background: var(--ink); color: var(--bg); }
-  a { color: inherit; text-decoration: none; }
-  .wrap { max-width: 960px; margin: 0 auto; padding: 0 48px; }
-  .mono { font-family: var(--font-mono); }
-
-  header {
-    position: sticky; top: 0; z-index: 10;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-  }
-  nav {
-    max-width: 960px; margin: 0 auto; padding: 0 48px; height: 56px;
-    display: flex; align-items: center; justify-content: space-between; gap: 24px;
-  }
-  .mark { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; }
-  .mark-sq {
-    width: 24px; height: 24px; border-radius: 7px; background: var(--ink); color: var(--bg);
-    display: grid; place-items: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-  }
-  .nav-links { display: flex; align-items: center; gap: 26px; font-size: 14px; }
-  .nav-links a { color: var(--muted); }
+  a { color: inherit; }
+  .wrap { max-width: 700px; margin: 0 auto; padding: 0 24px; }
+  header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  nav { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+  .nav-links a { color: var(--muted); text-decoration: none; }
   .nav-links a:hover { color: var(--ink); }
-  .nav-pill {
-    background: var(--ink); color: var(--bg) !important; border-radius: 999px;
-    padding: 6px 16px; font-size: 13px; font-weight: 500;
-    transition: opacity 160ms ease;
-  }
-  .nav-pill:hover { opacity: 0.85; color: var(--bg) !important; text-decoration: none; }
-
-  .blog-head { padding: 72px 0 8px; }
-  .blog-head h1 {
-    font-size: clamp(40px, 5.5vw, 60px); font-weight: 600; letter-spacing: -0.03em; line-height: 1;
-  }
-  .blog-sub { margin-top: 18px; font-size: 17px; color: var(--muted); max-width: 620px; }
-
-  .posts { margin-top: 32px; border-top: 1px solid var(--line); padding-bottom: 16px; }
-  a.post { display: block; padding: 30px 0; border-bottom: 1px solid var(--line); }
-  .post-meta {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
-    font-family: var(--font-mono); font-size: 12.5px; color: var(--dim);
-  }
-  .post-tag {
-    border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px;
-    font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-  }
-  a.post h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.01em; margin: 10px 0 6px; transition: opacity 160ms ease; }
-  a.post:hover h2 { text-decoration: underline; text-underline-offset: 4px; }
-  .post-excerpt { color: var(--muted); font-size: 15px; max-width: 68ch; }
-  .post-read { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 500; color: var(--muted); }
-  a.post:hover .post-read { color: var(--ink); }
-
-  footer { border-top: 1px solid var(--line); padding: 40px 0 48px; }
-  .footer-row { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 14px; color: var(--dim); }
-  .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
-  .footer-links a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-
-  .rise { opacity: 0; animation: rise 720ms var(--ease) forwards; animation-delay: var(--d, 0ms); }
-  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-  .reveal { opacity: 0; transform: translateY(10px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
-  .reveal.in { opacity: 1; transform: none; }
-
-  @media (max-width: 768px) {
-    .wrap, nav { padding: 0 24px; }
-    .nav-links a:not(.nav-pill) { display: none; }
-    .blog-head { padding-top: 48px; }
-    a.post { padding: 24px 0; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .rise { opacity: 1; animation: none; }
-    .reveal { opacity: 1; transform: none; transition: none; }
-    * { transition-duration: 0.01ms !important; }
-  }
+  .theme-btn { font: inherit; font-size: 12.5px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+  .theme-btn:hover { color: var(--ink); border-color: var(--faint); }
+  .blog-head { padding: 56px 0 0; }
+  .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); margin-bottom: 10px; }
+  .blog-head h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 650; letter-spacing: -0.03em; }
+  .blog-sub { margin-top: 10px; font-size: 16px; color: var(--muted); max-width: 56ch; }
+  .posts { margin-top: 32px; border-top: 1px solid var(--line); padding-bottom: 32px; }
+  a.post { display: block; padding: 22px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+  a.post:hover h2 { text-decoration: underline; text-underline-offset: 3px; }
+  .post-meta { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--faint); }
+  a.post h2 { font-size: 19px; font-weight: 650; letter-spacing: -0.015em; margin: 6px 0 4px; line-height: 1.35; }
+  .post-excerpt { color: var(--muted); font-size: 14.5px; }
+  footer { border-top: 1px solid var(--line); padding: 24px 0 40px; font-size: 13.5px; color: var(--faint); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; }
+  footer a { color: var(--muted); }
+  @media (max-width: 640px) { .blog-head { padding-top: 40px; } }
 </style>
 </head>
 <body>
 
 <header>
   <nav>
-    <a href="../" class="mark" aria-label="Back to portfolio">
-      <span class="mark-sq">AM</span> Abhishek Kumar Maurya
-    </a>
+    <a href="../" class="mark">Abhishek Maurya</a>
     <div class="nav-links">
       <a href="../#work">Work</a>
-      <a href="../resume/" class="nav-pill">CV</a>
+      <a href="../resume/">CV</a>
+      <button type="button" class="theme-btn" data-theme-btn>◐ System</button>
     </div>
   </nav>
 </header>
 
 <main class="wrap">
-  <div class="blog-head rise">
+  <div class="blog-head">
+    <div class="kicker">Writing · Deep dives</div>
     <h1>Blog</h1>
-    <p class="blog-sub rise" style="--d:80ms">Long-form technical writeups — AI agents, MCP workflows, and developer platforms. Deep dives from my work at ServiceNow and beyond.</p>
+    <p class="blog-sub">Long-form technical writeups — AI agents, MCP workflows, and developer platforms.</p>
   </div>
 
   <div class="posts">
     
-    <a class="post reveal" href="revision.html">
-      <div class="post-meta">
-        
-        <span>Sep 2, 2026</span><span>·</span><span>9 min read</span>
-      </div>
+    <a class="post" href="revision.html">
+      <div class="post-meta">Sep 2, 2026 · 9 min read</div>
       <h2>Revision — a local-first FSRS-5 desktop app with drag and air gestures</h2>
       <p class="post-excerpt">Revision is a local-first desktop app for principal-level interview prep — DSA, system design concepts and use cases, AI concepts and use cases, behavioral — with FSRS-5 scheduling, a keyboard-firs…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="agentic-rag-simulator.html">
-      <div class="post-meta">
-        
-        <span>Aug 25, 2026</span><span>·</span><span>6 min read</span>
-      </div>
+    <a class="post" href="agentic-rag-simulator.html">
+      <div class="post-meta">Aug 25, 2026 · 6 min read</div>
       <h2>Switchyard: Watch What Happens Inside an Agentic AI + RAG Pipeline</h2>
       <p class="post-excerpt">Most RAG tutorials show you the happy path and stop there. But the real learning — the part that makes you useful when a pipeline misbehaves in production — is in what happens around the LLM call: …</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="spendiq-copilot.html">
-      <div class="post-meta">
-        
-        <span>Aug 24, 2026</span><span>·</span><span>5 min read</span>
-      </div>
+    <a class="post" href="spendiq-copilot.html">
+      <div class="post-meta">Aug 24, 2026 · 5 min read</div>
       <h2>SpendIQ Copilot: Guardrails, Evals, and Honesty for an Agent Over Enterprise Data</h2>
       <p class="post-excerpt">Most agent demos are theater: a model, a vector database, and a happy path. I wanted to build the opposite — an agent that touches financial data (vendors, contracts, purchase orders, invoices) and…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="on-device-vlm-iphone.html">
-      <div class="post-meta">
-        
-        <span>Aug 24, 2026</span><span>·</span><span>8 min read</span>
-      </div>
+    <a class="post" href="on-device-vlm-iphone.html">
+      <div class="post-meta">Aug 24, 2026 · 8 min read</div>
       <h2>Putting a Vision-Language Model on a Phone: What 270 Benchmark Runs Taught Me About On-Device AI</h2>
       <p class="post-excerpt">Ordo started as a take-home assignment: take a vision-language model (VLM), measure how far quantization can push it, and get it running on a phone. I picked Qwen2-VL-2B-Instruct on llama.cpp and b…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="build-agent.html">
-      <div class="post-meta">
-        <span class="post-tag">Featured</span>
-        <span>Aug 18, 2026</span><span>·</span><span>7 min read</span>
-      </div>
+    <a class="post" href="build-agent.html">
+      <div class="post-meta">Featured · Aug 18, 2026 · 7 min read</div>
       <h2>ServiceNow Build Agent Architecture</h2>
       <p class="post-excerpt">The ServiceNow Build Agent is an autonomous, AI-driven developer companion integrated natively into the ServiceNow AI Platform. It enables creators and engineers to design, build, test, and deploy …</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="ala-app-summary-agent.html">
-      <div class="post-meta">
-        <span class="post-tag">Featured</span>
-        <span>Aug 18, 2026</span><span>·</span><span>5 min read</span>
-      </div>
+    <a class="post" href="ala-app-summary-agent.html">
+      <div class="post-meta">Featured · Aug 18, 2026 · 5 min read</div>
       <h2>ServiceNow ALA: Release Lifecycle Documentation AI Agent</h2>
       <p class="post-excerpt">The Release Lifecycle Documentation AI Agent is an autonomous governance tool integrated into the ServiceNow platform under the Application Lifecycle Analytics (ALA) framework. Powered by the Now A…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="local-llm-inference.html">
-      <div class="post-meta">
-        
-        <span>Aug 18, 2026</span><span>·</span><span>4 min read</span>
-      </div>
+    <a class="post" href="local-llm-inference.html">
+      <div class="post-meta">Aug 18, 2026 · 4 min read</div>
       <h2>Running Local LLMs on Apple Silicon: Ollama, MLX, and Memory-Efficient Inference</h2>
       <p class="post-excerpt">Running serious models locally on a MacBook M1 used to mean one thing: the entire model must fit in RAM. My setup changed when I started combining MLX-optimized models served through Ollama with a …</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="claude-code-self-improving-platform.html">
-      <div class="post-meta">
-        
-        <span>Aug 14, 2026</span><span>·</span><span>16 min read</span>
-      </div>
+    <a class="post" href="claude-code-self-improving-platform.html">
+      <div class="post-meta">Aug 14, 2026 · 16 min read</div>
       <h2>How We Turned Claude Code Into a Self-Improving AI Engineering Platform for Our Entire Organization</h2>
       <p class="post-excerpt">A deep dive into building a shared AI toolkit with 20+ skills, 20+ specialist agents, and safety guardrails - and what happened when we scaled it across 20+ teams in 4 weeks.</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="servicenow-project-portfolio.html">
-      <div class="post-meta">
-        <span class="post-tag">Featured</span>
-        <span>Aug 14, 2026</span><span>·</span><span>10 min read</span>
-      </div>
+    <a class="post" href="servicenow-project-portfolio.html">
+      <div class="post-meta">Featured · Aug 14, 2026 · 10 min read</div>
       <h2>ServiceNow Project Portfolio: Technical Writeup</h2>
       <p class="post-excerpt">Over my tenure at ServiceNow, I have architected and delivered six major platform capabilities spanning AI-assisted development, low-code/no-code tooling, and internal developer productivity infras…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="adp-claude-code-rollout.html">
-      <div class="post-meta">
-        
-        <span>Aug 14, 2026</span><span>·</span><span>3 min read</span>
-      </div>
+    <a class="post" href="adp-claude-code-rollout.html">
+      <div class="post-meta">Aug 14, 2026 · 3 min read</div>
       <h2>We rolled Claude Code out to 20+ enterprise teams in 4 weeks — and cut debugging effort 95%</h2>
       <p class="post-excerpt">By 2025, every team in our org had someone experimenting with Claude Code. Prompts lived in private dotfiles, MCP servers were duplicated across repos, and nobody measured anything. Adoption stalle…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="sn-claude-skills.html">
-      <div class="post-meta">
-        <span class="post-tag">Featured</span>
-        <span>Aug 12, 2026</span><span>·</span><span>5 min read</span>
-      </div>
+    <a class="post" href="sn-claude-skills.html">
+      <div class="post-meta">Featured · Aug 12, 2026 · 5 min read</div>
       <h2>Technical Specification: Agentic Developer Platform (ADP)</h2>
       <p class="post-excerpt">The Agentic Developer Platform (ADP) is a unified, multi-team automation framework designed to bootstrap, govern, and scale AI-assisted engineering workflows across the enterprise. Built and scaled…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="generic.html">
-      <div class="post-meta">
-        
-        <span>Aug 12, 2026</span><span>·</span><span>1 min read</span>
-      </div>
+    <a class="post" href="generic.html">
+      <div class="post-meta">Aug 12, 2026 · 1 min read</div>
       <h2>Generic Points</h2>
       <p class="post-excerpt">Reduced case task resolution time by 90% using claude code , mcp tools and a well crafted skills repository</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="table-builder.html">
-      <div class="post-meta">
-        
-        <span>Aug 12, 2026</span><span>·</span><span>2 min read</span>
-      </div>
+    <a class="post" href="table-builder.html">
+      <div class="post-meta">Aug 12, 2026 · 2 min read</div>
       <h2>ServiceNow Table Builder: Overview & Core Capabilities</h2>
       <p class="post-excerpt">The ServiceNow Table Builder is an all-in-one, modern low-code developer interface built into the ServiceNow platform. It consolidates multiple scattered data management tasks—such as creating data…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
-    <a class="post reveal" href="workspace-builder.html">
-      <div class="post-meta">
-        
-        <span>Aug 12, 2026</span><span>·</span><span>2 min read</span>
-      </div>
+    <a class="post" href="workspace-builder.html">
+      <div class="post-meta">Aug 12, 2026 · 2 min read</div>
       <h2>ServiceNow Workspace Builder: Overview & Core Capabilities</h2>
       <p class="post-excerpt">The ServiceNow Workspace Builder is a dedicated, no-code visualization tool integrated within the ServiceNow platform. It allows citizen developers and business analysts to design, configure, and c…</p>
-      <span class="post-read">Read post →</span>
     </a>
     
   </div>
@@ -280,17 +164,34 @@
 
 <footer>
   <div class="wrap">
-    <div class="footer-row">
-      <span>Abhishek Kumar Maurya</span>
-      <div class="footer-links">
-        <a href="../">Home</a>
-        <a href="../resume/">CV</a>
-        <a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a>
-      </div>
-    </div>
+    <span>Abhishek Maurya</span>
+    <span><a href="../">Home</a> · <a href="../resume/">CV</a> · <a href="mailto:akm.nitt@gmail.com">akm.nitt@gmail.com</a></span>
   </div>
 </footer>
 
+<script>
+  (function () {
+    var btn = document.querySelector("[data-theme-btn]");
+    if (!btn) return;
+    function current() { return document.documentElement.getAttribute("data-theme") || "system"; }
+    function label(t) { return t === "light" ? "○ Light" : t === "dark" ? "● Dark" : "◐ System"; }
+    function paint() {
+      btn.textContent = label(current());
+      btn.setAttribute("aria-label", "Color theme: " + current() + ". Activate to change.");
+    }
+    btn.addEventListener("click", function () {
+      var next = { system: "light", light: "dark", dark: "system" }[current()] || "system";
+      try {
+        if (next === "system") localStorage.removeItem("theme");
+        else localStorage.setItem("theme", next);
+      } catch (e) {}
+      if (next === "system") document.documentElement.removeAttribute("data-theme");
+      else document.documentElement.setAttribute("data-theme", next);
+      paint();
+    });
+    paint();
+  })();
+</script>
 <script>
   (function () {
     document.querySelectorAll("a[href]").forEach(function (a) {
@@ -301,23 +202,6 @@
         a.setAttribute("rel", "noopener");
       }
     });
-  })();
-  (function () {
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var els = document.querySelectorAll(".reveal");
-    if (reduce || !("IntersectionObserver" in window)) {
-      els.forEach(function (el) { el.classList.add("in"); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    els.forEach(function (el) { io.observe(el); });
   })();
 </script>
 
