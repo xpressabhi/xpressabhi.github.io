@@ -77,7 +77,10 @@
   .reader th { color: var(--ink); font-weight: 650; }
   .reader-foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
   .reader-foot a:hover { color: var(--ink); }
-  @media (max-width: 640px) { main { padding-top: 36px; } }
+  @media (max-width: 640px) {
+    main { padding-top: 36px; }
+    .nav-links a:not(.cv):not(.blog-link) { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -86,8 +89,11 @@
   <nav>
     <a href="../" class="mark">Abhishek Maurya</a>
     <div class="nav-links">
-      <a href="./">Blog</a>
-      <a href="../">Home</a>
+      <a href="../#work">Work</a>
+      <a href="../#experience">Experience</a>
+      <a href="../#projects">Projects</a>
+      <a href="./" class="blog-link">Blog</a>
+      <a href="../resume/" class="cv">CV</a>
       <button type="button" class="theme-btn" data-theme-btn>◐ System</button>
     </div>
   </nav>
