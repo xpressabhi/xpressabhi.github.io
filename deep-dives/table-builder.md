@@ -3,7 +3,7 @@
 
 # ServiceNow Table Builder: Overview & Core Capabilities
 
-The **ServiceNow Table Builder** is an all-in-one, modern low-code developer interface built into the ServiceNow platform. It consolidates multiple scattered data management tasks—such as creating database schemas, altering dictionary fields, configuring visual form layouts, and declaring dynamic display rules—into a single, unified visual design canvas.
+The **ServiceNow Table Builder** is an all-in-one, modern low-code developer interface built into the ServiceNow platform. It consolidates multiple scattered data management tasks (creating database schemas, altering dictionary fields, configuring visual form layouts, and declaring dynamic display rules) into a single, unified visual design canvas.
 
 ---
 

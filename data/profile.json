@@ -41,7 +41,7 @@
     },
     {
       "title": "Local LLM inference",
-      "blurb": "Run MLX-optimized models (Qwen, Gemma, DeepSeek) locally on Apple silicon via Ollama, plus memory-efficient loaders like turbo-fieldfare that stream model portions on demand — Gemma 4 26B under 2GB RAM. Took VLMs end-to-end on-device: Qwen2-VL-2B on llama.cpp/GGUF via Metal across a quantization ladder on iPhone, with sub-second TTFT from architecture and resolution levers.",
+      "blurb": "Run MLX-optimized models (Qwen, Gemma, DeepSeek) locally on Apple silicon via Ollama, plus memory-efficient loaders like turbo-fieldfare that stream model portions on demand: Gemma 4 26B under 2GB RAM. Took VLMs end-to-end on-device: Qwen2-VL-2B on llama.cpp/GGUF via Metal across a quantization ladder on iPhone, with sub-second TTFT from architecture and resolution levers.",
       "tags": [
         "Ollama",
         "MLX",
@@ -250,7 +250,7 @@
       "title": "Build Agent, ServiceNow Studio",
       "org": "ServiceNow",
       "role": "App Engine",
-      "summary": "Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern — think first, then execute — with a metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
+      "summary": "Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern (think first, then execute) with a metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
       "dive": "build-agent.md",
       "metrics": [
         "35+ metadata types · 11 domains",
@@ -265,7 +265,7 @@
       "title": "Release lifecycle & app summary agents",
       "org": "ServiceNow",
       "role": "Now Assist for Creator",
-      "summary": "Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests — documentation time from hours to a single click. Built on the REAct agentic framework (reason → act → observe). Ships as the Release lifecycle documentation agent in Now Assist for Creator.",
+      "summary": "Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests: documentation time from hours to a single click. Built on the REAct agentic framework (reason → act → observe). Ships as the Release lifecycle documentation agent in Now Assist for Creator.",
       "dive": "ala-app-summary-agent.md",
       "metrics": [
         "Hours → one click",
@@ -297,7 +297,7 @@
         "Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains; built on the planning pattern (think first, then execute) and led its metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
         "Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks on a multi-agent orchestration pattern and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.",
         "ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.",
-        "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests on the REAct agentic framework — documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
+        "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests on the REAct agentic framework: documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
         "Architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; API and template contributions to the App Template Framework (ATFr).",
         "Lead a 9-person engineering team as tech lead: mentoring, technical hiring, and high-bar architectural reviews; ran cross-team onboarding sessions enabling teams to set up ADP skills, agents, rules, and MCP servers in a single session.",
         "Drive performance optimization and WCAG/ARIA accessibility compliance; established enterprise testing strategy with Jest, React Testing Library, and Playwright."
@@ -358,8 +358,8 @@
       ],
       "highlights": [
         "Built products and services using JavaScript, Node.js, MongoDB, Meteor, and REST APIs.",
-        "flexzone.in (2018–2020): aggregator of cafés into coworking spaces.",
-        "hospeto.in (2017–2018): video consultation platform for doctors, with health record and billing management."
+        "flexzone.in (2018-2020): aggregator of cafés into coworking spaces.",
+        "hospeto.in (2017-2018): video consultation platform for doctors, with health record and billing management."
       ]
     },
     {
@@ -399,19 +399,20 @@
     {
       "name": "SpendIQ Copilot",
       "url": "https://github.com/xpressabhi/SpendIQ_Candidate",
-      "description": "Conversational spend-analysis agent: LangGraph ReAct over SQLite + FTS5 with SQL guardrails (SELECT-only, read-only connections), an AST-whitelisted calculator instead of eval, and a 14-case golden-set eval harness with majority voting — all passing",
+      "description": "Conversational spend-analysis agent: LangGraph ReAct over SQLite + FTS5 with SQL guardrails (SELECT-only, read-only connections), an AST-whitelisted calculator instead of eval, and a 14-case golden-set eval harness with majority voting, all passing",
       "status": "live"
     },
     {
       "name": "ordo",
       "url": "https://xpressabhi.github.io/ordo/",
-      "description": "Ordo take-home: on-device vision-language model — Qwen2-VL-2B on llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
+      "description": "Ordo take-home, an on-device vision-language model built on Qwen2-VL-2B with llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
       "status": "live"
     },
     {
       "name": "Revision",
       "url": "https://github.com/xpressabhi/revision",
-      "description": "Local-first Tauri desktop app for principal-level interview prep — FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
+      "image": "/assets/revision/analytics.png",
+      "description": "Local-first Tauri desktop app for principal-level interview prep: FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
       "status": "live"
     },
     {
@@ -441,25 +442,25 @@
     {
       "name": "uberpro.in",
       "url": "",
-      "description": "Earlier project, no longer available — kept for reference",
+      "description": "Earlier project, no longer available, kept for reference",
       "status": "discontinued"
     },
     {
       "name": "swechhafarms.com",
       "url": "",
-      "description": "Earlier project, no longer available — kept for reference",
+      "description": "Earlier project, no longer available, kept for reference",
       "status": "discontinued"
     },
     {
       "name": "covid19open.in",
       "url": "",
-      "description": "Earlier project, no longer available — kept for reference",
+      "description": "Earlier project, no longer available, kept for reference",
       "status": "discontinued"
     },
     {
       "name": "selftest.app",
       "url": "",
-      "description": "Earlier version of the self-testing app, no longer available — kept for reference",
+      "description": "Earlier version of the self-testing app, no longer available, kept for reference",
       "status": "discontinued"
     }
   ],
@@ -467,12 +468,12 @@
     {
       "school": "National Institute of Technology (NIT), Tiruchirappalli",
       "degree": "Master of Computer Applications (MCA)",
-      "period": "2007–2010"
+      "period": "2007-2010"
     },
     {
       "school": "Banaras Hindu University (BHU), Varanasi",
       "degree": "BSc (Hons), Mathematics",
-      "period": "2003–2006"
+      "period": "2003-2006"
     }
   ],
   "deepDives": [
@@ -505,7 +506,7 @@
       "file": "workspace-builder.md"
     },
     {
-      "title": "Revision — a local-first FSRS-5 desktop app with drag and air gestures",
+      "title": "Revision: a local-first FSRS-5 desktop app with drag and air gestures",
       "file": "revision.md"
     }
   ]

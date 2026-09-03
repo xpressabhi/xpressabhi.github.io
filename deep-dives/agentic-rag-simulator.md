@@ -4,7 +4,7 @@
 
 ![Switchyard in action — the pipeline view mid-run: ingestion lane up top, agent loop with tools and memory in the middle, and the time-series trace streaming every internal step on the right](/assets/switchyard-sim.png)
 
-Most RAG tutorials show you the happy path and stop there. But the real learning — the part that makes you useful when a pipeline misbehaves in production — is in what happens *around* the LLM call: chunking decisions, similarity scores falling below a threshold, an agent burning iterations, a tool timing out and getting retried. So I built **Switchyard** — an interactive harness where you configure every one of those knobs and watch the consequences animate in real time, with a time-series log of every internal step. Like a rail yard for AI workflows: you see every car get switched onto its track.
+Most RAG tutorials show you the happy path and stop there. But the real learning, the part that makes you useful when a pipeline misbehaves in production, is in what happens *around* the LLM call: chunking decisions, similarity scores falling below a threshold, an agent burning iterations, a tool timing out and getting retried. So I built **Switchyard** — an interactive harness where you configure every one of those knobs and watch the consequences animate in real time, with a time-series log of every internal step. Like a rail yard for AI workflows: you see every car get switched onto its track.
 
 ---
 

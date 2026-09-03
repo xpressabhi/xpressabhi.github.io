@@ -1,6 +1,6 @@
 # SpendIQ Copilot: Guardrails, Evals, and Honesty for an Agent Over Enterprise Data
 
-Most agent demos are theater: a model, a vector database, and a happy path. I wanted to build the opposite — an agent that touches **financial data** (vendors, contracts, purchase orders, invoices) and has to earn trust before it answers. SpendIQ Copilot was my submission for a 2-hour AI & Data Engineer take-home, and it became a good vehicle for the decisions that actually matter when an LLM sits between a user's question and a company's data.
+Most agent demos are theater: a model, a vector database, and a happy path. I wanted to build the opposite: an agent that touches **financial data** (vendors, contracts, purchase orders, invoices) and has to earn trust before it answers. SpendIQ Copilot was my submission for a 2-hour AI & Data Engineer take-home, and it became a good vehicle for the decisions that actually matter when an LLM sits between a user's question and a company's data.
 
 Source: [github.com/xpressabhi/SpendIQ_Candidate](https://github.com/xpressabhi/SpendIQ_Candidate)
 

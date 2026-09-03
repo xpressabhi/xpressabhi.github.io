@@ -1,6 +1,6 @@
-# Revision — a local-first FSRS-5 desktop app with drag and air gestures
+# Revision: a local-first FSRS-5 desktop app with drag and air gestures
 
-Revision is a local-first desktop app for principal-level interview prep — DSA, system design concepts and use cases, AI concepts and use cases, behavioral — with FSRS-5 scheduling, a keyboard-first review loop, and grading by drag or air gesture.
+Revision is a local-first desktop app for principal-level interview prep across DSA, system design concepts and use cases, AI concepts and use cases, and behavioral topics, with FSRS-5 scheduling, a keyboard-first review loop, and grading by drag or air gesture.
 
 Source: [github.com/xpressabhi/revision](https://github.com/xpressabhi/revision) · Releases: [v0.4.0](https://github.com/xpressabhi/revision/releases/latest) (macOS .dmg + Windows .exe/.msi, each under 25 MB) · Stack: Tauri 2 + React 19 + TypeScript + Vite 7 + KaTeX, SQLite `revision.db` with a `localStorage` fallback for the browser preview. No cloud, no account.
 

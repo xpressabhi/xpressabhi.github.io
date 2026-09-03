@@ -1,4 +1,4 @@
-# We rolled Claude Code out to 20+ enterprise teams in 4 weeks — and cut debugging effort 95%
+# We rolled Claude Code out to 20+ enterprise teams in 4 weeks and cut debugging effort 95%
 
 **Author:** Abhishek Maurya — Staff SWE, ServiceNow · Hyderabad, India
 **Reading time:** ~6 min
