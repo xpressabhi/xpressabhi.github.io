@@ -2,7 +2,17 @@
 
 Revision is a local-first desktop app for principal-level interview prep across DSA, system design concepts and use cases, AI concepts and use cases, and behavioral topics, with FSRS-5 scheduling, a keyboard-first review loop, and grading by drag or air gesture.
 
-Source: [github.com/xpressabhi/revision](https://github.com/xpressabhi/revision) · Releases: [v0.4.0](https://github.com/xpressabhi/revision/releases/latest) (macOS .dmg + Windows .exe/.msi, each under 25 MB) · Stack: Tauri 2 + React 19 + TypeScript + Vite 7 + KaTeX, SQLite `revision.db` with a `localStorage` fallback for the browser preview. No cloud, no account.
+Source: [github.com/xpressabhi/revision](https://github.com/xpressabhi/revision) · Releases: [v0.5.0](https://github.com/xpressabhi/revision/releases/latest) (macOS .dmg + Windows .exe/.msi, each under 25 MB) · Stack: Tauri 2 + React 19 + TypeScript + Vite 7 + KaTeX, SQLite `revision.db` with a `localStorage` fallback for the browser preview. No cloud, no account.
+
+---
+
+## Update: v0.5.0 visual overhaul
+
+This post was written against v0.4.0 and the screenshots above are now from v0.5.0 (all five refreshed). Two things changed, neither touches the interaction model:
+
+- **Design overhaul across the app.** One brand accent per theme (the second-accent drift is gone), a unified shape scale (cards 12px, overlays 16px, inputs 8px, pills), and a Geist/Satoshi-first type stack with Inter dropped as the default. Stronger `prefers-reduced-motion` handling and a solid-accent focus ring. Review keeps the same gestures and grading, with calmer hints and readout copy.
+- **Copy cleanup.** No em/en dashes in UI strings and middle-dot separators capped at one per line, the same rules I apply to my portfolio. Empty states and tooltips are clearer.
+- **Retention forecast stays in bounds (fixed).** The chart floor is now derived from the actual data minimum (snapped to 5%) instead of a hard 0.75, so decaying forecasts no longer draw past the axis. Grid ticks and the day axis follow the same scale.
 
 ---
 

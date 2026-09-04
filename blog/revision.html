@@ -103,7 +103,7 @@
 <main>
   <article class="reader">
     <h1>Revision: a local-first FSRS-5 desktop app with drag and air gestures</h1>
-    <div class="post-meta"><span>Sep 2, 2026</span><span> · </span><span>9 min read</span><span> · </span><a href="./">All posts</a></div>
+    <div class="post-meta"><span>Sep 3, 2026</span><span> · </span><span>10 min read</span><span> · </span><a href="./">All posts</a></div>
     <div class="share">
       <span><span class="dot" style="display:inline-block;vertical-align:1px;margin-right:6px"></span>Share:</span>
       <a href="https://twitter.com/intent/tweet?text=Revision%3A%20a%20local-first%20FSRS-5%20desktop%20app%20with%20drag%20and%20air%20gestures&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Frevision.html">X</a>
@@ -112,7 +112,11 @@
       <button type="button" data-share="native" hidden>Share…</button>
     </div>
     <p>Revision is a local-first desktop app for principal-level interview prep across DSA, system design concepts and use cases, AI concepts and use cases, and behavioral topics, with FSRS-5 scheduling, a keyboard-first review loop, and grading by drag or air gesture.</p>
-<p>Source: <a href="https://github.com/xpressabhi/revision" target="_blank" rel="noopener">github.com/xpressabhi/revision</a> · Releases: <a href="https://github.com/xpressabhi/revision/releases/latest" target="_blank" rel="noopener">v0.4.0</a> (macOS .dmg + Windows .exe/.msi, each under 25 MB) · Stack: Tauri 2 + React 19 + TypeScript + Vite 7 + KaTeX, SQLite <code>revision.db</code> with a <code>localStorage</code> fallback for the browser preview. No cloud, no account.</p>
+<p>Source: <a href="https://github.com/xpressabhi/revision" target="_blank" rel="noopener">github.com/xpressabhi/revision</a> · Releases: <a href="https://github.com/xpressabhi/revision/releases/latest" target="_blank" rel="noopener">v0.5.0</a> (macOS .dmg + Windows .exe/.msi, each under 25 MB) · Stack: Tauri 2 + React 19 + TypeScript + Vite 7 + KaTeX, SQLite <code>revision.db</code> with a <code>localStorage</code> fallback for the browser preview. No cloud, no account.</p>
+<hr>
+<h2>Update: v0.5.0 visual overhaul</h2>
+<p>This post was written against v0.4.0 and the screenshots above are now from v0.5.0 (all five refreshed). Two things changed, neither touches the interaction model:</p>
+<ul><li><strong>Design overhaul across the app.</strong> One brand accent per theme (the second-accent drift is gone), a unified shape scale (cards 12px, overlays 16px, inputs 8px, pills), and a Geist/Satoshi-first type stack with Inter dropped as the default. Stronger <code>prefers-reduced-motion</code> handling and a solid-accent focus ring. Review keeps the same gestures and grading, with calmer hints and readout copy.</li><li><strong>Copy cleanup.</strong> No em/en dashes in UI strings and middle-dot separators capped at one per line, the same rules I apply to my portfolio. Empty states and tooltips are clearer.</li><li><strong>Retention forecast stays in bounds (fixed).</strong> The chart floor is now derived from the actual data minimum (snapped to 5%) instead of a hard 0.75, so decaying forecasts no longer draw past the axis. Grid ticks and the day axis follow the same scale.</li></ul>
 <hr>
 <h2>What it is</h2>
 <p>One SQLite file (<code>revision.db</code> via <code>tauri-plugin-sql</code>, or <code>localStorage</code> keys like <code>revision_cards</code> in the browser) — everything else is derived. A single <strong>Revision</strong> deck with tag trees (<code>dsa</code>, <code>sd-concepts</code>, <code>sd-use-cases</code>, <code>ai-concepts</code>, <code>ai-use-cases</code>, <code>behavioral</code>, <code>bookmark</code> …) replaces the usual multi-deck model. The shell is a 3-pane glass layout — collapsible sidebar (decks, smart filters, tag graph), central canvas, inspector — with four themes, command bar (<code>⌘K</code>), quick capture (<code>⌘⇧K</code>), cloze deletions and KaTeX, a 53-week heatmap and retention forecasts.</p>
