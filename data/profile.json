@@ -509,5 +509,25 @@
       "title": "Revision: a local-first FSRS-5 desktop app with drag and air gestures",
       "file": "revision.md"
     }
-  ]
+  ],
+  "blog": {
+    "$comment": "Canonical blog order, newest first. buildBlog sorts the index by this list and features `featured` on the homepage. When adding a post: append the .md source to deep-dives/ AND add its slug here, else the build warns and appends it by file date.",
+    "featured": "revision",
+    "order": [
+      "revision",
+      "spendiq-copilot",
+      "adp-claude-code-rollout",
+      "table-builder",
+      "agentic-rag-simulator",
+      "on-device-vlm-iphone",
+      "build-agent",
+      "ala-app-summary-agent",
+      "local-llm-inference",
+      "claude-code-self-improving-platform",
+      "servicenow-project-portfolio",
+      "sn-claude-skills",
+      "generic",
+      "workspace-builder"
+    ]
+  }
 }

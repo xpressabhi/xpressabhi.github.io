@@ -19,6 +19,7 @@ import { join, dirname } from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { render, stripMd, mdToHtml } from "./lib/engine.mjs";
+import { orderPosts, pickFeatured } from "./lib/blog.mjs";
 import { evidenceCoverage } from "./lib/evidence.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -188,9 +189,11 @@ function buildBlog() {
     });
   }
 
-  posts.sort((a, b) => b.mtime - a.mtime);
-  const index = render(indexTpl, [{ name: (REPO.basics.shortName || REPO.basics.name), email: REPO.basics.email, posts }]);
-  return { posts, index };
+  const blogOrder = (REPO.blog && REPO.blog.order) || [];
+  const { sorted: orderedPosts, unlisted } = orderPosts(posts, blogOrder);
+  if (unlisted.length) console.warn(`⚠ blog post(s) missing from profile.json blog.order, appended by file date: ${unlisted.join(", ")}`);
+  const index = render(indexTpl, [{ name: (REPO.basics.shortName || REPO.basics.name), email: REPO.basics.email, posts: orderedPosts }]);
+  return { posts: orderedPosts, index };
 }
 
 function buildProfileReadme() {
@@ -410,8 +413,11 @@ if (VARIANT && VARIANT_REPO) {
   if (variantMissing.length) console.warn(`⚠ variant "${VARIANT}": ${variantMissing.length} claim(s) without provenance (ok for tailored CV)`);
 }
 const blog = buildBlog();
+const featuredSlug = REPO.blog && REPO.blog.featured;
+const { post: featuredPost, pinned: featuredPinned } = pickFeatured(blog.posts, featuredSlug);
+if (!featuredPinned) console.warn(`⚠ blog.featured "${featuredSlug}" not found, featuring newest post instead`);
 const jobs = [
-  ["index.html", buildPortfolio(blog.posts[0])],
+  ["index.html", buildPortfolio(featuredPost)],
   ["resume/index.html", buildCvPage()],
   ["blog/index.html", blog.index],
   ...blog.posts.map((p) => [`blog/${p.slug}.html`, p.html]),
