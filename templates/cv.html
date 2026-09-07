@@ -212,10 +212,12 @@
     {{/each}}
   </div>
 
+  {{#if basics.patent.showOnCv}}
   <div class="cv-section">
     <div class="cv-section-title">Patent</div>
     <p class="patent"><span class="pnum">{{basics.patent.number}}</span> — "{{basics.patent.title}}" · assigned to {{basics.patent.assignedTo}} · status: {{basics.patent.status}}</p>
   </div>
+  {{/if}}
 
   <div class="cv-foot">
     <span>{{basics.name}} · {{basics.location}}</span>

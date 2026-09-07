@@ -3,9 +3,9 @@
   "basics": {
     "name": "Abhishek Kumar Maurya",
     "shortName": "Abhishek Maurya",
-    "headline": "Staff Software Engineer building AI agents, MCP workflows, and scalable software platforms",
-    "tagline": "16+ years of building web applications, agentic AI workflows, and developer platforms",
-    "shortSummary": "16+ years across agentic AI, frontend, and platform architecture. Systems adopted by 20+ teams at ServiceNow.",
+    "headline": "Staff AI Engineer (Agents) / Frontend & Full-Stack — agent architectures, React/TypeScript UIs, forward-deployed delivery",
+    "tagline": "16+ years of frontend and full-stack delivery, AI agent UIs, and developer platforms",
+    "shortSummary": "Staff AI/Frontend Engineer. React/TypeScript surfaces with Java/Glide full-stack case ownership; team-level rollouts adopted by 20+ teams.",
     "yearsExperience": "16+",
     "location": "Hyderabad, India",
     "timezone": "IST",
@@ -19,13 +19,14 @@
     ],
     "patent": {
       "number": "US20150046358",
+      "showOnCv": false,
       "title": "Importing tested objects into benefits programs deployed on production systems",
       "assignedTo": "Oracle Corp.",
       "status": "Abandoned",
       "url": "https://patents.google.com/patent/US20150046358"
     }
   },
-  "summary": "Software engineer with 16+ years of experience building AI agents, MCP-driven workflows, and scalable developer platforms. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams), leads a 9-person engineering team, and has deep roots in frontend architecture, system design, developer productivity, and enterprise reliability.",
+  "summary": "Staff Frontend / Full-Stack Engineer with 16+ years across React, TypeScript, and Node.js, now focused on AI agent interfaces and forward-deployed delivery. Founded ServiceNow's Agentic Developer Platform frontend and enablement motion (adopted by 20+ teams via hands-on onboarding), lead a 9-person engineering team, and ship enterprise-grade UI with testing and accessibility. Ex-co-founder with direct client delivery experience. Design agent systems end-to-end: tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), and governance via AI Agent Studio — shipped ALA from requirements to GA.",
   "capabilityCards": [
     {
       "wide": true,
@@ -102,39 +103,6 @@
     }
   ],
   "skills": {
-    "Architecture": [
-      "System design",
-      "Scalable frontend architecture",
-      "Design patterns",
-      "Developer productivity",
-      "Metadata-driven development"
-    ],
-    "AI & Agentic Engineering": [
-      "AI agents",
-      "MCP workflows",
-      "Claude Code",
-      "Harness",
-      "LLM APIs (Anthropic, OpenAI, Gemini)",
-      "Amazon Bedrock",
-      "Now Assist for Creator",
-      "Now Assist",
-      "LangChain / LangGraph",
-      "Prompt engineering",
-      "Agent workflows",
-      "Tool orchestration",
-      "Multi-model systems",
-      "REAct agents",
-      "Planning pattern (think first, then execute)",
-      "Multi-agent orchestration",
-      "Local LLM inference (Ollama, MLX)",
-      "On-device inference (iOS/Metal)",
-      "llama.cpp / GGUF",
-      "Model quantization (GGUF ladders, imatrix)",
-      "Vision-language models",
-      "LoRA fine-tuning (MLX)",
-      "LLM evals (golden sets, LLM-as-judge, majority voting)",
-      "RAG / keyword retrieval (BM25, FTS5)"
-    ],
     "Frontend & Platform": [
       "JavaScript (ES6+)",
       "TypeScript",
@@ -146,6 +114,30 @@
       "Webpack",
       "Vite",
       "PWA"
+    ],
+    "AI & Agentic Engineering": [
+      "AI agents",
+      "Agent UIs",
+      "MCP workflows",
+      "Claude Code",
+      "LLM APIs (Anthropic, OpenAI, Gemini)",
+      "LangChain / LangGraph",
+      "Prompt engineering",
+      "Tool orchestration",
+      "Multi-model systems",
+      "Multi-agent orchestration",
+      "REAct agents",
+      "LLM evals (golden sets, LLM-as-judge)",
+      "Agent evaluation & guardrails",
+      "AI governance (AI Agent Studio / Control Tower)",
+      "RAG / keyword retrieval (BM25, FTS5)"
+    ],
+    "Architecture": [
+      "System design",
+      "Scalable frontend architecture",
+      "Design patterns",
+      "Developer productivity",
+      "Metadata-driven development"
     ],
     "Reliability & Quality": [
       "Jest",
@@ -160,11 +152,7 @@
       "SQLite",
       "Java",
       "REST APIs",
-      "MongoDB",
-      "Meteor",
-      "Oracle Database",
-      "Oracle ODI",
-      "SQL / PLSQL"
+      "MongoDB"
     ],
     "CI/CD & Tooling": [
       "GitHub Actions",
@@ -283,24 +271,21 @@
       "start": "Oct 2023",
       "end": "Present",
       "stack": [
+        "React",
+        "TypeScript",
+        "JavaScript",
+        "Node.js",
         "AI Agents",
         "MCP",
-        "Harness",
-        "JavaScript",
-        "Java",
-        "React",
-        "Node.js",
         "Python"
       ],
       "highlights": [
-        "Designed and integrated MCP-driven agentic workflows into the engineering lifecycle, adopted by 20+ teams; reduced research and debugging effort by approximately 95% while improving accuracy.",
-        "Contributed to Build Agent in ServiceNow Studio, elevating App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains; built on the planning pattern (think first, then execute) and led its metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
-        "Founded the Agentic Developer Platform (ADP), a multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills; built in 4 weeks on a multi-agent orchestration pattern and rolled out to 7 pilot squads with 20+ skills, 20+ agents, and 20+ teams.",
-        "ADP outcomes: reduced case task resolution time by 90%, cut automation development from days to hours even on legacy codebases, lifted legacy test coverage from 20% to 90%, and reduced external defects by 90%.",
-        "Led the ALA Release Lifecycle Documentation Agent and App Summary Agent (Now Assist for Creator): automated delta analysis, human-readable release notes, and CAB-ready deployment manifests on the REAct agentic framework: documentation time from hours to a single click; ships as the Release lifecycle documentation agent in Now Assist for Creator.",
-        "Architected scalable React/TypeScript systems powering low-code tools including Table Builder and Workspace Builder; API and template contributions to the App Template Framework (ATFr).",
-        "Lead a 9-person engineering team as tech lead: mentoring, technical hiring, and high-bar architectural reviews; ran cross-team onboarding sessions enabling teams to set up ADP skills, agents, rules, and MCP servers in a single session.",
-        "Drive performance optimization and WCAG/ARIA accessibility compliance; established enterprise testing strategy with Jest, React Testing Library, and Playwright."
+        "Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.",
+        "Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.",
+        "Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.",
+        "Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.",
+        "Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.",
+        "Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation."
       ]
     },
     {
@@ -405,7 +390,7 @@
     {
       "name": "ordo",
       "url": "https://xpressabhi.github.io/ordo/",
-      "description": "Ordo take-home, an on-device vision-language model built on Qwen2-VL-2B with llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
+      "description": "On-device vision-language model built on Qwen2-VL-2B with llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
       "status": "live"
     },
     {
@@ -419,25 +404,25 @@
       "name": "selftest.in",
       "url": "https://selftest.in",
       "description": "Self-testing and government job preparation app powered by the Gemini API",
-      "status": "live"
+      "status": "discontinued"
     },
     {
       "name": "lifetimetax.vercel.app",
       "url": "https://lifetimetax.vercel.app",
       "description": "Lifetime tax liability calculator",
-      "status": "live"
+      "status": "discontinued"
     },
     {
       "name": "airoadtripplanner.vercel.app",
       "url": "https://airoadtripplanner.vercel.app",
       "description": "AI-powered road trip planner",
-      "status": "live"
+      "status": "discontinued"
     },
     {
       "name": "faang-cv.vercel.app",
       "url": "https://faang-cv.vercel.app",
       "description": "CV builder tuned for FAANG-style applications",
-      "status": "live"
+      "status": "discontinued"
     },
     {
       "name": "uberpro.in",
