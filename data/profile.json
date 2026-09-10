@@ -238,7 +238,7 @@
       "title": "Build Agent, ServiceNow Studio",
       "org": "ServiceNow",
       "role": "App Engine",
-      "summary": "Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern (think first, then execute) with a metadata-aware, multi-model (Claude Opus 4.6 default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
+      "summary": "Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern (think first, then execute) with a metadata-aware, multi-model (Claude default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
       "dive": "build-agent.md",
       "metrics": [
         "35+ metadata types · 11 domains",
