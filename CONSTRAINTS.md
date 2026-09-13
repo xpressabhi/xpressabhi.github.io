@@ -1,29 +1,50 @@
 # CONSTRAINTS.md
 
+**Purpose:** before writing code, what should I understand about this problem?
+
 Last reviewed: 2026-09-13
 
 ## Users & traffic
-- Audience: recruiters, hiring managers, and engineers worldwide, arriving from a CV or shared link.
-- Traffic: low, spiky when shared; global, so page weight matters more than server capacity.
+- Audience: recruiters, hiring managers, and engineers worldwide, arriving from a CV or a shared link.
+- Traffic: low and spiky when shared; global, so page weight and latency matter more than server capacity.
 
-## What this system is
-- Static site on GitHub Pages; no server, database, or runtime process.
-- Source of truth: `data/profile.json`. Posts live in `deep-dives/*.md`. Layout lives in `templates/*.html`.
-- Everything else (`index.html`, `blog/**`, `resume/**`, `../xpressabhi/README.md`, career CVs) is generated — never hand-edit.
+## Data & schema
+- No database. The "data" is `data/profile.json` — the single source of truth; posts are `deep-dives/*.md`.
+- Consistency: `profile.json` is authoritative; generated files always derive from it and never diverge.
+- Everything else (`index.html`, `blog/**`, `resume/**`, `../xpressabhi/README.md`, career CVs) is generated. Never hand-edit generated files.
+- Deleting content means editing the source and rebuilding — never force-removing generated output.
 
-## Runtime & dependencies
-- Build-time only: Node 24 and npm scripts; no runtime dependencies.
-- PDF generation needs Playwright locally (`npm run build:pdf`).
-- Keep dependencies at zero unless a feature truly needs one.
+## Runtime
+- Static site on GitHub Pages; no server process, no runtime dependencies.
+- Build-time only: Node 24 and npm scripts. PDF generation needs Playwright (`npm run build:pdf`).
+- Runs on existing hosting and local tooling; no new services or platforms without a clear reason.
 
-## Budgets & targets
-- Cost: free hosting tier; no paid services.
-- Pages stay light: static HTML/CSS, no trackers, no heavy client-side JavaScript.
-- URLs claimed in `data/profile.json` must resolve (`npm run check`).
+## Targets & cost
+- Pages stay light and fast on a 3G connection; no trackers, no heavy client-side JavaScript.
+- Cost: free hosting tiers only; no paid services.
 
-## Unknowns — ask, don't assume
-- Before editing a source file, confirm whether it is hand-edited or generated.
+## Team & timeline
+- Maintained by one person; anything added must stay operable without ongoing babysitting.
+- Publishing is deliberate — update deliberately, and never ship generated-file drift in a rush.
+
+## Dependencies & upgrades
+- Keep runtime dependencies at zero unless a feature truly needs one.
+- Upgrade the Node version deliberately; verify the build, tests, and PDF step after any tooling bump.
+- Re-check tooling quarterly or when GitHub Pages changes.
+
+## Security & compliance
+- Never commit secrets, tokens, or personal data. `npm run check` enforces the PII allowlist.
+- Everything here is public: anything generated ships to the internet. Assume publication on every write.
+- Links claimed in `data/profile.json` must resolve.
+
+## Decisions — ask, don't assume
+- Before editing a file, confirm whether it is hand-edited or generated.
 - Before adding a dependency, confirm it is worth the maintenance cost.
+- Before adding a new page type or template, confirm it fits the build pipeline.
+
+## Before building
+- Investigate first: what's ambiguous, what are we assuming, what could fail in production?
+- Propose options and tradeoffs; attack the preferred option; then implement.
 
 ## Verification
 - Every change: `npm run build` (no warnings), `npm test`, `npm run check`.
