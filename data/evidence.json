@@ -34,7 +34,7 @@
       { "source": "repo", "ref": "github.com/xpressabhi/revision", "date": "2026-09", "note": "Blog post written from revision repo evidence (README, CHANGELOG, src/lib/fsrs.ts, src/lib/gestures.ts, src/lib/handGestures.ts, src/lib/session.ts, ReviewView.tsx, App.tsx) and portfolio build" }
     ],
     "deepDive:never-met-your-users.md": [
-      { "source": "session+web", "ref": "output/deep-research-agent-constraints.md", "date": "2026-09", "note": "Research essay on real-world constraints for coding agents; evidence refreshed to Jul-Sep 2026 frontier-lab sources (OpenAI, Anthropic, Google, arXiv); cited URLs verified live" }
+      { "source": "session+web", "ref": "output/deep-research-agent-constraints.md", "date": "2026-09", "note": "Research essay reshaped around real-world engineering pain points (data/schema, runtime, cost, security, dependencies, review); evidence from Jul-Sep 2026 industry reports, arXiv papers, and frontier-lab posts; cited URLs verified live" }
     ]
   }
 }

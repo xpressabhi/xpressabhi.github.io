@@ -27,13 +27,13 @@ I spent the last few months collecting how this shows up. Same root cause every 
 
 **6. Codebase coherence.** Duplicated code is up 81% since 2023; error-masking constructs up 47%; cross-file reuse down 35% — so new code inherits none of your shared timeouts, retries, or metrics. A fresh paper names the pattern: locally valid, globally incoherent patches that pass tests and static analysis, then break in production. [12][13]
 
-**7. Dependencies and drift.** New versions are opportunities, not chores — React 19.3 shipped stable View Transitions that your next screen could use. [21] But drift bites back: a study of 203 real dependency upgrades found agents solved just over half when a "minor" version hid code-level changes. [14][15]
+**7. Dependencies and drift.** Drift bites: a study of 203 real dependency upgrades found agents solved just over half when a "minor" version hid code-level changes. [14][15] New versions are also opportunities — React 19.3 shipped stable View Transitions your next screen could use, if the upgrade is planned. [21]
 
 **8. Verification and trust.** Two-thirds of developers name "almost right, but not quite" as their top AI frustration. In Anthropic's own testing, humans clicking permission prompts caught 13.6% of dangerous commands; the classifier caught 89%. Teams can't read everything, and pretending otherwise fails silently. [16][17][18]
 
 ## Why it keeps happening
 
-Rules don't fix judgment. A prompt file is advice; the agent weighs it against everything else and, under pressure, reasons past it. Rules also rot — "graveyard of stale rules" is how one OpenAI build described its master instruction file after a long run. [20] And agents don't ask enough: more than half of successful 4–8 hour tasks in OpenAI's research org still needed a human intervention. [19]
+Rules don't fix judgment. A prompt file is advice; the agent weighs it against everything else and, under pressure, reasons past it. And agents don't ask enough: more than half of successful 4–8 hour tasks in OpenAI's research org still needed a human intervention. [19] Rules also rot — "graveyard of stale rules" is how one OpenAI build described its master instruction file after a long run. [20]
 
 ## The one fix: CONSTRAINTS.md
 

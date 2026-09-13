@@ -16,7 +16,7 @@ Last reviewed: 2026-09-13
 
 ## Runtime
 - Static site on GitHub Pages; no server process, no runtime dependencies.
-- Build-time only: Node 24 and npm scripts. PDF generation needs Playwright (`npm run build:pdf`).
+- Build-time only: Node 20+ and npm scripts (CI runs Node 20; local tooling on 24). PDF generation needs Playwright (`npm run build:pdf`).
 - Runs on existing hosting and local tooling; no new services or platforms without a clear reason.
 
 ## Targets & cost
