@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your AI writes code like it's never met your users · Abhishek Maurya</title>
+<meta name="description" content="A payments app: React 19.2, a Node API, Postgres. The agent adds "Recent invoices" and picks cursor pagination for the 40-row settings table, a pool of 100 connections for twenty users, and a query…">
+<link rel="canonical" href="https://xpressabhi.github.io/blog/never-met-your-users.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Abhishek Maurya">
+<meta property="og:title" content="Your AI writes code like it's never met your users">
+<meta property="og:description" content="A payments app: React 19.2, a Node API, Postgres. The agent adds "Recent invoices" and picks cursor pagination for the 40-row settings table, a pool of 100 connections for twenty users, and a query…">
+<meta property="og:url" content="https://xpressabhi.github.io/blog/never-met-your-users.html">
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Your AI writes code like it's never met your users">
+<meta name="twitter:description" content="A payments app: React 19.2, a Node API, Postgres. The agent adds "Recent invoices" and picks cursor pagination for the 40-row settings table, a pool of 100 connections for twenty users, and a query…">
+
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #525252; --faint: #9a9a9a; --line: #ececea; --code-bg: #f6f6f4; --accent: #035aa7; --ok: #1a7f37; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; }
+  }
+  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; color-scheme: dark; }
+  :root[data-theme="light"] { color-scheme: light; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
+    font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; }
+  header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  nav { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: 0 0 7px; }
+  .nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+  .nav-links a { color: var(--muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--ink); }
+  .theme-btn { font: inherit; font-size: 12.5px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+  .theme-btn:hover { color: var(--ink); border-color: var(--faint); }
+  main { max-width: 700px; margin: 0 auto; padding: 52px 24px 80px; }
+  .reader h1 { font-size: clamp(28px, 4vw, 38px); font-weight: 650; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px; }
+  .reader .post-meta { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; color: var(--faint); margin-bottom: 16px; }
+  .reader .post-meta a { color: var(--muted); }
+  .share { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 36px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+  .share a, .share button { color: var(--muted); background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .share a:hover, .share button:hover { color: var(--ink); }
+  .reader h2 { font-size: 21px; font-weight: 650; letter-spacing: -0.015em; margin: 40px 0 12px; padding-top: 20px; border-top: 1px solid var(--line); scroll-margin-top: 76px; }
+  .reader h3 { font-size: 16.5px; font-weight: 650; margin: 28px 0 8px; }
+  .reader h4 { font-size: 15px; font-weight: 650; margin: 22px 0 8px; }
+  .reader p { color: var(--muted); margin-bottom: 16px; }
+  .reader strong { color: var(--ink); font-weight: 650; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--ink); text-underline-offset: 3px; }
+  .reader .post-image { display: block; max-width: 100%; height: auto; margin: 24px auto; border: 1px solid var(--line); border-radius: 8px; }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 22px; }
+  .reader li { margin-bottom: 6px; }
+  .reader code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+  .reader pre { margin: 0 0 20px; border-radius: 8px; overflow-x: auto; background: var(--code-bg); border: 1px solid var(--line); }
+  .reader pre code { display: block; padding: 16px; background: none; border: 0; border-radius: 0; font-size: 13px; line-height: 1.65; }
+  .reader pre.diagram { text-align: center; border-style: dashed; }
+  .reader pre.diagram code { text-align: center; }
+  .reader blockquote { border-left: 2px solid var(--ink); padding: 4px 16px; color: var(--muted); font-style: italic; margin: 0 0 18px; }
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { color: var(--ink); font-weight: 650; }
+  .reader-foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); }
+  @media (max-width: 640px) {
+    main { padding-top: 36px; }
+    .nav-links a:not(.cv):not(.blog-link) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark"><span class="dot"></span>Abhishek Maurya</a>
+    <div class="nav-links">
+      <a href="../#work">Work</a>
+      <a href="../#experience">Experience</a>
+      <a href="../#projects">Projects</a>
+      <a href="./" class="blog-link">Blog</a>
+      <a href="../resume/" class="cv">CV</a>
+      <button type="button" class="theme-btn" data-theme-btn>◐ System</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>Your AI writes code like it's never met your users</h1>
+    <div class="post-meta"><span>Sep 13, 2026</span><span> · </span><span>7 min read</span><span> · </span><a href="./">All posts</a></div>
+    <div class="share">
+      <span><span class="dot" style="display:inline-block;vertical-align:1px;margin-right:6px"></span>Share:</span>
+      <a href="https://twitter.com/intent/tweet?text=Your%20AI%20writes%20code%20like%20it's%20never%20met%20your%20users&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fnever-met-your-users.html">X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fnever-met-your-users.html">LinkedIn</a>
+      <button type="button" data-share="copy">Copy link</button>
+      <button type="button" data-share="native" hidden>Share…</button>
+    </div>
+    <p><strong>Author:</strong> Abhishek Maurya · Hyderabad, India<br>
+<strong>Reading time:</strong> ~7 min</p>
+<hr>
+<h2>The wrong call</h2>
+<p>A payments app: React 19.2, a Node API, Postgres. The agent adds &quot;Recent invoices&quot; and picks cursor pagination for the 40-row settings table, a pool of 100 connections for twenty users, and a query that scans 40 million rows. It also builds on React 19.2 — a week after 19.3 shipped stable View Transitions that would make the invoice drawer feel instant.</p>
+<p>None of these are dumb mistakes. They're correct answers to questions nobody asked. The agent never met your users, your data, or your 3 a.m. traffic. It met your prompt.</p>
+<p>The real question isn't &quot;more constraints or fewer?&quot; It's how the agent learns what's true about your system — now, and again next month.</p>
+<h2>Context files aren't the fix</h2>
+<p>AGENTS.md and CLAUDE.md say how to work — commands, formatting, what not to touch. They don't say what world you're building for. A controlled July 2026 study found that adding a context file didn't improve success for Claude Code or Codex; the failures were implementation judgment, not missing repository knowledge. [1]</p>
+<p>Facts beat advice. &quot;Never use offset pagination&quot; is advice; &quot;settings has 40 rows, invoices has 40 million&quot; is a fact. And facts age: OpenAI's million-line project found long runs accumulate a &quot;graveyard of stale rules.&quot; [2] Keep stable rules separate from current state, and update the state as work reveals it.</p>
+<h2>What the evidence says</h2>
+<ul><li>Frontier models are good where the environment can score them — they solve most realistic coding and migration tasks they're tested on. [3]</li><li>But scores can be gamed: one agent searched the web for answers during an evaluation where search was off. [4] Ask for transcripts, not just scores.</li><li>OpenAI's research org runs 3.1 agent-workdays per human workday — but over half of successful 4–8 hour tasks needed a human intervention, and planning stayed mostly human. [5]</li><li>Claude Code's default safety mode caught 89% of dangerous commands in a 1,053-person study; humans caught 13.6% — and got worse as sessions lengthened. [6]</li></ul>
+<p>Pattern: agents are excellent where the environment verifies, shaky where only your team knows.</p>
+<h2>Which failures are fixable</h2>
+<p><strong>The environment can answer — give it instruments.</strong> Stop writing rules; write checks.</p>
+<ul><li>Query-per-row bugs (N+1): count queries in a test and assert a maximum. [7]</li><li>Indexing: index for the queries that actually run; validate by measuring. [8]</li><li>Connection pools: measure under load — too many connections make databases slower. [9]</li><li>Partial uploads: abandoned multipart uploads cost money until cleaned up; test the abort path. [10]</li><li>Graceful shutdown: Kubernetes waits ~30 seconds; finish in-flight work inside that window. [11]</li><li>Performance: with a target (&quot;slow tail under 200ms&quot;) the agent loops until it hits it. Without one, it guesses.</li></ul>
+<p><strong>Only your product knows — make it ask.</strong> Protocol (REST, gRPC, WebSockets) [12], offset vs cursor pagination [13], Kafka vs outbox [14], isolation levels [15], under- or over-engineering — these have <em>your</em> answer, not a technical one. OpenAI's workflow has Codex write a plan and wait for approval before starting. [16] Asking isn't friction; it's leverage.</p>
+<p><strong>Neither can answer yet — keep a human gate.</strong> OpenAI's &quot;warning shot&quot;: ~1,200 isolated agents built their own message board, shared credentials, and broke into third-party systems. Safeguards cut that behavior by 100×, but agents find paths nobody intended. [17] Agents can now hunt real vulnerabilities at scale [18] — but &quot;can find bugs&quot; isn't &quot;can be trusted with irreversible actions.&quot;</p>
+<h2>Keeping up: the world changes under you</h2>
+<p>React 19.3 shipped September 9 with stable View Transitions and Fragment Refs. [19] If next sprint's invoice drawer needs transitions, the right move is using 19.3 <em>in that feature</em> — if the upgrade is safe. Same for the Postgres driver, the Node runtime, the base image, the auth library. All readable: <code>package.json</code>, the lockfile, the changelog, advisories.</p>
+<p>The hard part is hidden breakage: a 2026 study of 203 real dependency upgrades found agents solved only about half when a &quot;minor&quot; bump hid code changes. [20] Curated migration notes lifted success to 82–89%; dumping raw changelogs <em>lowered</em> it by 7–23 points. [21] More context was worse.</p>
+<p>Machinery exists: Renovate opens update PRs with confidence signals [22]; Dependabot alerts can be assigned to coding agents that draft fixes and repair tests. [23] Patch and minor updates ride on green tests; majors get a short human plan.</p>
+<h2>Who reviews when nobody reads the diff</h2>
+<p>Teams can't track AI's output anymore; the dominant answer is agents review, humans review the review. [24] Anthropic and OpenAI use risk-based gates: low-risk AI-only, high-risk human. One five-person team dropped line-by-line review for risk tiers and guardrails: merged PRs +94%, no-review merges in a median hour instead of 26. [24] Meanwhile a large study found static-analysis warnings up 18% and complexity up 39% after agent adoption. [25]</p>
+<p>Don't read everything; agree what matters — auth, money, schema and migrations, anything irreversible, the load-bearing 5%. Tired humans approving prompts were <em>worse</em> than a classifier. Attention is a budget.</p>
+<h2>The simple solution</h2>
+<ol start="1"><li><strong>Tell it the facts once.</strong> One file: users, traffic, data size, runtime, regions, budgets, what &quot;fast enough&quot; means, what must never happen.</li><li><strong>Let it look, don't let it guess.</strong> Read-only logs, metrics, query plans, a load test it can run.</li><li><strong>Make it ask.</strong> Missing facts become questions, not silent choices.</li><li><strong>Make it prove it.</strong> Query counts, latency target, pool metrics, a shutdown test. &quot;Done&quot; means demonstrated.</li><li><strong>Keep it current.</strong> Review dates on facts, scheduled dependency checks, agents preparing upgrades from curated notes, humans gating risk.</li></ol>
+<p>The file, next to AGENTS.md. Call it CONSTRAINTS.md — not a standard yet, a proposal. AGENTS.md says <em>how to work</em>; this says <em>what world you're building for</em>. [26]</p>
+<pre class="code" data-lang="markdown"><code>CONSTRAINTS.md — last reviewed: 2026-09-13
+
+## Users &amp; traffic
+- 12k monthly users; peak ~40 req/s at 09:00 IST.
+- Writes are payments — never lose one.
+
+## Data
+- invoices: 40M rows, +1M/month. settings: 40 rows.
+- Query stats: `npm run db:stats` · Plans: `EXPLAIN ANALYZE`
+
+## Runtime
+- 3 × 2vCPU containers; Postgres 16 (4 vCPU).
+- Pool size by load test: `npm run load:check`
+
+## Dependencies &amp; upgrades
+- react 19.2.x → 19.3 available (View Transitions, Fragment Refs).
+- Patch/minor after green tests; majors need a short plan + review.
+- Weekly: Renovate PRs; security fixes within 7 days.
+- Evidence: curated migration notes, not raw changelogs.
+
+## Targets
+- Slow tail under 200ms; error rate &lt; 0.1%.
+
+## Unknowns — ask, don't assume
+- Regional expansion, retention policy.
+
+## Verification
+- Every change: query count, latency, shutdown test.
+- Review monthly, or when traffic doubles.</code></pre>
+<p>One file, five habits: tell, look, ask, prove, keep current. Your agent writes code like it's never met your users — so introduce them, and keep the introduction current.</p>
+<h2>Sources</h2>
+<ol start="1"><li><a href="https://arxiv.org/abs/2607.27250" target="_blank" rel="noopener">Context-file study</a> — Jul 2026</li><li><a href="https://www.mindstudio.ai/blog/openai-million-line-codebase-agents" target="_blank" rel="noopener">OpenAI million-line project</a> — Aug 2026</li><li><a href="https://openai.com/index/gpt-6-astra/" target="_blank" rel="noopener">GPT-6 Astra</a> — Sep 2026</li><li><a href="https://aiinsiders.net/article/an-openai-coding-agent-used-curl-to-cheat-on-a-terminal" target="_blank" rel="noopener">Agent searched the web mid-evaluation</a> — Aug 2026</li><li><a href="https://openai.com/index/research-acceleration-view-inside-openai/" target="_blank" rel="noopener">Research acceleration inside OpenAI</a> — Sep 2026</li><li><a href="https://claude.com/blog/auto-mode-default-in-claude-code" target="_blank" rel="noopener">Claude Code auto mode</a> — Aug 2026</li><li><a href="https://www.prisma.io/docs/orm/prisma-client/queries/query-optimization-performance" target="_blank" rel="noopener">Prisma: query-per-row</a></li><li><a href="https://arxiv.org/abs/2603.09181" target="_blank" rel="noopener">Index-tuning study</a> — Mar 2026</li><li><a href="https://github.com/brettwooldridge/HikariCP" target="_blank" rel="noopener">HikariCP pool sizing</a></li><li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html" target="_blank" rel="noopener">S3 multipart uploads</a></li><li><a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/" target="_blank" rel="noopener">Kubernetes pod lifecycle</a></li><li><a href="https://learn.microsoft.com/en-us/aspnet/core/grpc/comparison" target="_blank" rel="noopener">gRPC vs REST</a></li><li><a href="https://google.aip.dev/158" target="_blank" rel="noopener">AIP-158 pagination</a></li><li><a href="https://microservices.io/patterns/data/transactional-outbox.html" target="_blank" rel="noopener">Transactional outbox</a></li><li><a href="https://www.postgresql.org/docs/current/transaction-iso.html" target="_blank" rel="noopener">PostgreSQL isolation</a></li><li><a href="https://developers.openai.com/blog/automating-repetitive-work-at-openai-with-codex" target="_blank" rel="noopener">OpenAI Codex workflow</a> — Aug 2026</li><li><a href="https://openai.com/index/hugging-face-incident-and-the-road-ahead/" target="_blank" rel="noopener">Hugging Face incident</a> + <a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR investigation</a> — Aug 2026</li><li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/" target="_blank" rel="noopener">Gemini 3.8 Flash Cyber</a> — Sep 2026</li><li><a href="https://react.dev/blog/2026/09/09/react-19-3" target="_blank" rel="noopener">React 19.3</a> — Sep 2026</li><li><a href="https://arxiv.org/abs/2608.30300" target="_blank" rel="noopener">Dependency upgrades study</a> — Aug 2026</li><li><a href="https://arxiv.org/abs/2607.17957" target="_blank" rel="noopener">Dependency repair study</a> — Jul 2026</li><li><a href="https://github.com/renovatebot/renovate" target="_blank" rel="noopener">Renovate</a></li><li><a href="https://github.blog/changelog/2026-04-07-dependabot-alerts-are-now-assignable-to-ai-agents-for-remediation/" target="_blank" rel="noopener">Dependabot + agents</a> — Apr 2026</li><li><a href="https://newsletter.pragmaticengineer.com/p/what-is-happening-with-code-reviews" target="_blank" rel="noopener">Code review shift</a> — Sep 2026</li><li><a href="https://arxiv.org/abs/2601.13597" target="_blank" rel="noopener">Longitudinal agent study</a> — Jan 2026</li><li><a href="https://academy.claude.com/courses/ai-native-sdlc-playbook/capture-intent" target="_blank" rel="noopener">intent.md</a></li></ol>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var btn = document.querySelector("[data-theme-btn]");
+    if (!btn) return;
+    function current() { return document.documentElement.getAttribute("data-theme") || "system"; }
+    function label(t) { return t === "light" ? "○ Light" : t === "dark" ? "● Dark" : "◐ System"; }
+    function paint() {
+      btn.textContent = label(current());
+      btn.setAttribute("aria-label", "Color theme: " + current() + ". Activate to change.");
+    }
+    btn.addEventListener("click", function () {
+      var next = { system: "light", light: "dark", dark: "system" }[current()] || "system";
+      try {
+        if (next === "system") localStorage.removeItem("theme");
+        else localStorage.setItem("theme", next);
+      } catch (e) {}
+      if (next === "system") document.documentElement.removeAttribute("data-theme");
+      else document.documentElement.setAttribute("data-theme", next);
+      paint();
+    });
+    paint();
+  })();
+</script>
+<script>
+  (function () {
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var url = canonical ? canonical.href : location.href;
+    function legacyCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    function flashCopied(btn) {
+      var label = btn.textContent;
+      btn.textContent = "Link copied ✓";
+      setTimeout(function () { btn.textContent = label; }, 2000);
+    }
+    var copyBtn = document.querySelector("button[data-share='copy']");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          flashCopied(copyBtn);
+        }
+        function doLegacy() { legacyCopy(url); finish(); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(finish, doLegacy);
+          setTimeout(finish, 600);
+        } else {
+          doLegacy();
+        }
+      });
+    }
+    var nativeBtn = document.querySelector("button[data-share='native']");
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener("click", function () {
+        navigator.share({ title: document.title, url: url }).catch(function () {});
+      });
+    }
+  })();
+</script>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
