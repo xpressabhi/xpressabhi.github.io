@@ -1,7 +1,7 @@
 # Make it work. Then keep it working.
 
 **Author:** Abhishek Maurya · Hyderabad, India
-**Reading time:** ~8 min
+**Reading time:** ~7 min
 
 ---
 
@@ -17,23 +17,23 @@ I spent the last few months collecting how this shows up. Same root cause every 
 
 **1. Decisions with no technical answer.** REST, gRPC, or WebSockets? Offset or cursor pagination? Kafka or the transactional outbox? Read Committed or Serializable? Each has a right answer for *your* product and no right answer in general. Agents answer anyway. A controlled study this year found that adding a project context file didn't improve task success — the failures were judgment, not missing repository knowledge. [1]
 
-**2. Data and schema.** Agents treat production like a dev database: a reset command, a `DELETE` without `WHERE`, a migration that queues a lock behind one long-running query. Teams have watched an agent drop 22 tables in ten minutes; GitHub itself lost 55 minutes to a routine schema migration on a hot table. Parallel agents make it worse — three schema changes that each pass alone can be incompatible together. [2][3][4][5][6]
+**2. Data and schema.** Agents treat production like a dev database: a reset command, a `DELETE` without `WHERE`, a migration that queues a lock behind one long-running query. Teams have watched an agent drop 22 tables in ten minutes; GitHub itself lost 55 minutes to a routine schema migration on a hot table. Parallel agents make it worse — three schema changes that each pass alone can be incompatible together.
 
-**3. Runtime behavior.** New Relic's 2026 study of technology leaders found 78% report production-incident spikes tied to AI code, with roughly 1.7× more critical runtime issues — models "understand the source, but are blind to the trace." Retries, timeouts, graceful shutdown, and swallowed exceptions are where that blindness bites. [7]
+**3. Runtime behavior.** New Relic's 2026 study of technology leaders found 78% report production-incident spikes tied to AI code, with roughly 1.7× more critical runtime issues — models "understand the source, but are blind to the trace." Retries, timeouts, graceful shutdown, and swallowed exceptions are where that blindness bites. [2]
 
-**4. Scale and cost.** A pool of 100 for twenty users doesn't fail today; it fails at 3 a.m. next quarter. CloudBees' 2026 survey found 81% of enterprises hit production failures from AI-written code, and 70% now say maintaining tests is harder than writing code — while infrastructure and CI costs climb with the volume. [8]
+**4. Scale and cost.** A pool of 100 for twenty users doesn't fail today; it fails at 3 a.m. next quarter. CloudBees' 2026 survey found 81% of enterprises hit production failures from AI-written code, and 70% now say maintaining tests is harder than writing code — while infrastructure and CI costs climb with the volume.
 
-**5. Security and compliance.** AI co-authored commits leak secrets at twice the human rate. Researchers at Black Hat 2026 showed that a single GitHub issue could reach CI secrets inside the vendors' own agent tooling — and that instruction files like AGENTS.md can carry attacker content between agent runs. Then OpenAI's "warning shot": roughly 1,200 agents built their own message board and broke into third-party systems. [9][10][11]
+**5. Security and compliance.** AI co-authored commits leak secrets at twice the human rate. Researchers at Black Hat 2026 showed that a single GitHub issue could reach CI secrets inside the vendors' own agent tooling — and that instruction files like AGENTS.md can carry attacker content between agent runs. Then OpenAI's "warning shot": roughly 1,200 agents built their own message board and broke into third-party systems. [3]
 
-**6. Codebase coherence.** Duplicated code is up 81% since 2023; error-masking constructs up 47%; cross-file reuse down 35% — so new code inherits none of your shared timeouts, retries, or metrics. A fresh paper names the pattern: locally valid, globally incoherent patches that pass tests and static analysis, then break in production. [12][13]
+**6. Codebase coherence.** Duplicated code is up 81% since 2023; error-masking constructs up 47%; cross-file reuse down 35% — so new code inherits none of your shared timeouts, retries, or metrics. A fresh paper names the pattern: locally valid, globally incoherent patches that pass tests and static analysis, then break in production.
 
-**7. Dependencies and drift.** Drift bites: a study of 203 real dependency upgrades found agents solved just over half when a "minor" version hid code-level changes. [14][15] New versions are also opportunities — React 19.3 shipped stable View Transitions your next screen could use, if the upgrade is planned. [21]
+**7. Dependencies and drift.** Drift bites: a study of 203 real dependency upgrades found agents solved just over half when a "minor" version hid code-level changes. [4] New versions are also opportunities — React 19.3 shipped stable View Transitions your next screen could use, if the upgrade is planned.
 
-**8. Verification and trust.** Two-thirds of developers name "almost right, but not quite" as their top AI frustration. In Anthropic's own testing, humans clicking permission prompts caught 13.6% of dangerous commands; the classifier caught 89%. Teams can't read everything, and pretending otherwise fails silently. [16][17][18]
+**8. Verification and trust.** Two-thirds of developers name "almost right, but not quite" as their top AI frustration. In Anthropic's own testing, humans clicking permission prompts caught 13.6% of dangerous commands; the classifier caught 89%. Teams can't read everything, and pretending otherwise fails silently. [5]
 
 ## Why it keeps happening
 
-Rules don't fix judgment. A prompt file is advice; the agent weighs it against everything else and, under pressure, reasons past it. And agents don't ask enough: more than half of successful 4–8 hour tasks in OpenAI's research org still needed a human intervention. [19] Rules also rot — "graveyard of stale rules" is how one OpenAI build described its master instruction file after a long run. [20]
+Rules don't fix judgment. A prompt file is advice; the agent weighs it against everything else and, under pressure, reasons past it. And agents don't ask enough: more than half of successful 4–8 hour tasks in OpenAI's research org still needed a human intervention. Rules also rot — "graveyard of stale rules" is how one OpenAI build described its master instruction file after a long run.
 
 ## The one fix: CONSTRAINTS.md
 
@@ -61,7 +61,7 @@ The file sets the stage; a workflow runs on it. Before writing anything, the age
 4. "Give me three options, and the tradeoffs I'm underestimating."
 5. "Attack the option I prefer."
 
-Only then: **"Now implement it."** That sequence turns plan approval into a checklist — and it's how OpenAI's internal Codex workflow runs: plan first, wait for review, then build. [23]
+Only then: **"Now implement it."** That sequence turns plan approval into a checklist — and it's how OpenAI's internal Codex workflow runs: plan first, wait for review, then build.
 
 ```markdown
 CONSTRAINTS.md
@@ -109,7 +109,7 @@ Last reviewed: 2026-09-13
 - Review this file monthly, or when traffic doubles.
 ```
 
-Five habits keep it alive: **tell** it the facts once, **look** with read-only access to logs and metrics, **ask** when a fact is missing, **prove** it with checks, and **keep** the file current as versions and traffic change. Tools like Renovate and Dependabot can run the upgrade loop for you; curated migration notes beat raw changelogs. [15][22]
+Five habits keep it alive: **tell** it the facts once, **look** with read-only access to logs and metrics, **ask** when a fact is missing, **prove** it with checks, and **keep** the file current as versions and traffic change. Tools like Renovate and Dependabot can run the upgrade loop for you; curated migration notes beat raw changelogs.
 
 Some things stay human: security decisions, irreversible actions, and taste. No file fixes those.
 
@@ -118,25 +118,7 @@ Make it work first. Then make it keep working.
 ## Sources
 
 1. [Context-file study](https://arxiv.org/abs/2607.27250) — Jul 2026
-2. [Prisma: agent-safe database guardrails](https://www.prisma.io/blog/stop-your-ai-agent-dropping-your-database) — Jul 2026
-3. [Preventing agents from dropping production databases](https://www.bytebase.com/blog/how-to-prevent-ai-agent-from-dropping-your-production-database/) — Sep 2026
-4. [AI agent wiped production database: guardrails](https://outpostqa.com/resource-hub/qa-automation-cicd/ai-agent-wiped-production-database/) — Jul 2026
-5. [AI migrations that lock production tables](https://reptile.haus/journal/ai-generated-database-migrations-locking-production-2026/) — Aug 2026
-6. [Parallel AI agents merging schemas](https://dataplatformadvisory.com/blog/2026/08/15/parallel-ai-agents-schema-migration-review-gap/) — Aug 2026
-7. [New Relic: State of AI Coding 2026](https://newrelic.com/blog/ai/state-of-ai-coding-2026) — Jun 2026
-8. [CloudBees: State of Code Abundance 2026](https://www.cloudbees.com/newsroom/enterprise-technology-leaders-report-production-failures-from-ai-generated-code) — May 2026
-9. [GitGuardian: State of Secrets Sprawl 2026](https://nhimg.org/the-state-of-secrets-sprawl-2026) — Mar 2026
-10. [CSA: CI/CD secrets exposed via AI coding agents](https://labs.cloudsecurityalliance.org/wp-content/uploads/2026/08/CSA%5Fresearch%5Fnote%5Fai%5Fcoding%5Fagent%5Fcicd%5Fsecrets%5F20260808-csa-styled.pdf) — Aug 2026
-11. [Hugging Face incident](https://openai.com/index/hugging-face-incident-and-the-road-ahead/) + [METR investigation](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/) — Aug 2026
-12. [AI-generated code incidents: the 2026 data](https://www.pagerly.io/blog/ai-generated-code-incidents-2026-data-2026-08-30) — Aug 2026
-13. [The Patchwork Problem in LLM-generated code](https://www.alphaxiv.org/abs/2607.08981) — Jul 2026
-14. [Dependency upgrades study](https://arxiv.org/abs/2608.30300) — Aug 2026
-15. [Dependency repair study](https://arxiv.org/abs/2607.17957) — Jul 2026
-16. [Stack Overflow developer survey: AI](https://survey.stackoverflow.co/2025/ai) — 2025
-17. [Claude Code auto mode](https://claude.com/blog/auto-mode-default-in-claude-code) — Aug 2026
-18. [What is happening with code reviews](https://newsletter.pragmaticengineer.com/p/what-is-happening-with-code-reviews) — Sep 2026
-19. [Research acceleration inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/) — Sep 2026
-20. [OpenAI million-line project](https://www.mindstudio.ai/blog/openai-million-line-codebase-agents) — Aug 2026
-21. [React 19.3](https://react.dev/blog/2026/09/09/react-19-3) — Sep 2026
-22. [Renovate](https://github.com/renovatebot/renovate) + [Dependabot with coding agents](https://github.blog/changelog/2026-04-07-dependabot-alerts-are-now-assignable-to-ai-agents-for-remediation/) — Apr 2026
-23. [OpenAI Codex workflow](https://developers.openai.com/blog/automating-repetitive-work-at-openai-with-codex) — Aug 2026
+2. [New Relic: State of AI Coding 2026](https://newrelic.com/blog/ai/state-of-ai-coding-2026) — Jun 2026
+3. [Hugging Face incident](https://openai.com/index/hugging-face-incident-and-the-road-ahead/) + [METR investigation](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/) — Aug 2026
+4. [Dependency upgrades study](https://arxiv.org/abs/2608.30300) — Aug 2026
+5. [Claude Code auto mode](https://claude.com/blog/auto-mode-default-in-claude-code) — Aug 2026
