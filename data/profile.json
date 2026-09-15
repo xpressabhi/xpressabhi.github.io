@@ -73,6 +73,17 @@
       ]
     },
     {
+      "title": "Backend & data ownership",
+      "blurb": "Hands-on backend behind the surfaces: Python/FastAPI and SQLite services with guarded, read-only SQL access, plus Java/Glide enterprise case backends and REST APIs.",
+      "tags": [
+        "Python",
+        "FastAPI",
+        "SQLite",
+        "Java / Glide",
+        "REST APIs"
+      ]
+    },
+    {
       "title": "System design",
       "blurb": "Metadata-aware, multi-model architectures and design patterns built to hold up across teams, tenants, and releases.",
       "tags": [
