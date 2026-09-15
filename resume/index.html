@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Abhishek Kumar Maurya · CV</title>
-<meta name="description" content="Curriculum vitae of Abhishek Kumar Maurya — Staff AI Engineer (Agents) / Frontend & Full-Stack — agent architectures, React/TypeScript UIs, forward-deployed delivery">
+<meta name="description" content="Curriculum vitae of Abhishek Kumar Maurya — Staff AI Engineer — agent systems (MCP, evals, orchestration) and full-stack delivery across React/TypeScript and Python/Java">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -108,6 +108,10 @@
   .proj-line .pname { font-weight: 700; color: var(--ink); }
   .proj-line .pstatus { font-family: var(--font-mono); font-size: 7.5pt; color: var(--dim); }
 
+  .flag-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 3px; }
+  .flag-line .fname { font-weight: 700; color: var(--ink); }
+  .flag-line .forg { font-family: var(--font-mono); font-size: 7.5pt; color: var(--dim); }
+
   .edu-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 2px; }
   .edu-line .ename { font-weight: 700; color: var(--ink); }
 
@@ -150,7 +154,7 @@
 <div class="sheet">
   <div class="cv-head">
     <div class="cv-name">Abhishek Kumar Maurya</div>
-    <div class="cv-role">Staff AI Engineer (Agents) / Frontend & Full-Stack — agent architectures, React/TypeScript UIs, forward-deployed delivery</div>
+    <div class="cv-role">Staff AI Engineer — agent systems (MCP, evals, orchestration) and full-stack delivery across React/TypeScript and Python/Java</div>
     <div class="cv-contact">
       <span>Hyderabad, India</span>
       <span class="mono">+917842740174</span>
@@ -162,7 +166,7 @@
 
   <div class="cv-section">
     <div class="cv-section-title">Summary</div>
-    <p class="cv-summary">Staff Frontend / Full-Stack Engineer with 16+ years across React, TypeScript, and Node.js, now focused on AI agent interfaces and forward-deployed delivery. Founded ServiceNow's Agentic Developer Platform frontend and enablement motion (adopted by 20+ teams via hands-on onboarding), lead a 9-person engineering team, and ship enterprise-grade UI with testing and accessibility. Ex-co-founder with direct client delivery experience. Design agent systems end-to-end: tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), and governance via AI Agent Studio — shipped ALA from requirements to GA.</p>
+    <p class="cv-summary">Staff AI Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), lead a 9-person engineering team, and design agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.</p>
   </div>
 
   <div class="cv-section">
@@ -170,13 +174,18 @@
     <div class="skill-grid">
       
       <div class="skill-group">
+        <h3>AI & Agentic Engineering</h3>
+        <p>AI agents, Agent UIs, MCP workflows, Claude Code, LLM APIs (Anthropic, OpenAI, Gemini), LangChain / LangGraph, Prompt engineering, Tool orchestration, Multi-model systems, Multi-agent orchestration, REAct agents, LLM evals (golden sets, LLM-as-judge), Agent evaluation & guardrails, AI governance (AI Agent Studio / Control Tower), RAG / keyword retrieval (BM25, FTS5)</p>
+      </div>
+      
+      <div class="skill-group">
         <h3>Frontend & Platform</h3>
         <p>JavaScript (ES6+), TypeScript, React, Next.js, Redux Toolkit, RTK Query, Node.js, Webpack, Vite, PWA</p>
       </div>
       
       <div class="skill-group">
-        <h3>AI & Agentic Engineering</h3>
-        <p>AI agents, Agent UIs, MCP workflows, Claude Code, LLM APIs (Anthropic, OpenAI, Gemini), LangChain / LangGraph, Prompt engineering, Tool orchestration, Multi-model systems, Multi-agent orchestration, REAct agents, LLM evals (golden sets, LLM-as-judge), Agent evaluation & guardrails, AI governance (AI Agent Studio / Control Tower), RAG / keyword retrieval (BM25, FTS5)</p>
+        <h3>Backend & Data</h3>
+        <p>Python, FastAPI, SQLite, Java, REST APIs, MongoDB</p>
       </div>
       
       <div class="skill-group">
@@ -187,11 +196,6 @@
       <div class="skill-group">
         <h3>Reliability & Quality</h3>
         <p>Jest, React Testing Library, Playwright, Performance optimization, WCAG / ARIA accessibility</p>
-      </div>
-      
-      <div class="skill-group">
-        <h3>Backend & Data</h3>
-        <p>Python, FastAPI, SQLite, Java, REST APIs, MongoDB</p>
       </div>
       
       <div class="skill-group">
@@ -215,9 +219,9 @@
         <span class="job-title">Staff Software Engineer · <span class="org">ServiceNow, Hyderabad</span></span>
         <span class="job-period">Oct 2023 – Present</span>
       </div>
-      <div class="job-stack">React, TypeScript, JavaScript, Node.js, AI Agents, MCP, Python</div>
+      <div class="job-stack">AI Agents, MCP, Python, TypeScript, React, Node.js, Java</div>
       <ul>
-        <li>Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.</li><li>Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.</li><li>Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.</li><li>Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.</li><li>Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.</li><li>Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation.</li>
+        <li>Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.</li><li>Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.</li><li>Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.</li><li>Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.</li><li>Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.</li><li>Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation.</li>
       </ul>
     </div>
     
@@ -277,6 +281,21 @@
     </div>
     
   </div>
+
+  
+  <div class="cv-section">
+    <div class="cv-section-title">Selected AI work</div>
+    
+    <div class="flag-line"><span class="fname">Agentic Developer Platform (ADP)</span> <span class="forg">ServiceNow · Founder</span> — Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks on a multi-agent orchestration pattern, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</div>
+    
+    <div class="flag-line"><span class="fname">MCP-driven engineering workflows</span> <span class="forg">ServiceNow · 20+ teams</span> — Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</div>
+    
+    <div class="flag-line"><span class="fname">Build Agent, ServiceNow Studio</span> <span class="forg">ServiceNow · App Engine</span> — Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern (think first, then execute) with a metadata-aware, multi-model (Claude default; Now LLM + Claude on Bedrock), self-healing agentic architecture.</div>
+    
+    <div class="flag-line"><span class="fname">Release lifecycle & app summary agents</span> <span class="forg">ServiceNow · Now Assist for Creator</span> — Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests: documentation time from hours to a single click. Built on the REAct agentic framework (reason → act → observe). Ships as the Release lifecycle documentation agent in Now Assist for Creator.</div>
+    
+  </div>
+  
 
   <div class="cv-section">
     <div class="cv-section-title">Projects</div>

@@ -3,9 +3,9 @@
   "basics": {
     "name": "Abhishek Kumar Maurya",
     "shortName": "Abhishek Maurya",
-    "headline": "Staff AI Engineer (Agents) / Frontend & Full-Stack — agent architectures, React/TypeScript UIs, forward-deployed delivery",
-    "tagline": "16+ years of frontend and full-stack delivery, AI agent UIs, and developer platforms",
-    "shortSummary": "Staff AI/Frontend Engineer. React/TypeScript surfaces with Java/Glide full-stack case ownership; team-level rollouts adopted by 20+ teams.",
+    "headline": "Staff AI Engineer — agent systems (MCP, evals, orchestration) and full-stack delivery across React/TypeScript and Python/Java",
+    "tagline": "16+ years full-stack: AI agents and agentic platforms, React/TypeScript frontends, Python/Java backends",
+    "shortSummary": "Staff AI Engineer. Agent systems, evals, and MCP workflows adopted by 20+ teams; React/TypeScript surfaces with Java/Glide full-stack case ownership.",
     "yearsExperience": "16+",
     "location": "Hyderabad, India",
     "timezone": "IST",
@@ -26,7 +26,7 @@
       "url": "https://patents.google.com/patent/US20150046358"
     }
   },
-  "summary": "Staff Frontend / Full-Stack Engineer with 16+ years across React, TypeScript, and Node.js, now focused on AI agent interfaces and forward-deployed delivery. Founded ServiceNow's Agentic Developer Platform frontend and enablement motion (adopted by 20+ teams via hands-on onboarding), lead a 9-person engineering team, and ship enterprise-grade UI with testing and accessibility. Ex-co-founder with direct client delivery experience. Design agent systems end-to-end: tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), and governance via AI Agent Studio — shipped ALA from requirements to GA.",
+  "summary": "Staff AI Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), lead a 9-person engineering team, and design agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.",
   "capabilityCards": [
     {
       "wide": true,
@@ -103,18 +103,6 @@
     }
   ],
   "skills": {
-    "Frontend & Platform": [
-      "JavaScript (ES6+)",
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Redux Toolkit",
-      "RTK Query",
-      "Node.js",
-      "Webpack",
-      "Vite",
-      "PWA"
-    ],
     "AI & Agentic Engineering": [
       "AI agents",
       "Agent UIs",
@@ -132,6 +120,26 @@
       "AI governance (AI Agent Studio / Control Tower)",
       "RAG / keyword retrieval (BM25, FTS5)"
     ],
+    "Frontend & Platform": [
+      "JavaScript (ES6+)",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Redux Toolkit",
+      "RTK Query",
+      "Node.js",
+      "Webpack",
+      "Vite",
+      "PWA"
+    ],
+    "Backend & Data": [
+      "Python",
+      "FastAPI",
+      "SQLite",
+      "Java",
+      "REST APIs",
+      "MongoDB"
+    ],
     "Architecture": [
       "System design",
       "Scalable frontend architecture",
@@ -145,14 +153,6 @@
       "Playwright",
       "Performance optimization",
       "WCAG / ARIA accessibility"
-    ],
-    "Backend & Data": [
-      "Python",
-      "FastAPI",
-      "SQLite",
-      "Java",
-      "REST APIs",
-      "MongoDB"
     ],
     "CI/CD & Tooling": [
       "GitHub Actions",
@@ -271,20 +271,20 @@
       "start": "Oct 2023",
       "end": "Present",
       "stack": [
-        "React",
-        "TypeScript",
-        "JavaScript",
-        "Node.js",
         "AI Agents",
         "MCP",
-        "Python"
+        "Python",
+        "TypeScript",
+        "React",
+        "Node.js",
+        "Java"
       ],
       "highlights": [
-        "Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.",
-        "Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.",
         "Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.",
         "Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.",
         "Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.",
+        "Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.",
+        "Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.",
         "Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation."
       ]
     },

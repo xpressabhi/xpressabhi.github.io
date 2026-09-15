@@ -108,6 +108,10 @@
   .proj-line .pname { font-weight: 700; color: var(--ink); }
   .proj-line .pstatus { font-family: var(--font-mono); font-size: 7.5pt; color: var(--dim); }
 
+  .flag-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 3px; }
+  .flag-line .fname { font-weight: 700; color: var(--ink); }
+  .flag-line .forg { font-family: var(--font-mono); font-size: 7.5pt; color: var(--dim); }
+
   .edu-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 2px; }
   .edu-line .ename { font-weight: 700; color: var(--ink); }
 
@@ -192,6 +196,15 @@
     </div>
     {{/each}}
   </div>
+
+  {{#if flagship}}
+  <div class="cv-section">
+    <div class="cv-section-title">Selected AI work</div>
+    {{#each flagship}}
+    <div class="flag-line"><span class="fname">{{title}}</span> <span class="forg">{{org}} · {{role}}</span> — {{summary}}</div>
+    {{/each}}
+  </div>
+  {{/if}}
 
   <div class="cv-section">
     <div class="cv-section-title">Projects</div>
