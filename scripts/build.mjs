@@ -79,7 +79,7 @@ function buildCvPage(repo = REPO) {
   const tpl = readFileSync(P("templates/cv.html"), "utf8");
   const cv = { ...repo };
   const discontinued = repo.projects.filter((p) => p.status === "discontinued");
-  const live = repo.projects.filter((p) => p.status !== "discontinued");
+  const live = repo.projects.filter((p) => p.status !== "discontinued" && p.showOnCv !== false);
   cv.projects = live.concat(
     discontinued.length
       ? [{ name: discontinued.map((p) => p.name).join(" · "), status: "discontinued", description: "earlier projects, kept for reference", url: "" }]
@@ -316,7 +316,7 @@ function buildCareerOsResume() {
   const skills = Object.entries(REPO.skills)
     .map(([g, items]) => `| ${g} | ${items.join(", ")} |`)
     .join("\n");
-  const projects = REPO.projects.filter((p) => p.status === "live").map((p) => `- ${p.name}`).join("\n");
+  const projects = REPO.projects.filter((p) => p.status === "live" && p.showOnCv !== false).map((p) => `- ${p.name}`).join("\n");
   return `\`\`\`markdown
 # ${b.name}
 

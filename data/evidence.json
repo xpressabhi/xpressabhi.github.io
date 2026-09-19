@@ -30,6 +30,12 @@
     "projects:Revision": [
       { "source": "repo", "ref": "github.com/xpressabhi/revision", "date": "2026-09", "note": "Tauri 2 + React 19 + TS + Vite 7 + KaTeX desktop app (v0.4.0). FSRS-5 scheduler (src/lib/fsrs.ts), drag gestures (src/lib/gestures.ts), air gestures via MediaPipe HandLandmarker (src/lib/handGestures.ts + HandOverlay.tsx, public/mediapipe/ committed), activity-aware sessions (src/lib/session.ts), single SQLite file revision.db with localStorage fallback" }
     ],
+    "projects:jev-browser": [
+      { "source": "repo+site", "ref": "github.com/xpressabhi/jev-browser", "date": "2026-09", "note": "Harness-agnostic TypeScript browser-decision core (Jev observe/step/decide/text); OpenCode adapter + skill; docs site at xpressabhi.github.io/jev-browser" }
+    ],
+    "projects:job-search-skills": [
+      { "source": "repo+site", "ref": "github.com/xpressabhi/job-search-skills", "date": "2026-09", "note": "job-finder + apply-to-jobs agent skills; Jev decision layer for eligibility/fit/duplicates; local-only profile + tracker in ~/.job-search; docs site at xpressabhi.github.io/job-search-skills" }
+    ],
     "deepDive:revision.md": [
       { "source": "repo", "ref": "github.com/xpressabhi/revision", "date": "2026-09", "note": "Blog post written from revision repo evidence (README, CHANGELOG, src/lib/fsrs.ts, src/lib/gestures.ts, src/lib/handGestures.ts, src/lib/session.ts, ReviewView.tsx, App.tsx) and portfolio build" }
     ],

@@ -412,6 +412,20 @@
       "status": "live"
     },
     {
+      "name": "jev-browser",
+      "url": "https://xpressabhi.github.io/jev-browser/",
+      "description": "Harness-agnostic TypeScript core that puts Jev (TypeSafe System One) in charge of browser decisions: one observed element and one operation per step, text-only payloads with no screenshots in the loop, zero runtime dependencies",
+      "status": "live",
+      "showOnCv": false
+    },
+    {
+      "name": "job-search-skills",
+      "url": "https://xpressabhi.github.io/job-search-skills/",
+      "description": "Two portable agent skills that run an entire job search locally: job-finder sweeps boards and ranks roles by real eligibility, apply-to-jobs autofills and submits ATS applications in your own browser, and a Jev decision layer keeps uncertain answers uncertain",
+      "status": "live",
+      "showOnCv": false
+    },
+    {
       "name": "selftest.in",
       "url": "https://selftest.in",
       "description": "Self-testing and government job preparation app powered by the Gemini API",
