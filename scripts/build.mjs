@@ -66,13 +66,28 @@ function checkEvidence() {
 /* Outputs                                                             */
 /* ------------------------------------------------------------------ */
 
-function buildPortfolio(latest) {
-  const tpl = readFileSync(P("templates/portfolio.html"), "utf8");
+function cookRepo() {
   const repo = JSON.parse(JSON.stringify(REPO));
   repo.flagship = repo.flagship.map((f) => (f.dive ? { ...f, dive: f.dive.replace(/\.md$/i, ".html") } : f));
   repo.deepDives = repo.deepDives.map((d) => ({ ...d, file: d.file.replace(/\.md$/i, ".html") }));
+  return repo;
+}
+
+function buildPortfolio(latest) {
+  const tpl = readFileSync(P("templates/portfolio.html"), "utf8");
+  const repo = cookRepo();
+  // Home is a glanceable landing: snapshot metrics and top three case studies,
+  // live projects only. Full detail lives on work/ and resume/.
+  repo.homeMetrics = repo.impactMetrics.slice(0, 6);
+  repo.homeWork = repo.flagship.slice(0, 3);
+  repo.liveProjects = repo.projects.filter((p) => p.status !== "discontinued");
   repo.latest = latest || null;
   return render(tpl, [repo]);
+}
+
+function buildWorkPage() {
+  const tpl = readFileSync(P("templates/work.html"), "utf8");
+  return render(tpl, [cookRepo()]);
 }
 
 function buildCvPage(repo = REPO) {
@@ -418,6 +433,7 @@ const { post: featuredPost, pinned: featuredPinned } = pickFeatured(blog.posts, 
 if (!featuredPinned) console.warn(`⚠ blog.featured "${featuredSlug}" not found, featuring newest post instead`);
 const jobs = [
   ["index.html", buildPortfolio(featuredPost)],
+  ["work/index.html", buildWorkPage()],
   ["resume/index.html", buildCvPage()],
   ["blog/index.html", blog.index],
   ...blog.posts.map((p) => [`blog/${p.slug}.html`, p.html]),

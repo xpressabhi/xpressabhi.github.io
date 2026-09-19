@@ -80,7 +80,7 @@
   .reader-foot a:hover { color: var(--ink); }
   @media (max-width: 640px) {
     main { padding-top: 36px; }
-    .nav-links a:not(.cv):not(.blog-link) { display: none; }
+    .nav-links a:not(.cv):not(.blog-link):not(.work-link) { display: none; }
   }
 </style>
 </head>
@@ -90,8 +90,7 @@
   <nav>
     <a href="../" class="mark"><span class="dot"></span>Abhishek Maurya</a>
     <div class="nav-links">
-      <a href="../#work">Work</a>
-      <a href="../#experience">Experience</a>
+      <a href="../work/" class="work-link">Work</a>
       <a href="../#projects">Projects</a>
       <a href="./" class="blog-link">Blog</a>
       <a href="../resume/" class="cv">CV</a>
