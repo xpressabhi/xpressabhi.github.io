@@ -11,3 +11,4 @@ scripts/cache/
 
 # local scratch (never published)
 drafts/
+.firecrawl/
