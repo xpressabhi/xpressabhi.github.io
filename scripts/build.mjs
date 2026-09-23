@@ -416,6 +416,31 @@ async function renderPdf(cvHtml, outPath = P("resume/abhishek-maurya-cv.pdf")) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Sitemap + robots                                                    */
+/* ------------------------------------------------------------------ */
+
+// Deterministic by design: static pages carry no lastmod (a build-time
+// "today" would make every CI run dirty), posts use their commit mtime.
+function buildSitemap(posts) {
+  const iso = (ms) => new Date(ms).toISOString().slice(0, 10);
+  const urls = [
+    { loc: `${SITE_URL}/` },
+    { loc: `${SITE_URL}/work/` },
+    { loc: `${SITE_URL}/resume/` },
+    { loc: `${SITE_URL}/blog/` },
+    ...posts.map((p) => ({ loc: `${SITE_URL}/blog/${p.slug}.html`, lastmod: iso(p.mtime) })),
+  ];
+  const body = urls
+    .map(({ loc, lastmod }) => `  <url><loc>${loc}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`)
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+function buildRobots() {
+  return `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`;
+}
+
+/* ------------------------------------------------------------------ */
 /* Main                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -437,6 +462,8 @@ const jobs = [
   ["resume/index.html", buildCvPage()],
   ["blog/index.html", blog.index],
   ...blog.posts.map((p) => [`blog/${p.slug}.html`, p.html]),
+  ["sitemap.xml", buildSitemap(blog.posts)],
+  ["robots.txt", buildRobots()],
 ];
 
 // Variant CV (isolated, never overwrites main)

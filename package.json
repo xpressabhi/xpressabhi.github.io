@@ -8,6 +8,7 @@
     "build": "node scripts/build.mjs",
     "build:pdf": "node scripts/build.mjs --pdf",
     "cv:preview": "node scripts/cv-preview.mjs",
+    "og:card": "node scripts/og-card.mjs",
     "check": "node scripts/check.mjs",
     "repos:scan": "node scripts/scan-repos.mjs",
     "signals:classify": "node scripts/classify-signals.mjs",

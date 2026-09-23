@@ -420,6 +420,13 @@
       "status": "live"
     },
     {
+      "name": "Switchyard",
+      "status": "live",
+      "url": "https://xpressabhi.github.io/sims/agentic-rag.html",
+      "image": "/assets/switchyard-sim-card.webp",
+      "description": "Interactive simulator for an agentic AI + RAG pipeline: watch ingestion, retrieval, tool calls, memory, and a live trace of every internal step while the loop runs."
+    },
+    {
       "name": "jev-browser",
       "url": "https://xpressabhi.github.io/jev-browser/",
       "description": "Harness-agnostic TypeScript core that puts Jev (TypeSafe System One) in charge of browser decisions: one observed element and one operation per step, text-only payloads with no screenshots in the loop, zero runtime dependencies",

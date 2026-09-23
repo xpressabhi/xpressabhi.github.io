@@ -8,3 +8,6 @@ output/
 # machine-local scanner state
 scripts/cache/
 .playwright-mcp/
+
+# local scratch (never published)
+drafts/

@@ -11,12 +11,14 @@
 <meta property="og:title" content="{{title}}">
 <meta property="og:description" content="{{excerpt}}">
 <meta property="og:url" content="{{url}}">
-{{#if image}}<meta property="og:image" content="{{image}}">{{/if}}
+{{#if image}}<meta property="og:image" content="{{image}}">{{else}}<meta property="og:image" content="https://xpressabhi.github.io/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">{{/if}}
 {{#if imageType}}<meta property="og:image:type" content="{{imageType}}">{{/if}}
-<meta name="twitter:card" content="{{#if image}}summary_large_image{{else}}summary{{/if}}">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{title}}">
 <meta name="twitter:description" content="{{excerpt}}">
-{{#if image}}<meta name="twitter:image" content="{{image}}">{{/if}}
+{{#if image}}<meta name="twitter:image" content="{{image}}">{{else}}<meta name="twitter:image" content="https://xpressabhi.github.io/assets/og-card.png">{{/if}}
 <script>
   (function () {
     try {
