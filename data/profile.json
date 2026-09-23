@@ -512,10 +512,6 @@
       "file": "adp-claude-code-rollout.md"
     },
     {
-      "title": "Generic ServiceNow impact points",
-      "file": "generic.md"
-    },
-    {
       "title": "Table Builder",
       "file": "table-builder.md"
     },
@@ -545,7 +541,6 @@
       "claude-code-self-improving-platform",
       "servicenow-project-portfolio",
       "sn-claude-skills",
-      "generic",
       "workspace-builder"
     ]
   }
