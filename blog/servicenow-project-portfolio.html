@@ -74,6 +74,8 @@
   .reader pre code { display: block; padding: 16px; background: none; border: 0; border-radius: 0; font-size: 13px; line-height: 1.65; }
   .reader pre.diagram { text-align: center; border-style: dashed; }
   .reader pre.diagram code { text-align: center; }
+  .reader pre.mermaid { text-align: center; background: none; border-style: dashed; padding: 16px; }
+  .reader pre.mermaid svg { max-width: 100%; height: auto; }
   .reader blockquote { border-left: 2px solid var(--ink); padding: 4px 16px; color: var(--muted); font-style: italic; margin: 0 0 18px; }
   .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
   .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
@@ -374,6 +376,20 @@
         a.setAttribute("rel", "noopener");
       }
     });
+  })();
+</script>
+<script>
+  (function () {
+    if (!document.querySelector("pre.mermaid")) return;
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
+    s.onload = function () {
+      try {
+        window.mermaid.initialize({ startOnLoad: false });
+        window.mermaid.run({ querySelector: "pre.mermaid" });
+      } catch (e) {}
+    };
+    document.head.appendChild(s);
   })();
 </script>
 

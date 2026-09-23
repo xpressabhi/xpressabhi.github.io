@@ -230,8 +230,12 @@ export function mdToHtml(md) {
       while (i < lines.length && !/^\s*```\s*$/.test(lines[i])) code.push(lines[i++]);
       i++;
       const body = code.join("\n");
-      const isDiagram = /[┌└├│─▼►]/.test(body);
       const lang = (fence[1] || "").toLowerCase();
+      if (lang === "mermaid") {
+        out.push(`<pre class="mermaid">${escHtml(body)}</pre>`);
+        continue;
+      }
+      const isDiagram = /[┌└├│─▼►]/.test(body);
       const label = !isDiagram ? ` data-lang="${escHtml(lang || "code")}"` : "";
       out.push(`<pre class="${isDiagram ? "diagram" : "code"}"${label}><code>${escHtml(body)}</code></pre>`);
       continue;

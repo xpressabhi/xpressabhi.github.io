@@ -7,15 +7,28 @@ The **Release Lifecycle Documentation AI Agent** is an autonomous governance too
 
 ---
 
-## 🧠 Agent Architecture: Built on the REAct Framework
+## 🧠 Agent Architecture: Agentic RAG via tools, judge-filter, re-rank and summarize
 
-Both the ALA Release Documentation Agent and the App Summary Agent are built on the **REAct agentic framework** — Reason → Act → Observe — rather than a single monolithic prompt. Each documentation run is a closed reasoning loop:
+Both the ALA Release Documentation Agent and the App Summary Agent run as an agentic tool loop rather than a single pipeline call. Each documentation run follows the same closed loop:
 
-1. **Reason:** Analyze the current state (a scoped application, or the delta between an update set and the live instance) and decide what documentation step to take next.
-2. **Act:** Invoke the semantic discovery tools — crawl metadata configurations, diffs, script includes, and UI structures to gather the evidence the step needs.
-3. **Observe:** Interpret the tool results, fold them into the running manifest, and loop back to reasoning until the documentation set is complete (release notes, CAB deployment manifest, architecture diagrams).
+1. **Inventory:** Scope the work first — fetch basic details like apps, update sets, metadata types, and file counts so the agent knows what it is working with before pulling diffs.
+2. **Ranked fetch:** Pull diffs for the most important metadata types first, not everything at once, keeping each retrieval bounded.
+3. **Judge and categorize:** Check that batch, drop trivial changes, categorize what remains, and fold the keepers into the running manifest.
+4. **Loop:** Go back for the next set of metadata and repeat — until the summary is good enough or all content is processed.
+5. **Re-rank, filter, summarize:** Re-rank everything collected, filter once more, then summarize into the final release notes, CAB deployment manifest, and architecture diagrams.
 
-The REAct loop is what lets the agents handle arbitrary applications of any size: they keep reasoning and acting until the evidence is exhausted, instead of depending on a pre-baked prompt covering every case.
+The loop is what lets the agents handle arbitrary applications of any size: cheap scoping first, prioritized retrieval, per-batch judging, and a stop condition instead of a pre-baked prompt covering every case.
+
+```mermaid
+flowchart TD
+    Q["Query<br/>update set or release"] --> INV["1 Inventory<br/>apps, update sets, metadata types, file counts"]
+    INV --> FETCH["2 Ranked fetch<br/>top metadata diffs, bounded batch"]
+    FETCH --> JUDGE["3 Judge and categorize<br/>drop trivial, keepers to manifest"]
+    JUDGE --> LOOP{"4 Good enough<br/>or exhausted?"}
+    LOOP -- "No, next metadata set" --> FETCH
+    LOOP -- Yes --> RR["5 Re-rank, filter, summarize"]
+    RR --> OUT["Release notes, manifest, diagrams"]
+```
 
 ---
 

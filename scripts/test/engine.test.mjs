@@ -76,3 +76,9 @@ test("mdToHtml nested lists", () => {
   const html = mdToHtml("- a\n  - a1\n- b");
   assert.match(html, /<li>a<ul><li>a1<\/li><\/ul><\/li><li>b<\/li>/);
 });
+
+test("mdToHtml renders mermaid fences as pre.mermaid without code wrapper", () => {
+  const html = mdToHtml("```mermaid\nflowchart TD\n    A-->B\n```");
+  assert.match(html, /<pre class="mermaid">flowchart TD/);
+  assert.doesNotMatch(html, /<pre class="mermaid"><code>/);
+});
