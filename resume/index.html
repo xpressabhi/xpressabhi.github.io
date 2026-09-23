@@ -68,8 +68,9 @@
   }
   .cv-contact > span { white-space: nowrap; }
   .cv-contact .mono { font-size: 8.5pt; }
+  .cv-avail { margin-top: 5px; font-size: 9pt; color: var(--ink); font-weight: 600; }
 
-  .cv-section { margin-top: 14px; }
+  .cv-section { margin-top: 9px; }
   .cv-section-title {
     font-family: var(--font-mono); font-size: 9pt; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase;
@@ -78,7 +79,7 @@
   }
   .cv-summary { color: var(--muted); font-size: 9.5pt; }
 
-  .job { margin-bottom: 8px; page-break-inside: avoid; }
+  .job { margin-bottom: 6px; page-break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .job-title { font-size: 10.5pt; font-weight: 700; }
@@ -87,7 +88,7 @@
   .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
   .job ul { list-style: none; }
   .job li {
-    position: relative; padding-left: 15px; margin-bottom: 1px;
+    position: relative; padding-left: 15px; margin-bottom: 0;
     color: var(--muted); font-size: 9.3pt;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
@@ -119,7 +120,7 @@
   .patent .pnum { font-family: var(--font-mono); color: var(--ink); }
 
   .cv-foot {
-    margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--line);
+    margin-top: 10px; padding-top: 6px; border-top: 1px solid var(--line);
     display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
     font-size: 8pt; color: var(--dim);
   }
@@ -162,11 +163,12 @@
       <span><a href="https://github.com/xpressabhi" target="_blank" rel="noopener">github.com/xpressabhi</a></span>
       <span><a href="https://www.linkedin.com/in/akm85/" target="_blank" rel="noopener">linkedin.com/in/akm85</a></span>
     </div>
+    <div class="cv-avail">Immediately available; open to in-office, hybrid, or remote roles from Hyderabad</div>
   </div>
 
   <div class="cv-section">
     <div class="cv-section-title">Summary</div>
-    <p class="cv-summary">Staff AI Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), lead a 9-person engineering team, and design agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.</p>
+    <p class="cv-summary">Staff AI Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), led a 9-person engineering team there, and designs agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.</p>
   </div>
 
   <div class="cv-section">
@@ -175,7 +177,7 @@
       
       <div class="skill-group">
         <h3>AI & Agentic Engineering</h3>
-        <p>AI agents, Agent UIs, MCP workflows, Claude Code, LLM APIs (Anthropic, OpenAI, Gemini), LangChain / LangGraph, Prompt engineering, Tool orchestration, Multi-model systems, Multi-agent orchestration, REAct agents, LLM evals (golden sets, LLM-as-judge), Agent evaluation & guardrails, AI governance (AI Agent Studio / Control Tower), RAG / keyword retrieval (BM25, FTS5)</p>
+        <p>AI agents, Agent UIs, MCP workflows, Claude Code, LLM APIs (Anthropic, OpenAI, Gemini), LangChain / LangGraph, Prompt engineering, Tool orchestration, Multi-model systems, Multi-agent orchestration, REAct agents, LLM evals (golden sets, LLM-as-judge), Agent evaluation & guardrails, Human-in-the-loop agent design (plan → approve → execute → verify), AI governance (AI Agent Studio / Control Tower), RAG / keyword retrieval (BM25, FTS5)</p>
       </div>
       
       <div class="skill-group">
@@ -195,7 +197,7 @@
       
       <div class="skill-group">
         <h3>Reliability & Quality</h3>
-        <p>Jest, React Testing Library, Playwright, Performance optimization, WCAG / ARIA accessibility</p>
+        <p>Jest, React Testing Library, Playwright, Performance optimization, Performance profiling & tuning (production regressions, budgets), WCAG / ARIA accessibility</p>
       </div>
       
       <div class="skill-group">
@@ -205,7 +207,7 @@
       
       <div class="skill-group">
         <h3>Observability</h3>
-        <p>Sentry, LogRocket, Datadog, Sumo Logic</p>
+        <p>Sentry, LogRocket, Datadog, Sumo Logic, Agent observability (reasoning traces, tool-selection errors, cost/latency), On-call & incident command</p>
       </div>
       
     </div>
@@ -217,11 +219,11 @@
     <div class="job">
       <div class="job-head">
         <span class="job-title">Staff Software Engineer · <span class="org">ServiceNow, Hyderabad</span></span>
-        <span class="job-period">Oct 2023 – Present</span>
+        <span class="job-period">Oct 2023 – Aug 2026</span>
       </div>
       <div class="job-stack">AI Agents, MCP, Python, TypeScript, React, Node.js, Java</div>
       <ul>
-        <li>Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.</li><li>Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.</li><li>Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.</li><li>Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.</li><li>Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.</li><li>Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation.</li>
+        <li>Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.</li><li>Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.</li><li>Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.</li><li>Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.</li><li>Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.</li><li>Owned front-end performance for the builder surfaces: profiled and diagnosed production regressions, fixed render and bundle hotspots, held performance budgets.</li><li>Instrumented agent quality in production: reasoning traces, tool-selection and hallucination error tracking, rollback paths, cost/latency dashboards feeding failures back into evals.</li><li>Human-gated autonomy: chat → plan → explicit approval → execution → verification, with per-action approvals (script, intent, target scope) and rollback/hand-back paths — checkpoints structural, not advisory.</li><li>On-call and incident command for enterprise customer-facing surfaces.</li><li>Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation.</li>
       </ul>
     </div>
     

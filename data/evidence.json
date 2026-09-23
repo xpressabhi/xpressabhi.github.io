@@ -10,37 +10,132 @@
       }
     ],
     "skills:FastAPI": [
-      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "FastAPI 0.141 backend: /api/chat, /api/health, static mount; sync endpoint in threadpool" }
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/SpendIQ_Candidate",
+        "date": "2026-08",
+        "note": "FastAPI 0.141 backend: /api/chat, /api/health, static mount; sync endpoint in threadpool"
+      }
     ],
     "skills:SQLite": [
-      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "5 normalized tables, 7 analytic views, FTS5 index with triggers, read-only URI connections" }
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/SpendIQ_Candidate",
+        "date": "2026-08",
+        "note": "5 normalized tables, 7 analytic views, FTS5 index with triggers, read-only URI connections"
+      }
     ],
     "skills:LLM evals (golden sets, LLM-as-judge, majority voting)": [
-      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "Custom evals/ harness: 14 tiered cases, composable checks, optional LLM judge, majority vote over 3 runs; graders unit-tested" }
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/SpendIQ_Candidate",
+        "date": "2026-08",
+        "note": "Custom evals/ harness: 14 tiered cases, composable checks, optional LLM judge, majority vote over 3 runs; graders unit-tested"
+      }
     ],
     "skills:RAG / keyword retrieval (BM25, FTS5)": [
-      { "source": "repo", "ref": "github.com/xpressabhi/SpendIQ_Candidate", "date": "2026-08", "note": "BM25 over FTS5 with AND→OR fallback, prefix wildcards, snippet highlighting; documented BM25-over-embeddings decision in DESIGN_NOTES.md" }
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/SpendIQ_Candidate",
+        "date": "2026-08",
+        "note": "BM25 over FTS5 with AND→OR fallback, prefix wildcards, snippet highlighting; documented BM25-over-embeddings decision in DESIGN_NOTES.md"
+      }
     ],
     "deepDive:spendiq-copilot.md": [
-      { "source": "repo+session", "ref": "ses_fcdea61eaffenQwUzSc9wDzsOn", "date": "2026-08", "note": "Blog post written from SpendIQ_Candidate repo evidence gathered in this session" }
+      {
+        "source": "repo+session",
+        "ref": "ses_fcdea61eaffenQwUzSc9wDzsOn",
+        "date": "2026-08",
+        "note": "Blog post written from SpendIQ_Candidate repo evidence gathered in this session"
+      }
     ],
     "projects:ordo": [
-      { "source": "repo+site", "ref": "github.com/xpressabhi/ordo", "date": "2026-08", "note": "On-device VLM take-home: Qwen2-VL-2B on llama.cpp, 270-run quantization ladder, iPhone deploy" }
+      {
+        "source": "repo+site",
+        "ref": "github.com/xpressabhi/ordo",
+        "date": "2026-08",
+        "note": "On-device VLM take-home: Qwen2-VL-2B on llama.cpp, 270-run quantization ladder, iPhone deploy"
+      }
     ],
     "projects:Revision": [
-      { "source": "repo", "ref": "github.com/xpressabhi/revision", "date": "2026-09", "note": "Tauri 2 + React 19 + TS + Vite 7 + KaTeX desktop app (v0.4.0). FSRS-5 scheduler (src/lib/fsrs.ts), drag gestures (src/lib/gestures.ts), air gestures via MediaPipe HandLandmarker (src/lib/handGestures.ts + HandOverlay.tsx, public/mediapipe/ committed), activity-aware sessions (src/lib/session.ts), single SQLite file revision.db with localStorage fallback" }
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/revision",
+        "date": "2026-09",
+        "note": "Tauri 2 + React 19 + TS + Vite 7 + KaTeX desktop app (v0.4.0). FSRS-5 scheduler (src/lib/fsrs.ts), drag gestures (src/lib/gestures.ts), air gestures via MediaPipe HandLandmarker (src/lib/handGestures.ts + HandOverlay.tsx, public/mediapipe/ committed), activity-aware sessions (src/lib/session.ts), single SQLite file revision.db with localStorage fallback"
+      }
     ],
     "projects:jev-browser": [
-      { "source": "repo+site", "ref": "github.com/xpressabhi/jev-browser", "date": "2026-09", "note": "Harness-agnostic TypeScript browser-decision core (Jev observe/step/decide/text); OpenCode adapter + skill; docs site at xpressabhi.github.io/jev-browser" }
+      {
+        "source": "repo+site",
+        "ref": "github.com/xpressabhi/jev-browser",
+        "date": "2026-09",
+        "note": "Harness-agnostic TypeScript browser-decision core (Jev observe/step/decide/text); OpenCode adapter + skill; docs site at xpressabhi.github.io/jev-browser"
+      }
     ],
     "projects:job-search-skills": [
-      { "source": "repo+site", "ref": "github.com/xpressabhi/job-search-skills", "date": "2026-09", "note": "job-finder + apply-to-jobs agent skills; Jev decision layer for eligibility/fit/duplicates; local-only profile + tracker in ~/.job-search; docs site at xpressabhi.github.io/job-search-skills" }
+      {
+        "source": "repo+site",
+        "ref": "github.com/xpressabhi/job-search-skills",
+        "date": "2026-09",
+        "note": "job-finder + apply-to-jobs agent skills; Jev decision layer for eligibility/fit/duplicates; local-only profile + tracker in ~/.job-search; docs site at xpressabhi.github.io/job-search-skills"
+      }
     ],
     "deepDive:revision.md": [
-      { "source": "repo", "ref": "github.com/xpressabhi/revision", "date": "2026-09", "note": "Blog post written from revision repo evidence (README, CHANGELOG, src/lib/fsrs.ts, src/lib/gestures.ts, src/lib/handGestures.ts, src/lib/session.ts, ReviewView.tsx, App.tsx) and portfolio build" }
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/revision",
+        "date": "2026-09",
+        "note": "Blog post written from revision repo evidence (README, CHANGELOG, src/lib/fsrs.ts, src/lib/gestures.ts, src/lib/handGestures.ts, src/lib/session.ts, ReviewView.tsx, App.tsx) and portfolio build"
+      }
     ],
     "deepDive:never-met-your-users.md": [
-      { "source": "session+web", "ref": "output/deep-research-agent-constraints.md", "date": "2026-09", "note": "Research essay reshaped around real-world engineering pain points (data/schema, runtime, cost, security, dependencies, review); evidence from Jul-Sep 2026 industry reports, arXiv papers, and frontier-lab posts; cited URLs verified live" }
+      {
+        "source": "session+web",
+        "ref": "output/deep-research-agent-constraints.md",
+        "date": "2026-09",
+        "note": "Research essay reshaped around real-world engineering pain points (data/schema, runtime, cost, security, dependencies, review); evidence from Jul-Sep 2026 industry reports, arXiv papers, and frontier-lab posts; cited URLs verified live"
+      }
+    ],
+    "skills:Performance profiling & tuning (production regressions, budgets)": [
+      {
+        "source": "session",
+        "ref": "ses_f33d7a2e6ffdPJzfxwoz6PYcdX",
+        "date": "2026-09",
+        "note": "User confirmed 2026-09-23 doing profiling/diagnosing/fixing front-end performance problems in production (ServiceNow builder surfaces); no exact metrics available, wording kept qualitative"
+      }
+    ],
+    "skills:Agent observability (reasoning traces, tool-selection errors, cost/latency)": [
+      {
+        "source": "session",
+        "ref": "ses_f33d7a2e6ffdPJzfxwoz6PYcdX",
+        "date": "2026-09",
+        "note": "User confirmed 2026-09-23 instrumenting agent quality/safety in production: reasoning traces, tool-selection and hallucination error tracking, rollback paths, cost/latency dashboards"
+      }
+    ],
+    "skills:On-call & incident command": [
+      {
+        "source": "session",
+        "ref": "ses_f33d7a2e6ffdPJzfxwoz6PYcdX",
+        "date": "2026-09",
+        "note": "User confirmed 2026-09-23 on-call and incident command for enterprise customer-facing surfaces"
+      }
+    ],
+    "flagship:Build Agent, ServiceNow Studio": [
+      {
+        "source": "session+web",
+        "ref": "servicenow.com/docs/r/application-development/build-agent.html · build-agent-governance.html · build-agent-tools.html · community.ta-p/3536405",
+        "date": "2026-09",
+        "note": "Human-gated flow confirmed against Australia GA docs: plan→approve→execute workflow; approval before every script run (intent + target scope shown); scope restriction with fail-closed on unresolved scope; on-demand rollback requiring the same approval; ATF test generation/execution for post-change verification; last-resort actions (new tables, ACL/role changes, system properties, base business rules) behind explicit approval. User confirmed 2026-09-23 (session) that this is the product flow he built."
+      }
+    ],
+    "skills:Human-in-the-loop agent design (plan → approve → execute → verify)": [
+      {
+        "source": "session+web",
+        "ref": "servicenow.com/docs/r/application-development/build-agent.html · build-agent-governance.html · build-agent-tools.html",
+        "date": "2026-09",
+        "note": "Build Agent (Australia GA) documented plan→approve→execute workflow, approval before every script run with intent+scope shown, on-demand rollback requiring the same approval, ATF verification after changes; user confirmed 2026-09-23 this is the flow he built on the ServiceNow Studio side"
+      }
     ]
   }
 }

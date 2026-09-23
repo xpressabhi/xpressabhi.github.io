@@ -26,7 +26,7 @@
       "url": "https://patents.google.com/patent/US20150046358"
     }
   },
-  "summary": "Staff AI Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), lead a 9-person engineering team, and design agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.",
+  "summary": "Staff AI Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), led a 9-person engineering team there, and designs agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.",
   "capabilityCards": [
     {
       "wide": true,
@@ -128,6 +128,7 @@
       "REAct agents",
       "LLM evals (golden sets, LLM-as-judge)",
       "Agent evaluation & guardrails",
+      "Human-in-the-loop agent design (plan → approve → execute → verify)",
       "AI governance (AI Agent Studio / Control Tower)",
       "RAG / keyword retrieval (BM25, FTS5)"
     ],
@@ -163,6 +164,7 @@
       "React Testing Library",
       "Playwright",
       "Performance optimization",
+      "Performance profiling & tuning (production regressions, budgets)",
       "WCAG / ARIA accessibility"
     ],
     "CI/CD & Tooling": [
@@ -174,7 +176,9 @@
       "Sentry",
       "LogRocket",
       "Datadog",
-      "Sumo Logic"
+      "Sumo Logic",
+      "Agent observability (reasoning traces, tool-selection errors, cost/latency)",
+      "On-call & incident command"
     ]
   },
   "impactMetrics": [
@@ -280,7 +284,7 @@
       "location": "Hyderabad",
       "role": "Staff Software Engineer",
       "start": "Oct 2023",
-      "end": "Present",
+      "end": "Aug 2026",
       "stack": [
         "AI Agents",
         "MCP",
@@ -296,6 +300,10 @@
         "Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.",
         "Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.",
         "Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.",
+        "Owned front-end performance for the builder surfaces: profiled and diagnosed production regressions, fixed render and bundle hotspots, held performance budgets.",
+        "Instrumented agent quality in production: reasoning traces, tool-selection and hallucination error tracking, rollback paths, cost/latency dashboards feeding failures back into evals.",
+        "Human-gated autonomy: chat → plan → explicit approval → execution → verification, with per-action approvals (script, intent, target scope) and rollback/hand-back paths — checkpoints structural, not advisory.",
+        "On-call and incident command for enterprise customer-facing surfaces.",
         "Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation."
       ]
     },

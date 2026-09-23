@@ -68,8 +68,9 @@
   }
   .cv-contact > span { white-space: nowrap; }
   .cv-contact .mono { font-size: 8.5pt; }
+  .cv-avail { margin-top: 5px; font-size: 9pt; color: var(--ink); font-weight: 600; }
 
-  .cv-section { margin-top: 14px; }
+  .cv-section { margin-top: 9px; }
   .cv-section-title {
     font-family: var(--font-mono); font-size: 9pt; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase;
@@ -78,7 +79,7 @@
   }
   .cv-summary { color: var(--muted); font-size: 9.5pt; }
 
-  .job { margin-bottom: 8px; page-break-inside: avoid; }
+  .job { margin-bottom: 6px; page-break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .job-title { font-size: 10.5pt; font-weight: 700; }
@@ -87,7 +88,7 @@
   .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
   .job ul { list-style: none; }
   .job li {
-    position: relative; padding-left: 15px; margin-bottom: 1px;
+    position: relative; padding-left: 15px; margin-bottom: 0;
     color: var(--muted); font-size: 9.3pt;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
@@ -119,7 +120,7 @@
   .patent .pnum { font-family: var(--font-mono); color: var(--ink); }
 
   .cv-foot {
-    margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--line);
+    margin-top: 10px; padding-top: 6px; border-top: 1px solid var(--line);
     display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
     font-size: 8pt; color: var(--dim);
   }
@@ -162,6 +163,7 @@
       <span><a href="{{basics.github}}" target="_blank" rel="noopener">github.com/xpressabhi</a></span>
       <span><a href="{{basics.linkedin}}" target="_blank" rel="noopener">linkedin.com/in/akm85</a></span>
     </div>
+    <div class="cv-avail">{{basics.availability}}</div>
   </div>
 
   <div class="cv-section">
