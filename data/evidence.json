@@ -136,6 +136,22 @@
         "date": "2026-09",
         "note": "Build Agent (Australia GA) documented plan→approve→execute workflow, approval before every script run with intent+scope shown, on-demand rollback requiring the same approval, ATF verification after changes; user confirmed 2026-09-23 this is the flow he built on the ServiceNow Studio side"
       }
+    ],
+    "flagship:Release lifecycle & app summary agents": [
+      {
+        "source": "session+web",
+        "ref": "ses_f2cf51278ffedhwtyQAyytMc6z · servicenow.com/docs/r/application-development/now-assist-for-creator/release-lifecycle-documentation-agent-landing.html",
+        "date": "2026-09",
+        "note": "User confirmed 2026-09-24 that both agents (ALA Release Lifecycle Documentation Agent and App Summary Agent) are built on the ReAct agentic framework: they receive the user query, use tools as needed, and keep working until the final outcome defined by the agent's system prompt is achieved. ServiceNow docs cover delta analysis, release notes, and CAB-ready deployment manifests; ships as the Release lifecycle documentation agent in Now Assist for Creator."
+      }
+    ],
+    "deepDive:ala-app-summary-agent.md": [
+      {
+        "source": "session",
+        "ref": "ses_f327e5904ffeWexRw9RQU2jA0v · ses_f2cf51278ffedhwtyQAyytMc6z",
+        "date": "2026-09",
+        "note": "Blog post on the ALA Release Lifecycle Documentation + App Summary agents: tool-loop pipeline story from the agentic-RAG session; ReAct agentic framework framing (system-prompt-driven query → reason → act → observe) confirmed by the user 2026-09-24"
+      }
     ]
   }
 }

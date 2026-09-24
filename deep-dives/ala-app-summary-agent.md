@@ -7,9 +7,11 @@ The **Release Lifecycle Documentation AI Agent** is an autonomous governance too
 
 ---
 
-## 🧠 Agent Architecture: Agentic RAG via tools, judge-filter, re-rank and summarize
+## 🧠 Agent Architecture: Built on the ReAct agentic framework
 
-Both the ALA Release Documentation Agent and the App Summary Agent run as an agentic tool loop rather than a single pipeline call. Each documentation run follows the same closed loop:
+Both the ALA Release Documentation Agent and the App Summary Agent are built on the **ReAct (Reason → Act → Observe) agentic framework**, running an agentic RAG loop over tools rather than a single pipeline call. Each agent is initialized with a system prompt that defines its goal, receives the user's query, and then works it in a loop: reason about the current state, call the tool it needs next, observe the result, and repeat — continuing until the final outcome described by that system prompt is produced. The agent decides its own path through the tools based on what it finds.
+
+Each documentation run follows the same closed loop:
 
 1. **Inventory:** Scope the work first — fetch basic details like apps, update sets, metadata types, and file counts so the agent knows what it is working with before pulling diffs.
 2. **Ranked fetch:** Pull diffs for the most important metadata types first, not everything at once, keeping each retrieval bounded.
@@ -17,11 +19,12 @@ Both the ALA Release Documentation Agent and the App Summary Agent run as an age
 4. **Loop:** Go back for the next set of metadata and repeat — until the summary is good enough or all content is processed.
 5. **Re-rank, filter, summarize:** Re-rank everything collected, filter once more, then summarize into the final release notes, CAB deployment manifest, and architecture diagrams.
 
-The loop is what lets the agents handle arbitrary applications of any size: cheap scoping first, prioritized retrieval, per-batch judging, and a stop condition instead of a pre-baked prompt covering every case.
+That reason → act → observe loop is what lets the agents handle arbitrary applications of any size: cheap scoping first, prioritized retrieval, per-batch judging, and a stop condition instead of a pre-baked prompt covering every case.
 
 ```mermaid
 flowchart TD
-    Q["Query<br/>update set or release"] --> INV["1 Inventory<br/>apps, update sets, metadata types, file counts"]
+    SP["System prompt<br/>defines the goal and outcome"] --> Q["User query<br/>update set or release"]
+    Q --> INV["1 Inventory<br/>apps, update sets, metadata types, file counts"]
     INV --> FETCH["2 Ranked fetch<br/>top metadata diffs, bounded batch"]
     FETCH --> JUDGE["3 Judge and categorize<br/>drop trivial, keepers to manifest"]
     JUDGE --> LOOP{"4 Good enough<br/>or exhausted?"}
@@ -85,7 +88,7 @@ The **ServiceNow App Summary Agent** is an autonomous, Generative AI assistant b
 
 ## 🚀 Core Capabilities
 
-The App Summary Agent uses semantic discovery tools to crawl an entire scoped or global application metadata configuration, delivering three primary automated workflows:
+Running on the same ReAct (reason → act → observe) agentic framework as the release agent, the App Summary Agent uses semantic discovery tools to crawl an entire scoped or global application metadata configuration, delivering three primary automated workflows:
 
 * **Instant Architectural Descriptions:** Evaluates all active development components—including database tables, business rules, access control lists (ACLs), UI structures, and active workflows—and [automatically generates an application description](https://servicenow.com) that can be saved directly to the application registry.
 * **Technical Manifest & Documentation Packaging:** Translates messy technical diffs, script inclusions, and metadata configurations into a beautifully structured Markdown document. This package includes comprehensive data profiling, code catalogs, and functional change overviews suitable for delivery to corporate change advisory boards (CAB).
