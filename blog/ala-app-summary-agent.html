@@ -106,7 +106,7 @@
 <main>
   <article class="reader">
     <h1>ServiceNow ALA: Release Lifecycle Documentation AI Agent</h1>
-    <div class="post-meta"><span>Aug 18, 2026</span><span> · </span><span>6 min read</span><span> · </span><a href="./">All posts</a></div>
+    <div class="post-meta"><span>Sep 24, 2026</span><span> · </span><span>6 min read</span><span> · </span><a href="./">All posts</a></div>
     <div class="share">
       <span><span class="dot" style="display:inline-block;vertical-align:1px;margin-right:6px"></span>Share:</span>
       <a href="https://twitter.com/intent/tweet?text=ServiceNow%20ALA%3A%20Release%20Lifecycle%20Documentation%20AI%20Agent&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Fala-app-summary-agent.html">X</a>
@@ -117,12 +117,14 @@
     <h2><a href="https://www.servicenow.com/docs/r/application-development/now-assist-for-creator/release-lifecycle-documentation-agent-landing.html" target="_blank" rel="noopener">ALA</a></h2>
 <p>The <strong>Release Lifecycle Documentation AI Agent</strong> is an autonomous governance tool integrated into the ServiceNow platform under the <strong>Application Lifecycle Analytics (ALA)</strong> framework. Powered by the <strong>Now Assist for Creator</strong> suite, it automates one of the most tedious parts of DevOps: compiling exhaustive release notes, deployment manifests, and audit trails for application updates.</p>
 <hr>
-<h2>🧠 Agent Architecture: Agentic RAG via tools, judge-filter, re-rank and summarize</h2>
-<p>Both the ALA Release Documentation Agent and the App Summary Agent run as an agentic tool loop rather than a single pipeline call. Each documentation run follows the same closed loop:</p>
+<h2>🧠 Agent Architecture: Built on the ReAct agentic framework</h2>
+<p>Both the ALA Release Documentation Agent and the App Summary Agent are built on the <strong>ReAct (Reason → Act → Observe) agentic framework</strong>, running an agentic RAG loop over tools rather than a single pipeline call. Each agent is initialized with a system prompt that defines its goal, receives the user's query, and then works it in a loop: reason about the current state, call the tool it needs next, observe the result, and repeat — continuing until the final outcome described by that system prompt is produced. The agent decides its own path through the tools based on what it finds.</p>
+<p>Each documentation run follows the same closed loop:</p>
 <ol start="1"><li><strong>Inventory:</strong> Scope the work first — fetch basic details like apps, update sets, metadata types, and file counts so the agent knows what it is working with before pulling diffs.</li><li><strong>Ranked fetch:</strong> Pull diffs for the most important metadata types first, not everything at once, keeping each retrieval bounded.</li><li><strong>Judge and categorize:</strong> Check that batch, drop trivial changes, categorize what remains, and fold the keepers into the running manifest.</li><li><strong>Loop:</strong> Go back for the next set of metadata and repeat — until the summary is good enough or all content is processed.</li><li><strong>Re-rank, filter, summarize:</strong> Re-rank everything collected, filter once more, then summarize into the final release notes, CAB deployment manifest, and architecture diagrams.</li></ol>
-<p>The loop is what lets the agents handle arbitrary applications of any size: cheap scoping first, prioritized retrieval, per-batch judging, and a stop condition instead of a pre-baked prompt covering every case.</p>
+<p>That reason → act → observe loop is what lets the agents handle arbitrary applications of any size: cheap scoping first, prioritized retrieval, per-batch judging, and a stop condition instead of a pre-baked prompt covering every case.</p>
 <pre class="mermaid">flowchart TD
-    Q[&quot;Query&lt;br/&gt;update set or release&quot;] --&gt; INV[&quot;1 Inventory&lt;br/&gt;apps, update sets, metadata types, file counts&quot;]
+    SP[&quot;System prompt&lt;br/&gt;defines the goal and outcome&quot;] --&gt; Q[&quot;User query&lt;br/&gt;update set or release&quot;]
+    Q --&gt; INV[&quot;1 Inventory&lt;br/&gt;apps, update sets, metadata types, file counts&quot;]
     INV --&gt; FETCH[&quot;2 Ranked fetch&lt;br/&gt;top metadata diffs, bounded batch&quot;]
     FETCH --&gt; JUDGE[&quot;3 Judge and categorize&lt;br/&gt;drop trivial, keepers to manifest&quot;]
     JUDGE --&gt; LOOP{&quot;4 Good enough&lt;br/&gt;or exhausted?&quot;}
@@ -150,7 +152,7 @@
 <p>The <strong>ServiceNow App Summary Agent</strong> is an autonomous, Generative AI assistant built natively into the ServiceNow platform under the <strong>Now Assist for Creator</strong> application suite. It solves a universal developer and platform administrator problem: automatically analyzing, reverse-engineering, and documenting complex application architectures without requiring hours of manual code reviews.</p>
 <hr>
 <h2>🚀 Core Capabilities</h2>
-<p>The App Summary Agent uses semantic discovery tools to crawl an entire scoped or global application metadata configuration, delivering three primary automated workflows:</p>
+<p>Running on the same ReAct (reason → act → observe) agentic framework as the release agent, the App Summary Agent uses semantic discovery tools to crawl an entire scoped or global application metadata configuration, delivering three primary automated workflows:</p>
 <ul><li><strong>Instant Architectural Descriptions:</strong> Evaluates all active development components—including database tables, business rules, access control lists (ACLs), UI structures, and active workflows—and <a href="https://servicenow.com" target="_blank" rel="noopener">automatically generates an application description</a> that can be saved directly to the application registry.</li><li><strong>Technical Manifest &amp; Documentation Packaging:</strong> Translates messy technical diffs, script inclusions, and metadata configurations into a beautifully structured Markdown document. This package includes comprehensive data profiling, code catalogs, and functional change overviews suitable for delivery to corporate change advisory boards (CAB).</li><li><strong>Automated Architecture Diagramming:</strong> Hooks cleanly into underlying system design utilities to map metadata references, visually rendering fully structured diagrams (such as <strong>Mermaid.js scripts</strong>) that depict exactly how data flows across different tables and integration points.</li></ul>
 <hr>
 <h2>🏗️ Premium Variant: Release Lifecycle Documentation AI Agent (ALA)</h2>
