@@ -81,6 +81,30 @@
         "note": "job-finder + apply-to-jobs agent skills; Jev decision layer for eligibility/fit/duplicates; local-only profile + tracker in ~/.job-search; docs site at xpressabhi.github.io/job-search-skills"
       }
     ],
+    "projects:intent": [
+      {
+        "source": "repo+site",
+        "ref": "github.com/xpressabhi/intent",
+        "date": "2026-10",
+        "note": "Agent-independent change protocol (protocol/v1.md), schemas/v1 (config/change/review), verify-change.sh reference verifier, conformance scenarios; docs site at xpressabhi.github.io/intent"
+      }
+    ],
+    "projects:job-radar": [
+      {
+        "source": "repo+site",
+        "ref": "github.com/xpressabhi/job-radar",
+        "date": "2026-10",
+        "note": "Nightly ATS board crawler (Greenhouse/Lever/Ashby/SmartRecruiters/Workable) rendering a static site + JSON/RSS from committed data/config.json; zero runtime deps; live at xpressabhi.github.io/job-radar (32 roles seen on 2026-10-06 crawl)"
+      }
+    ],
+    "projects:tutor": [
+      {
+        "source": "repo+site",
+        "ref": "github.com/xpressabhi/tutor",
+        "date": "2026-10",
+        "note": "Adaptive tutor agent skill (SKILL.md): one question per turn, difficulty tuned to the learner, session state persisted to disk across clean contexts; docs site at xpressabhi.github.io/tutor"
+      }
+    ],
     "deepDive:revision.md": [
       {
         "source": "repo",
