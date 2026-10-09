@@ -105,6 +105,14 @@
         "note": "Adaptive tutor agent skill (SKILL.md): one question per turn, difficulty tuned to the learner, session state persisted to disk across clean contexts; docs site at xpressabhi.github.io/tutor"
       }
     ],
+    "deepDive:tutor.md": [
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/tutor",
+        "date": "2026-10",
+        "note": "Blog post written from the tutor repo (README.md, DESIGN.md, SKILL.md, scripts/run.sh): ledger-as-state, how-based verdicts, ratchet guard, probe-on-resume, rung-tagged HTML artifacts; live site at xpressabhi.github.io/tutor"
+      }
+    ],
     "deepDive:revision.md": [
       {
         "source": "repo",

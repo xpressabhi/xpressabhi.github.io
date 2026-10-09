@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tutor: one question at a time, difficulty tuned to the learner · Abhishek Maurya</title>
+<meta name="description" content="tutor is an adaptive tutor skill for AI coding agents. It asks one question, reads the answer, and lets that answer decide what comes next — up, down, or sideways into a gap that just appeared. Say…">
+<link rel="canonical" href="https://xpressabhi.github.io/blog/tutor.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Abhishek Maurya">
+<meta property="og:title" content="tutor: one question at a time, difficulty tuned to the learner">
+<meta property="og:description" content="tutor is an adaptive tutor skill for AI coding agents. It asks one question, reads the answer, and lets that answer decide what comes next — up, down, or sideways into a gap that just appeared. Say…">
+<meta property="og:url" content="https://xpressabhi.github.io/blog/tutor.html">
+<meta property="og:image" content="https://xpressabhi.github.io/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="tutor: one question at a time, difficulty tuned to the learner">
+<meta name="twitter:description" content="tutor is an adaptive tutor skill for AI coding agents. It asks one question, reads the answer, and lets that answer decide what comes next — up, down, or sideways into a gap that just appeared. Say…">
+<meta name="twitter:image" content="https://xpressabhi.github.io/assets/og-card.png">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #525252; --faint: #9a9a9a; --line: #ececea; --code-bg: #f6f6f4; --accent: #035aa7; --ok: #1a7f37; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; }
+  }
+  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; color-scheme: dark; }
+  :root[data-theme="light"] { color-scheme: light; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
+    font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--ink); color: var(--bg); }
+  a { color: inherit; }
+  header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  nav { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: 0 0 7px; }
+  .nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+  .nav-links a { color: var(--muted); text-decoration: none; }
+  .nav-links a:hover { color: var(--ink); }
+  .theme-btn { font: inherit; font-size: 12.5px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
+  .theme-btn:hover { color: var(--ink); border-color: var(--faint); }
+  main { max-width: 700px; margin: 0 auto; padding: 52px 24px 80px; }
+  .reader h1 { font-size: clamp(28px, 4vw, 38px); font-weight: 650; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px; }
+  .reader .post-meta { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; color: var(--faint); margin-bottom: 16px; }
+  .reader .post-meta a { color: var(--muted); }
+  .share { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 36px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
+  .share a, .share button { color: var(--muted); background: none; border: 0; padding: 0; font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .share a:hover, .share button:hover { color: var(--ink); }
+  .reader h2 { font-size: 21px; font-weight: 650; letter-spacing: -0.015em; margin: 40px 0 12px; padding-top: 20px; border-top: 1px solid var(--line); scroll-margin-top: 76px; }
+  .reader h3 { font-size: 16.5px; font-weight: 650; margin: 28px 0 8px; }
+  .reader h4 { font-size: 15px; font-weight: 650; margin: 22px 0 8px; }
+  .reader p { color: var(--muted); margin-bottom: 16px; }
+  .reader strong { color: var(--ink); font-weight: 650; }
+  .reader em { color: var(--ink); }
+  .reader a { color: var(--ink); text-underline-offset: 3px; }
+  .reader .post-image { display: block; max-width: 100%; height: auto; margin: 24px auto; border: 1px solid var(--line); border-radius: 8px; }
+  .reader hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
+  .reader ul, .reader ol { color: var(--muted); margin: 0 0 18px 22px; }
+  .reader li { margin-bottom: 6px; }
+  .reader code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; background: var(--code-bg); border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; }
+  .reader pre { margin: 0 0 20px; border-radius: 8px; overflow-x: auto; background: var(--code-bg); border: 1px solid var(--line); }
+  .reader pre code { display: block; padding: 16px; background: none; border: 0; border-radius: 0; font-size: 13px; line-height: 1.65; }
+  .reader pre.diagram { text-align: center; border-style: dashed; }
+  .reader pre.diagram code { text-align: center; }
+  .reader pre.mermaid { text-align: center; background: none; border-style: dashed; padding: 16px; }
+  .reader pre.mermaid svg { max-width: 100%; height: auto; }
+  .reader blockquote { border-left: 2px solid var(--ink); padding: 4px 16px; color: var(--muted); font-style: italic; margin: 0 0 18px; }
+  .reader table { border-collapse: collapse; margin: 0 0 18px; font-size: 14.5px; max-width: 100%; display: block; overflow-x: auto; }
+  .reader th, .reader td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; color: var(--muted); }
+  .reader th { color: var(--ink); font-weight: 650; }
+  .reader-foot { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+  .reader-foot a:hover { color: var(--ink); }
+  @media (max-width: 640px) {
+    main { padding-top: 36px; }
+    .nav-links a:not(.cv):not(.blog-link):not(.work-link) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="../" class="mark"><span class="dot"></span>Abhishek Maurya</a>
+    <div class="nav-links">
+      <a href="../work/" class="work-link">Work</a>
+      <a href="../#projects">Projects</a>
+      <a href="./" class="blog-link">Blog</a>
+      <a href="../resume/" class="cv">CV</a>
+      <button type="button" class="theme-btn" data-theme-btn>◐ System</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <article class="reader">
+    <h1>tutor: one question at a time, difficulty tuned to the learner</h1>
+    <div class="post-meta"><span>Oct 9, 2026</span><span> · </span><span>8 min read</span><span> · </span><a href="./">All posts</a></div>
+    <div class="share">
+      <span><span class="dot" style="display:inline-block;vertical-align:1px;margin-right:6px"></span>Share:</span>
+      <a href="https://twitter.com/intent/tweet?text=tutor%3A%20one%20question%20at%20a%20time%2C%20difficulty%20tuned%20to%20the%20learner&url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Ftutor.html">X</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fxpressabhi.github.io%2Fblog%2Ftutor.html">LinkedIn</a>
+      <button type="button" data-share="copy">Copy link</button>
+      <button type="button" data-share="native" hidden>Share…</button>
+    </div>
+    <p>tutor is an adaptive tutor skill for AI coding agents. It asks one question, reads the answer, and lets that answer decide what comes next — up, down, or sideways into a gap that just appeared. Say &quot;I don't know&quot; and that is a useful signal, not a failure; miss a concept and it teaches the idea underneath and re-asks before moving on. Every question, answer, verdict, and explanation is written to disk, so the next session — with a clean context and no memory of this one — resumes exactly where the learner left off.</p>
+<p>Source: <a href="https://github.com/xpressabhi/tutor" target="_blank" rel="noopener">github.com/xpressabhi/tutor</a> · Live site: <a href="https://xpressabhi.github.io/tutor/" target="_blank" rel="noopener">xpressabhi.github.io/tutor</a> · Install: <code>npx skills add xpressabhi/tutor</code> · Stack: plain markdown, zero runtime dependencies, MIT.</p>
+<hr>
+<h2>The problem it solves</h2>
+<p>Most &quot;teach me X&quot; prompts produce a wall of text: a curriculum, or a document that either bores someone who already knows the basics or loses someone who doesn't. The learner's actual level never enters into it.</p>
+<p>tutor closes that loop. A short opening assessment finds the ceiling, not the average; after that, the next question is chosen from the answer to the last one. The tutor problem is a live question-and-answer loop with no friction between asking and adapting — a different primary artifact (a conversation, not a lesson document) with different failure modes, which is why tutor is a standalone skill rather than an extension of a lesson generator.</p>
+<hr>
+<h2>Decision 1: the ledger is the state</h2>
+<p>Plain markdown, one directory per topic — readable with <code>cat</code>, editable by hand, diffable in git:</p>
+<pre class="code" data-lang="code"><code>~/tutor/
+  LEARNER.md          # cross-topic profile — shared by every topic
+  ai-engineer/
+    TOPIC.md          # mission, outline, learner profile
+    LEDGER.md         # per-concept rung and verdict — read before every question
+    sources/          # only if you have material to ground in
+    sessions/
+      2026-10-07.md   # append-only: question, answer, verdict, teaching
+    artifacts/
+      attention-r4.html</code></pre>
+<p><code>LEDGER.md</code> is the file the tutor acts on — one row per concept, read before every question, rows edited in place and never duplicated so a <code>git diff</code> across sessions stays readable:</p>
+<table><thead><tr><th>concept</th><th>rung</th><th>last verdict</th><th>attempts</th><th>shaky</th><th>next probe</th><th>notes</th></tr></thead><tbody><tr><td>embeddings</td><td>2</td><td>correct</td><td>1</td><td>no</td><td></td><td></td></tr><tr><td>attention</td><td>3</td><td>partial</td><td>2</td><td>yes</td><td>forgets the 1/sqrt(d_k) scaling</td><td></td></tr><tr><td>fine-tuning</td><td>4</td><td>—</td><td>0</td><td>—</td><td>queued after attention</td><td></td></tr></tbody></table>
+<p><code>rung</code> is 1–5, calibrated against the learner, not the subject. What counts as rung 3 differs per domain and per person — for one Python learner it is &quot;apply it in a case you haven't seen&quot;, for another arriving from C it is &quot;explain why this idiom exists when the obvious version also works&quot;.</p>
+<p>The turn cycle, and the reason one question per message is non-negotiable:</p>
+<pre class="code" data-lang="code"><code>pick next concept   ← read LEDGER.md, not memory
+pick rung           ← learner's level on that concept, ±1 from last verdict
+ask ONE question
+receive answer
+verdict: correct / partial / wrong / &quot;don't know&quot;
+   ↓
+update LEDGER row, append to today's session log
+   ↓
+correct  → rung up, or move to next concept
+partial  → hold rung, re-ask with a different framing
+wrong    → hold rung, teach, re-ask immediately</code></pre>
+<p>The loop depends on the reply arriving before the next question is chosen.</p>
+<hr>
+<h2>Decision 2: verdicts read the how, not just the what</h2>
+<p>The verdict is not correctness — it is whether the understanding is real. This is the rule that keeps guessing from earning ground:</p>
+<ul><li><strong>Conclusion right, reasoning wrong → <code>partial</code>.</strong> A correct answer for the wrong reason is a guess, and filtering guesses is what the rung is for.</li><li><strong>Hedging or rambling → <code>partial</code>.</strong> &quot;I think it's B, or maybe C, because…&quot; is the shape of someone guessing.</li><li><strong>Right answer, unexplained → <code>partial</code>.</strong> Ask &quot;why?&quot; on the spot rather than crediting it.</li><li><strong>Right answer, clean reasoning → <code>correct</code>.</strong> The only thing that earns a rung up.</li></ul>
+<p>Two consequences fall out of this. <strong>&quot;Don't know&quot; is a first-class answer</strong> — the most honest signal available. Treating it as failure is what makes learners fake confidence; it logs as a miss and triggers a teaching turn, and it does not lower the rung permanently. And <strong>regression is live</strong>: a concept solid at rung 3 that returns with rung-2 reasoning has not deepened, it has thinned — the rung comes down even though the answer was technically correct. A single per-concept verdict would never catch this.</p>
+<hr>
+<h2>Decision 3: the ratchet guard and bounded teaching</h2>
+<p>Two guards keep the ladder honest.</p>
+<p><strong>The ratchet guard:</strong> rung rises only after a correct answer <strong>and</strong> a clean re-probe of that rung later. Otherwise every lucky guess walks the learner up a ladder they haven't climbed, and they end up lost three concepts past where they actually are. Overshooting easy by one costs a session; overshooting hard costs the thread.</p>
+<p><strong>Bounded teaching:</strong> explain the idea underneath the missed question, not the answer to it, then re-ask immediately in a fresh framing — never the identical question. Roughly three attempts at a rung before dropping it instead of hammering; after that, lower the rung and mark the concept shaky. Shaky concepts get revisited. That is what the log earns.</p>
+<hr>
+<h2>Decision 4: cold start probes the ledger — it doesn't trust it</h2>
+<p>Every session starts with a clean context, so the resume protocol runs before the first question: read <code>TOPIC.md</code> (subject, goal, learner profile), read <code>LEDGER.md</code> (concepts, rungs, verdict history, shaky flags), read the tail of the most recent session log (what was <strong>in flight</strong>, the concept mid-way through, any question never asked).</p>
+<p>Then <strong>probe rather than trust</strong>. The first question of every session is the last-covered concept at its recorded rung, in a framing the log shows is new. A ledger entry from three weeks ago is a claim, not evidence. If the probe misses, the recorded rung was optimistic and drops — with no comment on the gap, because nobody wants a session that opens by being told what they used to know. Long gaps decay the rung: open one below what's recorded and let correct answers walk it back up.</p>
+<p>The same distrust shapes session close: the turns themselves are a poor record of what was unfinished — a question that was <em>never asked</em> leaves no trace at all, and it is the one the next session most needs. So every sitting ends with what got covered and at what rung, what was in flight, and the openers for next time. The ledger's <code>Next probe</code> column carries the same debt for the ratchet guard.</p>
+<hr>
+<h2>Decision 5: artifacts at the learner's rung — and only when earned</h2>
+<p>A concept that genuinely needs to be <em>seen</em> — control flow, a comparison table, a state machine, a worked example — gets one self-contained HTML file in <code>artifacts/</code>, opened for the learner. Three hard rules:</p>
+<ul><li><strong>At the learner's rung.</strong> A diagram for a rung-2 learner labels the parts and traces one path; the same diagram at rung 4 adds what breaks at the boundaries. Never the maximal version. Filenames carry the rung (<code>attention-r4.html</code>) so a later session can regenerate the concept at a different one.</li><li><strong>Bounded.</strong> One idea, a screen or two — if it needs scrolling to see the point, it is two artifacts.</li><li><strong>Earned.</strong> Most concepts are better as a question and a paragraph; artifacts are for shapes prose cannot carry.</li></ul>
+<p>Two grounding mechanisms keep it honest beyond the model's own memory. <strong>Code execution</strong> (a sandboxed helper: timeout, temp file per run, no install, no network) verifies the learner's snippets against real output, produces &quot;what does this print&quot; answers by actually running them, and scaffolds fresh questions whose expected answer was observed — never guessed. <strong>Source grounding</strong> turns the learner's own material (docs, a codebase, a book) into per-concept notes carrying where each fact came from, so a question can name its source and an ungrounded question can be labelled as such. Two claims with the same confidence level stop looking identical, which is the whole point.</p>
+<hr>
+<h2>What I kept out</h2>
+<ul><li><strong>No spaced-repetition scheduler.</strong> Shaky concepts get revisited opportunistically. A proper SRS needs per-concept decay intervals and a due queue — worth it once sessions are weeks apart, not on day one.</li><li><strong>No Obsidian dependency.</strong> Obsidian opens any folder as a vault, so <code>~/tutor/&amp;lt;topic&amp;gt;/</code> is browsable that way already; the skill doesn't impose a structure on a third-party app.</li><li><strong>No vault generator.</strong> Source notes are written in one pass for the concepts the material actually covers; structured generation as its own pipeline is a separate skill.</li><li><strong>No learning-style taxonomy.</strong> Visual/auditory/kinesthetic matching has no evidence behind it and is the standard move a &quot;personalized tutor&quot; makes. Tailoring here is observed, not assigned: pace, response to being wrong, explain-back vs show-back, tolerance for struggle, entry point — recorded in <code>TOPIC.md</code> with its evidence. Stated preferences are followed (&quot;just give me the answer&quot; is recorded and honoured). The method adapts; the bar does not.</li><li><strong>No curriculum, no lesson generator, no percentage-of-correct scoring.</strong> Concepts accumulate as encountered; a batch score cannot see whether an answer was reasoned or guessed, so the ratchet guard and regression detection would both be unavailable.</li></ul>
+<p>Optional capabilities degrade rather than fail: no shell means the learner runs the code and reads the output back; no way to open a file means the idea comes through in prose; no writable filesystem means the session works but cannot resume — and the skill says so instead of pretending. Plain prose over plain files, with only <code>name</code> and <code>description</code> in the frontmatter, so it loads in OpenCode, Claude Code, Cursor, or anything else that reads <code>SKILL.md</code>.</p>
+<hr>
+<h2>Stack &amp; links</h2>
+<p><strong>Stack:</strong> plain markdown · <code>SKILL.md</code> + <code>FORMATS.md</code> + <code>DESIGN.md</code> · <code>scripts/run.sh</code> sandboxed snippet runner (timeout, temp cleanup, no network) · zero runtime dependencies · MIT.</p>
+<p>Browse the code at <a href="https://github.com/xpressabhi/tutor" target="_blank" rel="noopener">github.com/xpressabhi/tutor</a>, walk the design rationale in <a href="https://github.com/xpressabhi/tutor/blob/main/DESIGN.md" target="_blank" rel="noopener">DESIGN.md</a>, or install with <code>npx skills add xpressabhi/tutor</code> and try <code>tutor quiz me on SQL joins</code>. The live overview lives at <a href="https://xpressabhi.github.io/tutor/" target="_blank" rel="noopener">xpressabhi.github.io/tutor</a>.</p>
+  </article>
+  <div class="reader-foot">
+    <a href="./">← All posts</a>
+    <a href="../">← Home</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var btn = document.querySelector("[data-theme-btn]");
+    if (!btn) return;
+    function current() { return document.documentElement.getAttribute("data-theme") || "system"; }
+    function label(t) { return t === "light" ? "○ Light" : t === "dark" ? "● Dark" : "◐ System"; }
+    function paint() {
+      btn.textContent = label(current());
+      btn.setAttribute("aria-label", "Color theme: " + current() + ". Activate to change.");
+    }
+    btn.addEventListener("click", function () {
+      var next = { system: "light", light: "dark", dark: "system" }[current()] || "system";
+      try {
+        if (next === "system") localStorage.removeItem("theme");
+        else localStorage.setItem("theme", next);
+      } catch (e) {}
+      if (next === "system") document.documentElement.removeAttribute("data-theme");
+      else document.documentElement.setAttribute("data-theme", next);
+      paint();
+    });
+    paint();
+  })();
+</script>
+<script>
+  (function () {
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var url = canonical ? canonical.href : location.href;
+    function legacyCopy(text) {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    function flashCopied(btn) {
+      var label = btn.textContent;
+      btn.textContent = "Link copied ✓";
+      setTimeout(function () { btn.textContent = label; }, 2000);
+    }
+    var copyBtn = document.querySelector("button[data-share='copy']");
+    if (copyBtn) {
+      copyBtn.addEventListener("click", function () {
+        var finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          flashCopied(copyBtn);
+        }
+        function doLegacy() { legacyCopy(url); finish(); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(finish, doLegacy);
+          setTimeout(finish, 600);
+        } else {
+          doLegacy();
+        }
+      });
+    }
+    var nativeBtn = document.querySelector("button[data-share='native']");
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener("click", function () {
+        navigator.share({ title: document.title, url: url }).catch(function () {});
+      });
+    }
+  })();
+</script>
+
+<script>
+  (function () {
+    document.querySelectorAll("a[href]").forEach(function (a) {
+      var h = a.getAttribute("href");
+      if (!h || h.charAt(0) === "#" || /^(mailto|tel):/i.test(h)) return;
+      if (/^https?:\/\//i.test(h) && h.indexOf(location.origin) !== 0) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener");
+      }
+    });
+  })();
+</script>
+<script>
+  (function () {
+    if (!document.querySelector("pre.mermaid")) return;
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
+    s.onload = function () {
+      try {
+        window.mermaid.initialize({ startOnLoad: false });
+        window.mermaid.run({ querySelector: "pre.mermaid" });
+      } catch (e) {}
+    };
+    document.head.appendChild(s);
+  })();
+</script>
+
+</body>
+</html>

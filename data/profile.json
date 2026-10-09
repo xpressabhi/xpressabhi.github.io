@@ -525,6 +525,10 @@
   ],
   "deepDives": [
     {
+      "title": "tutor: one question at a time, difficulty tuned to the learner",
+      "file": "tutor.md"
+    },
+    {
       "title": "SpendIQ Copilot: guardrails, evals, and honesty for an agent over enterprise data",
       "file": "spendiq-copilot.md"
     },
@@ -555,8 +559,9 @@
   ],
   "blog": {
     "$comment": "Canonical blog order, newest first. buildBlog sorts the index by this list and features `featured` on the homepage. When adding a post: append the .md source to deep-dives/ AND add its slug here, else the build warns and appends it by file date.",
-    "featured": "revision",
+    "featured": "tutor",
     "order": [
+      "tutor",
       "never-met-your-users",
       "revision",
       "spendiq-copilot",
