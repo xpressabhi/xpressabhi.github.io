@@ -55,6 +55,8 @@ export function tokenize(tpl) {
     else if (body.startsWith("join ")) {
       const mm = body.match(/^join\s+([\w.@]+)\s+"([^"]*)"$/);
       tokens.push({ t: "join", path: mm ? mm[1] : "", sep: mm ? mm[2] : " " });
+    } else if (body.startsWith("count ")) {
+      tokens.push({ t: "count", path: body.slice(6).trim() });
     } else tokens.push({ t: "value", path: body });
     last = m.index + m[0].length;
   }
@@ -93,6 +95,9 @@ export function renderNodes(nodes, scopes) {
     else if (n.t === "join") {
       const v = resolvePath(scopes, n.path);
       out += Array.isArray(v) ? v.join(n.sep) : valueOr(v);
+    } else if (n.t === "count") {
+      const v = resolvePath(scopes, n.path);
+      out += String(Array.isArray(v) ? v.length : v && typeof v === "object" ? Object.keys(v).length : 0);
     } else if (n.t === "each") {
       const list = resolvePath(scopes, n.path);
       if (list == null) continue;

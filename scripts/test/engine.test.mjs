@@ -37,6 +37,20 @@ test("if/else picks branch on truthiness", () => {
   assert.equal(render(tpl, [{}]), "D");
 });
 
+test("count renders array length, object key count, 0 for missing", () => {
+  assert.equal(render("{{count items}}", [{ items: ["a", "b", "c"] }]), "3");
+  assert.equal(render("{{count groups}}", [{ groups: { A: 1, B: 2 } }]), "2");
+  assert.equal(render("{{count nope}}", [{}]), "0");
+  assert.equal(render("{{count x}}", [{ x: null }]), "0");
+});
+
+test("count works inside each over an array field", () => {
+  const out = render("{{#each rows}}{{@index}}/{{count cells}};{{/each}}", [
+    { rows: [{ cells: ["a"] }, { cells: ["a", "b"] }] },
+  ]);
+  assert.equal(out, "0/1;1/2;");
+});
+
 test("join renders arrays with separator, falls back to value", () => {
   assert.equal(render('{{join tags ", "}}', [{ tags: ["a", "b"] }]), "a, b");
   assert.equal(render('{{join name ", "}}', [{ name: "solo" }]), "solo");
