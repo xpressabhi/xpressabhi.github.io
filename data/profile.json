@@ -3,7 +3,8 @@
   "basics": {
     "name": "Abhishek Kumar Maurya",
     "shortName": "Abhishek Maurya",
-    "headline": "Staff Software Engineer — AI agent platforms (MCP, evals) and front-end platform delivery in React/TypeScript, Python/Java",
+    "shortTitle": "Staff Engineer, AI Agent Platforms & MCP",
+    "headline": "Staff Software Engineer — AI agent platforms, MCP and evals",
     "tagline": "16+ years full-stack: AI agents and agentic platforms, React/TypeScript frontends, Python/Java backends",
     "shortSummary": "Staff Software Engineer. Agent platforms, evals, and MCP workflows adopted by 20+ teams; React/TypeScript surfaces with Java/Glide full-stack case ownership.",
     "yearsExperience": "16+",
@@ -14,6 +15,8 @@
     "linkedin": "https://www.linkedin.com/in/akm85/",
     "github": "https://github.com/xpressabhi",
     "availability": "Immediately available; open to in-office, hybrid, or remote roles from Hyderabad",
+    "ctaText": "Download CV (PDF)",
+    "ctaHref": "resume/abhishek-maurya-cv.pdf",
     "authorizedIn": [
       "India"
     ],
@@ -403,19 +406,28 @@
     {
       "name": "SpendIQ Copilot",
       "url": "https://github.com/xpressabhi/SpendIQ_Candidate",
+      "homePick": true,
+      "outcome": "14-case golden-set eval harness passes with majority voting — agent answers enterprise data questions without inventing numbers",
+      "kind": "Agent",
       "description": "Conversational spend-analysis agent: LangGraph ReAct over SQLite + FTS5 with SQL guardrails (SELECT-only, read-only connections), an AST-whitelisted calculator instead of eval, and a 14-case golden-set eval harness with majority voting, all passing",
       "status": "live"
     },
     {
       "name": "ordo",
       "url": "https://xpressabhi.github.io/ordo/",
+      "homePick": true,
+      "outcome": "Time-to-first-token cut from 30s to 805ms on an iPhone A16 by changing architecture and resolution, not hardware",
+      "kind": "iOS app",
       "description": "On-device vision-language model built on Qwen2-VL-2B with llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
       "status": "live"
     },
     {
       "name": "Revision",
       "url": "https://github.com/xpressabhi/revision",
-      "image": "/assets/revision/analytics.png",
+      "homePick": true,
+      "image": "/assets/revision/analytics.webp",
+      "outcome": "Principal-level interview prep that works fully offline from a single SQLite file — no account, no sync, no network",
+      "kind": "Desktop app",
       "description": "Local-first Tauri desktop app for principal-level interview prep: FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
       "status": "live"
     },
@@ -423,13 +435,18 @@
       "name": "Switchyard",
       "status": "live",
       "showOnCv": false,
+      "homePick": true,
       "url": "https://xpressabhi.github.io/sims/agentic-rag.html",
       "image": "/assets/switchyard-sim-card.webp",
+      "outcome": "Every internal step of an agentic RAG loop — ingestion, retrieval, tool calls, memory — is watchable instead of imagined",
+      "kind": "Simulator",
       "description": "Interactive simulator for an agentic AI + RAG pipeline: watch ingestion, retrieval, tool calls, memory, and a live trace of every internal step while the loop runs."
     },
     {
       "name": "jev-browser",
       "url": "https://xpressabhi.github.io/jev-browser/",
+      "outcome": "One observed element and one operation per browser step, with zero runtime dependencies and no screenshots in the loop",
+      "kind": "Library",
       "description": "Harness-agnostic TypeScript core that puts Jev (TypeSafe System One) in charge of browser decisions: one observed element and one operation per step, text-only payloads with no screenshots in the loop, zero runtime dependencies",
       "status": "live",
       "showOnCv": false
@@ -437,6 +454,8 @@
     {
       "name": "job-search-skills",
       "url": "https://xpressabhi.github.io/job-search-skills/",
+      "outcome": "A whole job search — sweep, rank, autofill, submit — runs locally against the real eligibility rules",
+      "kind": "Agent skills",
       "description": "Two portable agent skills that run an entire job search locally: job-finder sweeps boards and ranks roles by real eligibility, apply-to-jobs autofills and submits ATS applications in your own browser, and a Jev decision layer keeps uncertain answers uncertain",
       "status": "live",
       "showOnCv": false
@@ -444,6 +463,8 @@
     {
       "name": "intent",
       "url": "https://xpressabhi.github.io/intent/",
+      "outcome": "Agent-driven changes ship with declared scope, protected tests and a green baseline enforced by a verifier",
+      "kind": "Protocol",
       "description": "Repo-owned protocol and verifier for agent-driven changes: declared scope, protected tests, digest-bound approvals, and a green baseline",
       "status": "live",
       "showOnCv": false
@@ -451,6 +472,8 @@
     {
       "name": "job-radar",
       "url": "https://xpressabhi.github.io/job-radar/",
+      "outcome": "Senior+ India engineering roles land on a static site with JSON/RSS feeds, with zero runtime dependencies",
+      "kind": "Data pipeline",
       "description": "Daily crawl of senior+ frontend and AI engineering roles in India from company ATS boards into a static site with JSON/RSS feeds; zero runtime dependencies, forkable configuration",
       "status": "live",
       "showOnCv": false
@@ -458,6 +481,8 @@
     {
       "name": "tutor",
       "url": "https://xpressabhi.github.io/tutor/",
+      "outcome": "Tutor state on disk survives a clean context, so difficulty tuning carries across sessions",
+      "kind": "Agent skill",
       "description": "Adaptive tutor skill for AI coding agents: one question per turn, difficulty tuned to the learner, state on disk that survives a clean context",
       "status": "live",
       "showOnCv": false
@@ -559,7 +584,7 @@
   ],
   "blog": {
     "$comment": "Canonical blog order, newest first. buildBlog sorts the index by this list and features `featured` on the homepage. When adding a post: append the .md source to deep-dives/ AND add its slug here, else the build warns and appends it by file date.",
-    "featured": "tutor",
+    "featured": "adp-claude-code-rollout",
     "order": [
       "tutor",
       "never-met-your-users",
