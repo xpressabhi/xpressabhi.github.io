@@ -416,7 +416,7 @@
     {
       "name": "Revision",
       "url": "https://github.com/xpressabhi/revision",
-      "image": "/assets/revision/analytics.png",
+      "image": "/assets/revision/analytics.webp",
       "description": "Local-first Tauri desktop app for principal-level interview prep: FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
       "status": "live"
     },

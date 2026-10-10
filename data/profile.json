@@ -426,6 +426,8 @@
       "url": "https://github.com/xpressabhi/revision",
       "homePick": true,
       "image": "/assets/revision/analytics.webp",
+      "imgw": 1280,
+      "imgh": 800,
       "outcome": "Principal-level interview prep that works fully offline from a single SQLite file — no account, no sync, no network",
       "kind": "Desktop app",
       "description": "Local-first Tauri desktop app for principal-level interview prep: FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
@@ -438,6 +440,8 @@
       "homePick": true,
       "url": "https://xpressabhi.github.io/sims/agentic-rag.html",
       "image": "/assets/switchyard-sim-card.webp",
+      "imgw": 1200,
+      "imgh": 692,
       "outcome": "Every internal step of an agentic RAG loop — ingestion, retrieval, tool calls, memory — is watchable instead of imagined",
       "kind": "Simulator",
       "description": "Interactive simulator for an agentic AI + RAG pipeline: watch ingestion, retrieval, tool calls, memory, and a live trace of every internal step while the loop runs."

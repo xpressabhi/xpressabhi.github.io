@@ -119,6 +119,18 @@
   .more { margin-top: 24px; font-size: 14px; color: var(--muted); max-width: 68ch; }
   .more a { color: var(--ink); }
 
+  .builds { margin-top: 18px; }
+  .build { padding: 16px 0; border-top: 1px solid var(--line); }
+  .build-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .build h3 { font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
+  .build .when { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--faint); white-space: nowrap; }
+  .build .outcome { margin-top: 6px; font-size: 14.5px; color: var(--ink); max-width: 64ch; }
+  .build .desc { margin-top: 6px; font-size: 13.5px; color: var(--muted); max-width: 68ch; }
+  .build .links { margin-top: 8px; font-size: 13.5px; }
+  .build .links a { color: var(--ink); font-weight: 600; text-underline-offset: 3px; }
+  .build .links a:hover { text-decoration: underline; }
+  .disc { color: var(--faint); }
+
   .term { margin-top: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--term-bg); color: var(--term-ink); overflow: hidden; }
   .term-bar { display: flex; gap: 6px; padding: 10px 14px; border-bottom: 1px solid rgba(128,128,128,.18); }
   .term-bar i { width: 10px; height: 10px; border-radius: 50%; background: #2a313b; display: block; }
@@ -298,6 +310,30 @@
 <span class="g">✓</span> TTFT 30s to <b>805ms</b> (architecture and resolution levers)</pre>
       </div>
       <div class="more">Writeups: <a href="../blog/on-device-vlm-iphone.html">On-device VLM on iPhone</a> · <a href="../blog/local-llm-inference.html">Local LLM inference on Apple silicon</a></div>
+    </div>
+  </section>
+
+  <section id="builds">
+    <div class="sec ruled">
+      <div class="sec-label">Builds</div>
+      <h2>Everything shipped</h2>
+      <p class="sec-sub">Every live build, with what each one changed. The home page shows a hand-picked four.</p>
+      <div class="builds">
+        {{#each allLiveBuilds}}
+        <div class="build">
+          <div class="build-top">
+            <h3>{{name}}</h3>
+            <span class="when">{{kind}}{{#if homePick}} · on home{{/if}}</span>
+          </div>
+          <p class="outcome">{{outcome}}</p>
+          <p class="desc">{{description}}</p>
+          <p class="links">{{#if url}}<a href="{{url}}">Visit {{name}} →</a>{{/if}}{{#if repo}} · <a href="{{repo}}">Repo →</a>{{/if}}</p>
+        </div>
+        {{/each}}
+      </div>
+      {{#if discontinuedNames}}
+      <div class="more">Discontinued: <span class="disc">{{join discontinuedNames " · "}}</span></div>
+      {{/if}}
     </div>
   </section>
 

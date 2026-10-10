@@ -1,12 +1,34 @@
 {
   "$comment": "Provenance for claims in profile.json. Every public claim should cite where it comes from (repo, session, live site). Claim keys: projects:<name>, skills:<item>, flagship:<title>, deepDive:<file>. `npm run build` warns about uncovered claims; --strict-evidence fails on them. Backfill legacy entries as you touch them.",
   "claims": {
+    "basics:shortTitle": [
+      {
+        "source": "session",
+        "ref": "ses_2026-10-10 portfolio rewrite",
+        "date": "2026-10",
+        "note": "Shorter page title (58 chars) cut from basics.headline so the SERP title is not truncated; same role claim (Staff Software Engineer, AI agent platforms / MCP / evals) already covered by basics.summary and flagship entries"
+      }
+    ],
+    "basics:ctaText": [
+      {
+        "source": "build",
+        "ref": "resume/abhishek-maurya-cv.pdf",
+        "date": "2026-10",
+        "note": "Hero CTA points at the generated CV PDF committed at resume/abhishek-maurya-cv.pdf (built by npm run build:pdf); no claim beyond the file existing"
+      }
+    ],
     "projects:SpendIQ Copilot": [
       {
         "source": "repo",
         "ref": "github.com/xpressabhi/SpendIQ_Candidate",
         "date": "2026-08",
         "note": "All 7 commits authored by Abhishek; LangGraph ReAct agent over SQLite/FTS5, AST-whitelisted calculator, 14-case eval harness with majority voting (eval_report.json: 14/14 passing)"
+      },
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/SpendIQ_Candidate",
+        "date": "2026-10",
+        "note": "Home-page 'outcome' line added 2026-10-10 is a restatement of the eval harness claim above (14 tiered cases, majority vote, all passing); no new metric introduced"
       }
     ],
     "skills:FastAPI": [
@@ -55,6 +77,12 @@
         "ref": "github.com/xpressabhi/ordo",
         "date": "2026-08",
         "note": "On-device VLM take-home: Qwen2-VL-2B on llama.cpp, 270-run quantization ladder, iPhone deploy"
+      },
+      {
+        "source": "repo+session",
+        "ref": "github.com/xpressabhi/ordo · work page 'On-device, on-desk' bench output",
+        "date": "2026-10",
+        "note": "Home-page 'outcome' line (30s -> 805ms TTFT on iPhone A16 via architecture and resolution levers) restates the bench output already published on the work page; no new metric"
       }
     ],
     "projects:Revision": [
@@ -63,6 +91,20 @@
         "ref": "github.com/xpressabhi/revision",
         "date": "2026-09",
         "note": "Tauri 2 + React 19 + TS + Vite 7 + KaTeX desktop app (v0.4.0). FSRS-5 scheduler (src/lib/fsrs.ts), drag gestures (src/lib/gestures.ts), air gestures via MediaPipe HandLandmarker (src/lib/handGestures.ts + HandOverlay.tsx, public/mediapipe/ committed), activity-aware sessions (src/lib/session.ts), single SQLite file revision.db with localStorage fallback"
+      },
+      {
+        "source": "repo",
+        "ref": "github.com/xpressabhi/revision",
+        "date": "2026-10",
+        "note": "Home-page 'outcome' line (fully offline from a single SQLite file, no account/sync/network) restates README claims and the single-file revision.db design above; no new metric"
+      }
+    ],
+    "projects:Switchyard": [
+      {
+        "source": "repo+site",
+        "ref": "xpressabhi.github.io/sims/agentic-rag.html",
+        "date": "2026-10",
+        "note": "Interactive agentic-AI + RAG pipeline simulator shipped as a live GitHub Pages artifact; shows ingestion, retrieval, tool calls, memory and a live trace of every internal step while the loop runs. Home-page 'outcome' line and 'kind: Simulator' label derive from that page description; no new metric"
       }
     ],
     "projects:jev-browser": [

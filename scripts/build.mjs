@@ -49,6 +49,30 @@ const P = (...p) => join(ROOT, ...p);
 const OUT = (...p) => join(ROOT, "output", ...p);
 const SITE_URL = "https://xpressabhi.github.io";
 
+/** schema.org Person payload for the portfolio page, built from the profile. */
+function buildJsonLd() {
+  const b = REPO.basics || {};
+  return JSON.stringify(
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: b.name,
+      alternateName: b.shortName,
+      jobTitle: "Staff Software Engineer",
+      description: b.tagline,
+      url: SITE_URL + "/",
+      email: "mailto:" + b.email,
+      worksFor: { "@type": "Organization", name: (REPO.experience || [])[0]?.company },
+      address: { "@type": "PostalAddress", addressLocality: b.location, addressCountry: "IN" },
+      sameAs: [b.linkedin, b.github].filter(Boolean),
+      alumniOf: (REPO.education || []).map((e) => ({ "@type": "EducationalOrganization", name: e.school })),
+      knowsAbout: Object.keys(REPO.skills || {}),
+    },
+    null,
+    2
+  );
+}
+
 function checkEvidence() {
   const { covered, missing } = evidenceCoverage(REPO, EVIDENCE);
   if (missing.length) {
@@ -76,18 +100,48 @@ function cookRepo() {
 function buildPortfolio(latest) {
   const tpl = readFileSync(P("templates/portfolio.html"), "utf8");
   const repo = cookRepo();
-  // Home is a glanceable landing: snapshot metrics and top three case studies,
-  // live projects only. Full detail lives on work/ and resume/.
+  // Home is a glanceable landing for a hiring-manager scan: outcome bullets,
+  // top case studies, and a hand-picked set of builds. Full detail lives on
+  // work/ and resume/.
+  const live = repo.projects.filter((p) => p.status !== "discontinued");
+  const homeBuilds = live.filter((p) => p.homePick === true);
   repo.homeMetrics = repo.impactMetrics.slice(0, 6);
   repo.homeWork = repo.flagship.slice(0, 3);
-  repo.liveProjects = repo.projects.filter((p) => p.status !== "discontinued");
+  repo.homeBuilds = homeBuilds;
+  repo.otherBuildsCount = live.length - homeBuilds.length;
+  repo.homeExperience = repo.experience.slice(0, 3);
   repo.latest = latest || null;
+  // Prose counts come from the data so the copy cannot drift from it.
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+  repo.metricsCount = repo.impactMetrics.length;
+  repo.workCount = repo.flagship.length;
+  repo.capabilityCount = repo.capabilityCards.length;
+  repo.experienceCount = repo.experience.length;
+  repo.liveBuildsCount = live.length;
+  repo.resultsSub = `${plural(repo.metricsCount, "outcome", "outcomes")}, with the work behind each one.`;
+  repo.capabilitiesSub = `${plural(repo.capabilityCount, "area", "areas")}, from agent platforms to backend ownership. Expand a tile for the short version.`;
+  repo.workSub = `${plural(repo.homeWork.length, "shipped agent system", "shipped agent systems")}. Each one has a deep dive.`;
+  repo.buildsSub = "Side projects, shipped and living online.";
+  repo.experienceSub = `${repo.basics.yearsExperience} years across AI platforms, frontend, backend and founding teams.`;
+  repo.metricsMore = `All ${repo.metricsCount} results, with the work behind them`;
+  repo.workMore = `All ${repo.workCount} case studies, with metrics and run logs`;
+  repo.buildsMore = repo.otherBuildsCount > 0
+    ? `${repo.otherBuildsCount} more builds, plus discontinued projects`
+    : "Discontinued projects";
+  repo.capabilitiesMore = "Full write-ups";
+  repo.experienceMore = `Full timeline and skills`;
+  repo.jsonld = buildJsonLd();
   return render(tpl, [repo]);
 }
 
 function buildWorkPage() {
   const tpl = readFileSync(P("templates/work.html"), "utf8");
-  return render(tpl, [cookRepo()]);
+  const repo = cookRepo();
+  // Full build list: home page curates a hand-picked subset, this page carries all of them.
+  repo.allLiveBuilds = repo.projects.filter((p) => p.status !== "discontinued");
+  repo.discontinuedBuilds = repo.projects.filter((p) => p.status === "discontinued");
+  repo.discontinuedNames = repo.discontinuedBuilds.map((p) => p.name);
+  return render(tpl, [repo]);
 }
 
 function buildCvPage(repo = REPO) {

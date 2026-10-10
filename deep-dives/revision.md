@@ -46,7 +46,7 @@ Anki's SM-2 works until it doesn't — stability collapses silently, difficulty 
 
 The product point is transparency. You never grade blind — the bar tells you what each button costs before you press it.
 
-![Analytics — retention forecast, heatmap, grade distribution](/assets/revision/analytics.png)
+![Analytics — retention forecast, heatmap, grade distribution](/assets/revision/analytics.webp)
 
 ---
 
