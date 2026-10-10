@@ -55,12 +55,21 @@ test("findBanned flags each dark-mode pattern", () => {
   assert.ok(findBanned('<html data-theme="dark">').includes("data-theme attribute"));
   assert.ok(findBanned("localStorage.getItem('jev-docs-theme')").includes("theme localStorage key"));
   assert.ok(findBanned('<button class="theme-btn">').includes("theme toggle control"));
+  assert.ok(findBanned("--panel: var(--panel);").includes("self-referential custom property"));
+  assert.ok(findBanned("--accent:var(--accent)").includes("self-referential custom property"));
+});
+
+test("findBanned allows a bridge that renames a variable", () => {
+  // the whole point of the bridge: local name differs from the theme's
+  assert.deepEqual(findBanned("--text: var(--ink);"), []);
+  assert.deepEqual(findBanned("--panel2: var(--sunken);"), []);
+  assert.deepEqual(findBanned("--muted: var(--ink-2);"), []);
 });
 
 test("findBanned passes clean and light-only source", () => {
   assert.deepEqual(findBanned("<style>:root{--paper:#f3f4ec;color-scheme:light}</style>"), []);
   assert.deepEqual(findBanned('<meta name="theme-color" content="#f3f4ec" media="(prefers-color-scheme: light)">'), []);
-  assert.ok(BANNED.length >= 4);
+  assert.ok(BANNED.length >= 5);
 });
 
 test("htmlFiles lists only .html files, non-recursively, sorted", () => {
@@ -122,7 +131,7 @@ test("job-radar links its theme copy from templates/ like every other repo", () 
   const base = fixture(repo, {
     "index.html": "<html>\n<head>\n</head>\n<body></body>\n</html>",
     "archive.html": "<html>\n<head>\n</head>\n<body></body>\n</html>",
-    "style.css": ":root{--accent:var(--accent)}",
+    "style.css": ":root{--accent:#a13a1f; --muted:var(--ink-2)}",
   });
   const written = propagateRepo(repo, { canonical: "TOKENS", base });
   assert.deepEqual(written, [
@@ -134,7 +143,7 @@ test("job-radar links its theme copy from templates/ like every other repo", () 
   assert.match(readFileSync(join(base, "job-radar", "templates", "index.html"), "utf8"), /<link rel="stylesheet" href="theme\.css">/);
   assert.deepEqual(checkRepo(repo, { canonical: "TOKENS", base }).problems, []);
   // its own stylesheet is left alone and still checked for dark-mode patterns
-  assert.equal(readFileSync(join(base, "job-radar", "templates", "style.css"), "utf8"), ":root{--accent:var(--accent)}");
+  assert.equal(readFileSync(join(base, "job-radar", "templates", "style.css"), "utf8"), ":root{--accent:#a13a1f; --muted:var(--ink-2)}");
   assert.deepEqual(propagateRepo(repo, { canonical: "TOKENS", base }), [], "idempotent");
 });
 

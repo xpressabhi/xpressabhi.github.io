@@ -90,13 +90,14 @@ if (mode === "push") {
     try {
       execFileSync("git", ["add", "-A"], { cwd: dir, stdio: "ignore" });
       const staged = execFileSync("git", ["diff", "--cached", "--name-only"], { cwd: dir, encoding: "utf8" }).trim();
-      if (!staged) {
-        console.log(`· ${r.name}: nothing to commit`);
-        continue;
+      let note = "";
+      if (staged) {
+        execFileSync("git", ["commit", "-m", "docs: adopt shared light-only theme from portfolio hub"], { cwd: dir, stdio: "ignore" });
+        note = "committed";
       }
-      execFileSync("git", ["commit", "-m", "docs: adopt shared light-only theme from portfolio hub"], { cwd: dir, stdio: "ignore" });
+      // Always push: a repo may already be committed locally but unpushed.
       execFileSync("git", ["push"], { cwd: dir, stdio: "ignore" });
-      console.log(`✓ ${r.name}: committed and pushed`);
+      console.log(`✓ ${r.name}: pushed${note ? ` (${note})` : " (already committed)"}`);
     } catch (e) {
       failed = true;
       console.log(`✗ ${r.name}: ${String(e.message).split("\n")[0]}`);

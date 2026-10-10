@@ -32,6 +32,10 @@ export const BANNED = [
   { id: "data-theme attribute", re: /data-theme\s*=/i },
   { id: "theme localStorage key", re: /localStorage[^\n;]{0,80}theme/i },
   { id: "theme toggle control", re: /(?:data-theme-btn|theme-btn|theme-toggle|theme-switch)/i },
+  // `--x: var(--x)` is a CSS custom-property cycle: the property resolves to
+  // nothing, so every rule using it silently falls back. A bridge line is only
+  // written when the local name differs from the theme's.
+  { id: "self-referential custom property", re: /--([\w-]+)\s*:\s*var\(\s*--\1\s*\)/ },
 ];
 
 export function hasThemeLink(html) {
