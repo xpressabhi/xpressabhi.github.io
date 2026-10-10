@@ -12,9 +12,10 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * The six live Pages sites. `link` repos carry their own copy of theme.css and
- * get a <link>; `generated` repos inline their stylesheet into built output, so
- * they are token-checked instead of file-synced.
+ * The six live Pages sites, each carrying its own copy of theme.css linked
+ * same-origin. job-radar's copy lives in `templates/` because its `site/`
+ * output is generated (and gitignored) — its renderer publishes theme.css
+ * alongside the built pages.
  */
 export const REPOS = [
   { name: "tutor", kind: "link", root: "docs" },
@@ -22,7 +23,7 @@ export const REPOS = [
   { name: "jev-browser", kind: "link", root: "docs" },
   { name: "job-search-skills", kind: "link", root: "docs" },
   { name: "ordo", kind: "link", root: "docs" },
-  { name: "job-radar", kind: "generated", root: "templates" },
+  { name: "job-radar", kind: "link", root: "templates" },
 ];
 
 /** Patterns that must not appear in any site's source. */
@@ -59,15 +60,15 @@ export function htmlFiles(dir) {
 export function checkedFiles(repo, base) {
   const dir = repoDir(repo, base);
   if (!existsSync(dir)) return [];
-  if (repo.kind === "generated") {
-    return readdirSync(dir).filter((f) => f.endsWith(".css")).map((f) => join(dir, f)).sort();
-  }
-  return htmlFiles(dir);
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".html") || f.endsWith(".css"))
+    .map((f) => join(dir, f))
+    .sort();
 }
 
 /** Files that must carry the <link>: every html file in the Pages root. */
 export function linkTargets(repo, base) {
-  return repo.kind === "generated" ? [] : htmlFiles(repoDir(repo, base));
+  return htmlFiles(repoDir(repo, base));
 }
 
 export function repoDir(repo, base) {
@@ -114,7 +115,6 @@ export function checkRepo(repo, opts = {}) {
 export function propagateRepo(repo, opts = {}) {
   const { canonical = "", base = "" } = opts;
   const written = [];
-  if (repo.kind === "generated") return written; // inlines its stylesheet into built output
   const dir = repoDir(repo, base);
   if (canonical) {
     const dest = join(dir, "theme.css");

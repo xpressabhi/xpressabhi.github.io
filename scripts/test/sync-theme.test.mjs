@@ -27,8 +27,10 @@ test("manifest covers exactly the six live Pages sites", () => {
   assert.deepEqual(REPOS.map((r) => r.name), [
     "tutor", "intent", "jev-browser", "job-search-skills", "ordo", "job-radar",
   ]);
-  assert.deepEqual(REPOS.filter((r) => r.kind === "generated").map((r) => r.name), ["job-radar"]);
-  assert.equal(REPOS.filter((r) => r.kind === "link").length, 5);
+  // every repo links a same-origin copy; job-radar's lives in templates/ because
+  // its site/ output is generated and gitignored
+  assert.equal(REPOS.filter((r) => r.kind === "link").length, 6);
+  assert.equal(REPOS.find((r) => r.name === "job-radar").root, "templates");
 });
 
 test("hasThemeLink detects presence and absence", () => {
@@ -115,20 +117,35 @@ test("propagateRepo writes theme.css and links every html file, idempotently", (
   assert.deepEqual(checkRepo(repo, { canonical: "TOKENS", base }).problems, []);
 });
 
-test("propagateRepo skips generated repos entirely", () => {
-  const repo = { name: "job-radar", kind: "generated", root: "templates" };
-  const base = fixture(repo, { "style.css": ":root{--accent:#0b5fff}" });
-  assert.deepEqual(propagateRepo(repo, { canonical: "TOKENS", base }), []);
-  assert.equal(existsSync(join(base, "job-radar", "templates", "theme.css")), false);
-  // but it is still checked for banned patterns
-  const { problems } = checkRepo(repo, { canonical: "TOKENS", base });
-  assert.deepEqual(problems, []);
+test("job-radar links its theme copy from templates/ like every other repo", () => {
+  const repo = { name: "job-radar", kind: "link", root: "templates" };
+  const base = fixture(repo, {
+    "index.html": "<html>\n<head>\n</head>\n<body></body>\n</html>",
+    "archive.html": "<html>\n<head>\n</head>\n<body></body>\n</html>",
+    "style.css": ":root{--accent:var(--accent)}",
+  });
+  const written = propagateRepo(repo, { canonical: "TOKENS", base });
+  assert.deepEqual(written, [
+    "job-radar/templates/theme.css",
+    "job-radar/templates/archive.html",
+    "job-radar/templates/index.html",
+  ]);
+  assert.equal(readFileSync(join(base, "job-radar", "templates", "theme.css"), "utf8"), "TOKENS");
+  assert.match(readFileSync(join(base, "job-radar", "templates", "index.html"), "utf8"), /<link rel="stylesheet" href="theme\.css">/);
+  assert.deepEqual(checkRepo(repo, { canonical: "TOKENS", base }).problems, []);
+  // its own stylesheet is left alone and still checked for dark-mode patterns
+  assert.equal(readFileSync(join(base, "job-radar", "templates", "style.css"), "utf8"), ":root{--accent:var(--accent)}");
+  assert.deepEqual(propagateRepo(repo, { canonical: "TOKENS", base }), [], "idempotent");
 });
 
-test("checkRepo flags a generated repo whose stylesheet still has dark mode", () => {
-  const repo = { name: "job-radar", kind: "generated", root: "templates" };
-  const base = fixture(repo, { "style.css": ":root{--bg:#fff}@media (prefers-color-scheme: dark){:root{--bg:#000}}" });
-  const { problems } = checkRepo(repo, { base });
+test("checkRepo flags job-radar's stylesheet if dark mode returns", () => {
+  const repo = { name: "job-radar", kind: "link", root: "templates" };
+  const base = fixture(repo, {
+    "index.html": '<html>\n<head>\n<link rel="stylesheet" href="theme.css">\n</head>\n<body></body>\n</html>',
+    "style.css": ":root{--bg:#fff}@media (prefers-color-scheme: dark){:root{--bg:#000}}",
+    "theme.css": "TOKENS",
+  });
+  const { problems } = checkRepo(repo, { canonical: "TOKENS", base });
   assert.deepEqual(problems, ["job-radar/templates/style.css: dark media query"]);
 });
 
