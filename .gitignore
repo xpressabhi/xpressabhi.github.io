@@ -9,6 +9,9 @@ output/
 scripts/cache/
 .playwright-mcp/
 
+# local-only tooling (Playwright is installed ad-hoc for `npm run build:pdf`)
+node_modules/
+
 # local scratch (never published)
 drafts/
 .firecrawl/
