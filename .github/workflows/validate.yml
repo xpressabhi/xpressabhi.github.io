@@ -7,14 +7,18 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    # Pinned image, not ubuntu-latest: this job is a validation gate, so a red
+    # run should mean the code changed, not the runner image. ubuntu-latest
+    # migrates to Ubuntu 26 on 2026-10-19.
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
+          # Matches local dev (npm run build / npm test) so CI cannot fail on a
+          # Node difference the author never sees — the quoted-glob breakage in
+          # `npm test` was exactly that, and Node 20 is EOL.
+          node-version: 24
       - name: Build (no deps needed; PDF skipped in CI)
         run: npm run build
       - name: Generated outputs are up to date
@@ -25,12 +29,12 @@ jobs:
         run: npm test
 
   links:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     continue-on-error: true # external sites flake; failures are surfaced but don't block deploys
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
       - name: PII lint + link check
         run: npm run check
