@@ -59,12 +59,13 @@ if (mode === "check") {
 
 if (mode === "plan") {
   for (const r of repos) {
-    console.log(`${r.name}:`);
-    if (r.kind === "generated") console.log(`    ${r.root}/*.css — token check only (stylesheet is inlined into built output)`);
-    else {
-      for (const f of linkTargets(r, BASE)) console.log(`    ${r.name}/${r.root}/${f.split("/").pop()}`);
-      console.log(`    ${r.name}/${r.root}/theme.css ← canonical`);
+    console.log(`${r.kind === "source" ? "hub (canonical, templates only)" : r.name}:`);
+    if (r.kind === "source") {
+      console.log(`    ${r.root}/*.html — banned-pattern check only (hub owns the canonical file)`);
+      continue;
     }
+    for (const f of linkTargets(r, BASE)) console.log(`    ${r.name}/${r.root}/${f.split("/").pop()}`);
+    console.log(`    ${r.name}/${r.root}/theme.css ← canonical`);
   }
   console.log("\ndry run — pass --write to apply, --check to verify, --push to commit and push");
   process.exit(0);

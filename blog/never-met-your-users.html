@@ -19,40 +19,29 @@
 <meta name="twitter:title" content="Make it work. Then keep it working.">
 <meta name="twitter:description" content="Every AI coding demo works. The failures start after: the agent paginates a forty-row table with cursors, sizes a database pool for twenty users at a hundred connections, swallows an error to keep …">
 <meta name="twitter:image" content="https://xpressabhi.github.io/assets/og-card.png">
-<script>
-  (function () {
-    try {
-      var t = localStorage.getItem("theme");
-      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
-    } catch (e) {}
-  })();
-</script>
+<link rel="stylesheet" href="../theme/theme.css">
 <style>
-  :root { --bg: #ffffff; --ink: #1a1a1a; --muted: #525252; --faint: #9a9a9a; --line: #ececea; --code-bg: #f6f6f4; --accent: #035aa7; --ok: #1a7f37; color-scheme: light dark; }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; }
+  /* Bridge this page's local variable names onto the shared theme.
+     Names the theme already defines (--ink, --panel, --accent, --ok) are not redeclared. */
+  :root {
+    --bg: var(--paper);
+    --muted: var(--ink-2);
+    --faint: var(--ink-3);
+    --line: var(--rule);
+    --code-bg: var(--sunken);
   }
-  :root[data-theme="dark"] { --bg: #0f0f0e; --ink: #ececec; --muted: #b5b5b5; --faint: #6e6e6e; --line: #232323; --code-bg: #171716; --accent: #5f91e8; --ok: #3fb950; color-scheme: dark; }
-  :root[data-theme="light"] { color-scheme: light; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--bg); color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
-    font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased;
+    font-size: 16px; line-height: 1.75; -webkit-font-smoothing: antialiased;
   }
-  ::selection { background: var(--ink); color: var(--bg); }
+  ::selection { background: rgba(161, 58, 31, 0.16); }
   a { color: inherit; }
-  header { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
-  nav { max-width: 700px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
-  .mark { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  /* reading pages stay pinned */
+  header.nav { position: sticky; top: 0; z-index: 10; background: var(--bg); }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: 0 0 7px; }
-  .nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
-  .nav-links a { color: var(--muted); text-decoration: none; }
-  .nav-links a:hover { color: var(--ink); }
-  .theme-btn { font: inherit; font-size: 12.5px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; }
-  .theme-btn:hover { color: var(--ink); border-color: var(--faint); }
   main { max-width: 700px; margin: 0 auto; padding: 52px 24px 80px; }
-  .reader h1 { font-size: clamp(28px, 4vw, 38px); font-weight: 650; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 10px; }
+  .reader h1 { font-size: clamp(1.75rem, 4vw, 2.4rem); line-height: 1.2; margin-bottom: 10px; }
   .reader .post-meta { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; color: var(--faint); margin-bottom: 16px; }
   .reader .post-meta a { color: var(--muted); }
   .share { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 36px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 13.5px; color: var(--muted); }
@@ -89,21 +78,21 @@
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<header>
-  <nav>
-    <a href="../" class="mark"><span class="dot"></span>Abhishek Maurya</a>
-    <div class="nav-links">
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="../" class="wordmark"><span class="dot"></span>Abhishek Maurya</a>
+    <nav class="nav-links" aria-label="Sections">
       <a href="../work/" class="work-link">Work</a>
       <a href="../#projects">Projects</a>
       <a href="./" class="blog-link">Blog</a>
       <a href="../resume/" class="cv">CV</a>
-      <button type="button" class="theme-btn" data-theme-btn>◐ System</button>
-    </div>
-  </nav>
+    </nav>
+  </div>
 </header>
 
-<main>
+<main id="main">
   <article class="reader">
     <h1>Make it work. Then keep it working.</h1>
     <div class="post-meta"><span>Sep 13, 2026</span><span> · </span><span>7 min read</span><span> · </span><a href="./">All posts</a></div>
@@ -194,29 +183,6 @@ Last reviewed: 2026-09-13
   </div>
 </main>
 
-<script>
-  (function () {
-    var btn = document.querySelector("[data-theme-btn]");
-    if (!btn) return;
-    function current() { return document.documentElement.getAttribute("data-theme") || "system"; }
-    function label(t) { return t === "light" ? "○ Light" : t === "dark" ? "● Dark" : "◐ System"; }
-    function paint() {
-      btn.textContent = label(current());
-      btn.setAttribute("aria-label", "Color theme: " + current() + ". Activate to change.");
-    }
-    btn.addEventListener("click", function () {
-      var next = { system: "light", light: "dark", dark: "system" }[current()] || "system";
-      try {
-        if (next === "system") localStorage.removeItem("theme");
-        else localStorage.setItem("theme", next);
-      } catch (e) {}
-      if (next === "system") document.documentElement.removeAttribute("data-theme");
-      else document.documentElement.setAttribute("data-theme", next);
-      paint();
-    });
-    paint();
-  })();
-</script>
 <script>
   (function () {
     var canonical = document.querySelector('link[rel="canonical"]');

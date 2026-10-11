@@ -25,10 +25,11 @@ function fixture(repo, files = {}) {
 
 test("manifest covers exactly the six live Pages sites", () => {
   assert.deepEqual(REPOS.map((r) => r.name), [
-    "tutor", "intent", "jev-browser", "job-search-skills", "ordo", "job-radar",
+    "xpressabhi.github.io", "tutor", "intent", "jev-browser", "job-search-skills", "ordo", "job-radar",
   ]);
-  // every repo links a same-origin copy; job-radar's lives in templates/ because
-  // its site/ output is generated and gitignored
+  assert.equal(REPOS.find((r) => r.name === "xpressabhi.github.io").kind, "source");
+  // every sibling links a same-origin copy; job-radar's lives in templates/
+  // because its site/ output is generated and gitignored
   assert.equal(REPOS.filter((r) => r.kind === "link").length, 6);
   assert.equal(REPOS.find((r) => r.name === "job-radar").root, "templates");
 });
@@ -156,6 +157,26 @@ test("checkRepo flags job-radar's stylesheet if dark mode returns", () => {
   });
   const { problems } = checkRepo(repo, { canonical: "TOKENS", base });
   assert.deepEqual(problems, ["job-radar/templates/style.css: dark media query"]);
+});
+
+test("checkRepo guards the hub's templates without requiring a theme link", () => {
+  const repo = { name: "xpressabhi.github.io", kind: "source", root: "templates" };
+  const base = fixture(repo, {
+    "portfolio.html": "<html>\n<head>\n</head>\n<body></body>\n</html>",
+    "cv.html": "<html>\n<head>\n</head>\n<body></body>\n</html>",
+  });
+  // neither template links theme.css, yet the hub must still check out clean
+  assert.deepEqual(checkRepo(repo, { base }).problems, []);
+  // but a banned pattern still fails it
+  const withDark = fixture(repo, { "portfolio.html": "<style>@media (prefers-color-scheme: dark){}</style>" });
+  assert.deepEqual(checkRepo(repo, { base: withDark }).problems, ["xpressabhi.github.io/templates/portfolio.html: dark media query"]);
+});
+
+test("propagateRepo never writes into the hub's own templates", () => {
+  const repo = { name: "xpressabhi.github.io", kind: "source", root: "templates" };
+  const base = fixture(repo, { "portfolio.html": "<html>\n<head>\n</head>\n<body></body>\n</html>" });
+  assert.deepEqual(propagateRepo(repo, { canonical: "TOKENS", base }), []);
+  assert.equal(existsSync(join(base, "templates", "theme.css")), false);
 });
 
 test("checkRepo reports an empty or missing Pages root", () => {

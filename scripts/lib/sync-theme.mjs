@@ -18,6 +18,9 @@ import { join } from "node:path";
  * alongside the built pages.
  */
 export const REPOS = [
+  // the hub itself is the canonical source: checked for banned patterns, but it
+  // needs no theme.css copy and its templates link theme/theme.css explicitly
+  { name: "xpressabhi.github.io", kind: "source", root: "templates" },
   { name: "tutor", kind: "link", root: "docs" },
   { name: "intent", kind: "link", root: "docs" },
   { name: "jev-browser", kind: "link", root: "docs" },
@@ -99,7 +102,11 @@ export function checkRepo(repo, opts = {}) {
     const src = readFileSync(f, "utf8");
     const found = findBanned(src);
     if (found.length) problems.push(`${rel(f, base)}: ${found.join(", ")}`);
-    if (f.endsWith(".html") && !hasThemeLink(src)) problems.push(`${rel(f, base)}: missing theme.css <link>`);
+    // the hub's cv template is a print/PDF document and legitimately standalone
+    const skipLink = repo.kind === "source";
+    if (f.endsWith(".html") && !skipLink && !hasThemeLink(src)) {
+      problems.push(`${rel(f, base)}: missing theme.css <link>`);
+    }
   }
 
   if (repo.kind === "link") {
@@ -120,14 +127,14 @@ export function propagateRepo(repo, opts = {}) {
   const { canonical = "", base = "" } = opts;
   const written = [];
   const dir = repoDir(repo, base);
-  if (canonical) {
+  if (canonical && repo.kind === "link") {
     const dest = join(dir, "theme.css");
     if (!existsSync(dest) || readFileSync(dest, "utf8") !== canonical) {
       writeFileSync(dest, canonical, "utf8");
       written.push(rel(dest, base));
     }
   }
-  for (const f of linkTargets(repo, base)) {
+  for (const f of repo.kind === "source" ? [] : linkTargets(repo, base)) {
     const before = readFileSync(f, "utf8");
     const after = insertThemeLink(before);
     if (after !== before) {
