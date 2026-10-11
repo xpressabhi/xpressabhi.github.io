@@ -14,12 +14,11 @@
  *   node scripts/build.mjs --pdf      # also render the PDF
  *   node scripts/build.mjs --verify   # render portfolio + CV to /tmp and assert no leftovers
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { render, stripMd, mdToHtml } from "./lib/engine.mjs";
-import { orderPosts, pickFeatured } from "./lib/blog.mjs";
+import { orderPosts, pickFeatured, checkDates, formatPostDate } from "./lib/blog.mjs";
 import { evidenceCoverage } from "./lib/evidence.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -161,17 +160,6 @@ function buildCvPage(repo = REPO) {
 /* Blog: deep-dives/*.md → blog/*.html (static posts + index)          */
 /* ------------------------------------------------------------------ */
 
-function lastCommitSec(file) {
-  try {
-    const out = execFileSync("git", ["log", "-1", "--format=%ct", "--", `deep-dives/${file}`], {
-      cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
-    }).trim();
-    return out ? Number(out) : null;
-  } catch {
-    return null;
-  }
-}
-
 function buildBlog() {
   const postTpl = readFileSync(P("templates/blog-post.html"), "utf8");
   const indexTpl = readFileSync(P("templates/blog-index.html"), "utf8");
@@ -181,6 +169,37 @@ function buildBlog() {
   ]);
   const files = [...curated, ...readdirSync(P("deep-dives")).filter((f) => f.endsWith(".md") && !curated.has(f)).sort()];
   const featured = new Set(REPO.flagship.filter((f) => f.dive).map((f) => f.dive));
+
+  // Post dates are pinned in profile.json, never read from git or file mtime:
+  // a commit that edits a post changes the git timestamp the build would read,
+  // so output regenerated inside that commit never matches what CI computes for
+  // it — every such commit failed the "generated outputs are up to date" gate.
+  const blogMeta = REPO.blog || {};
+  const pinnedDates = blogMeta.dates || {};
+  const slugOf = (file) => file.replace(/\.md$/i, "");
+  const { errors: dateErrors, warnings: dateWarnings } = checkDates(
+    files.map(slugOf),
+    pinnedDates,
+    blogMeta.order || []
+  );
+  if (dateErrors.length) {
+    const lines = dateErrors
+      .map((e) =>
+        e.kind === "malformed"
+          ? `    "${e.slug}": "${e.value}"  ← not YYYY-MM-DD`
+          : `    "${e.slug}": "YYYY-MM-DD"`
+      )
+      .join("\n");
+    throw new Error(
+      `unpinned blog date(s) in data/profile.json → blog.dates\n${lines}\n` +
+        `  Dates must be pinned: deriving them from git or file mtime makes the build\n` +
+        `  output depend on the commit that carries it, so CI can never match it.`
+    );
+  }
+  for (const w of dateWarnings) {
+    if (w.kind === "stale") console.warn(`⚠ blog.dates entry for unknown post (no deep-dives/${w.slug}.md): ${w.slug}`);
+    if (w.kind === "unordered") console.warn(`⚠ blog post missing from profile.json blog.order: ${w.slug}`);
+  }
 
   const posts = [];
   for (const file of files) {
@@ -231,10 +250,9 @@ function buildBlog() {
 
     const words = Math.max(1, body.split(/\s+/).length);
     const read = Math.max(1, Math.round(words / 200)) + " min read";
-    const commitTs = lastCommitSec(file);
-    const mtime = (commitTs ?? Math.floor(statSync(P("deep-dives", file)).mtimeMs / 1000)) * 1000;
-    const updated = new Date(mtime).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-    const slug = file.replace(/\.md$/i, "");
+    const slug = slugOf(file);
+    const date = pinnedDates[slug];
+    const updated = formatPostDate(date);
 
     const url = `${SITE_URL}/blog/${slug}.html`;
     const enc = encodeURIComponent;
@@ -253,14 +271,14 @@ function buildBlog() {
       slug, title, excerpt, updated, read,
       featured: featured.has(file),
       image,
-      mtime,
+      date,
       html: render(postTpl, [scope]),
     });
   }
 
-  const blogOrder = (REPO.blog && REPO.blog.order) || [];
+  const blogOrder = blogMeta.order || [];
   const { sorted: orderedPosts, unlisted } = orderPosts(posts, blogOrder);
-  if (unlisted.length) console.warn(`⚠ blog post(s) missing from profile.json blog.order, appended by file date: ${unlisted.join(", ")}`);
+  if (unlisted.length) console.warn(`⚠ blog post(s) not in profile.json blog.order, appended by pinned date: ${unlisted.join(", ")}`);
   const index = render(indexTpl, [{ name: (REPO.basics.shortName || REPO.basics.name), email: REPO.basics.email, posts: orderedPosts }]);
   return { posts: orderedPosts, index };
 }
@@ -474,15 +492,14 @@ async function renderPdf(cvHtml, outPath = P("resume/abhishek-maurya-cv.pdf")) {
 /* ------------------------------------------------------------------ */
 
 // Deterministic by design: static pages carry no lastmod (a build-time
-// "today" would make every CI run dirty), posts use their commit mtime.
+// "today" would make every CI run dirty), posts use their pinned date.
 function buildSitemap(posts) {
-  const iso = (ms) => new Date(ms).toISOString().slice(0, 10);
   const urls = [
     { loc: `${SITE_URL}/` },
     { loc: `${SITE_URL}/work/` },
     { loc: `${SITE_URL}/resume/` },
     { loc: `${SITE_URL}/blog/` },
-    ...posts.map((p) => ({ loc: `${SITE_URL}/blog/${p.slug}.html`, lastmod: iso(p.mtime) })),
+    ...posts.map((p) => ({ loc: `${SITE_URL}/blog/${p.slug}.html`, lastmod: p.date })),
   ];
   const body = urls
     .map(({ loc, lastmod }) => `  <url><loc>${loc}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`)

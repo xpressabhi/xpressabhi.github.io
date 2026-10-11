@@ -17,9 +17,15 @@ CV sync. Everything is generated from one file plus markdown post sources.
   `../career-os/data/files/abhishek_maurya_2026.md`) — the build overwrites them.
 - Blog posts live in `deep-dives/<slug>.md`; the build renders them to static
   `blog/<slug>.html` pages and lists them on `blog/index.html`. Order (newest
-  first) and the homepage-featured slug are pinned in `data/profile.json`
-  (`blog.order`, `blog.featured`) — a new `.md` file must be added there too,
-  else the build warns and appends it by file date. Never hand-edit `blog/`.
+  first), the homepage-featured slug, and each post's date are pinned in
+  `data/profile.json` (`blog.order`, `blog.featured`, `blog.dates`) — a new
+  `.md` file must be added to all three, else the build warns (order) or fails
+  with the exact line to add (date). Never hand-edit `blog/`.
+- **Post dates are pinned, never derived.** Reading a date from `git log` or
+  file mtime makes the build output depend on the commit carrying it, so
+  output regenerated inside that commit can never match what CI computes for
+  it — that is what failed the `validate` job on every commit that touched a
+  post. `npm test` guards it: adding a post without a pinned date fails.
 - Regenerate with `npm run build` (add `--pdf` for the PDF; needs Playwright).
 - Facts must come from `data/profile.json` or the user's explicit statements.
   Never invent metrics or authorship claims.

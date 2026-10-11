@@ -587,8 +587,25 @@
     }
   ],
   "blog": {
-    "$comment": "Canonical blog order, newest first. buildBlog sorts the index by this list and features `featured` on the homepage. When adding a post: append the .md source to deep-dives/ AND add its slug here, else the build warns and appends it by file date.",
+    "$comment": "Canonical blog metadata. `order` (newest first) drives the index, `featured` is pinned for the homepage, and `dates` pins each post's date. When adding a post: append the .md source to deep-dives/, add its slug to `order`, and pin its date below — buildBlog fails with the exact line to add if a date is missing, and warns if a post is unordered. Dates are pinned rather than derived because a commit that edits a post changes the git timestamp the build would read, so output regenerated inside that commit could never match what CI computes for it.",
     "featured": "adp-claude-code-rollout",
+    "dates": {
+      "tutor": "2026-10-09",
+      "never-met-your-users": "2026-09-13",
+      "revision": "2026-10-10",
+      "spendiq-copilot": "2026-09-03",
+      "adp-claude-code-rollout": "2026-09-03",
+      "table-builder": "2026-09-03",
+      "agentic-rag-simulator": "2026-09-03",
+      "on-device-vlm-iphone": "2026-08-24",
+      "build-agent": "2026-08-18",
+      "ala-app-summary-agent": "2026-09-24",
+      "local-llm-inference": "2026-08-18",
+      "claude-code-self-improving-platform": "2026-08-14",
+      "servicenow-project-portfolio": "2026-08-14",
+      "sn-claude-skills": "2026-08-12",
+      "workspace-builder": "2026-08-12"
+    },
     "order": [
       "tutor",
       "never-met-your-users",
