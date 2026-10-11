@@ -162,3 +162,4 @@ Python wasn't needed here — just web and Rust glue:
 **Stack:** Tauri 2 · React 19 · TypeScript 5.8 (strict) · Vite 7 · KaTeX · MediaPipe Tasks Vision · `tauri-plugin-sql` · `tauri-plugin-autostart` · Swift + XcodeGen (WidgetKit)
 
 Browse the code at [github.com/xpressabhi/revision](https://github.com/xpressabhi/revision), grab the [latest release](https://github.com/xpressabhi/revision/releases/latest), or run the browser preview with `npm run dev` at `http://localhost:1420` — it uses `localStorage` so you can try everything without installing the app. If you're hiring for frontend architecture, app shell design, or local-first tooling, my email is in the profile.
+
