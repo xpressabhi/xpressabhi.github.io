@@ -377,7 +377,7 @@
     {
       "name": "ordo",
       "url": "https://xpressabhi.github.io/ordo/",
-      "description": "Ordo take-home: on-device vision-language model — Qwen2-VL-2B on llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
+      "description": "Ordo: on-device vision-language model — Qwen2-VL-2B on llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
       "status": "live"
     },
     {

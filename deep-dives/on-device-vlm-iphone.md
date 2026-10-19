@@ -1,6 +1,6 @@
 # Putting a Vision-Language Model on a Phone: What 270 Benchmark Runs Taught Me About On-Device AI
 
-**Ordo** started as a take-home assignment: take a vision-language model (VLM), measure how far quantization can push it, and get it running on a phone. I picked **Qwen2-VL-2B-Instruct** on **llama.cpp** and built a full measurement rig around it — a custom C++ benchmark harness with per-stage timers, a private eval set of 18 real-world photos taken on my own iPhone, and a SwiftUI test app deployed to an iPhone 15 (A16 Bionic). After ~270 runs across the quantization ladder, plus a debugging saga that took thirty iterations to crack, the results overturned most of my assumptions about where on-device AI time actually goes.
+**Ordo** started as an experiment: take a vision-language model (VLM), measure how far quantization can push it, and get it running on a phone. I picked **Qwen2-VL-2B-Instruct** on **llama.cpp** and built a full measurement rig around it — a custom C++ benchmark harness with per-stage timers, a private eval set of 18 real-world photos taken on my own iPhone, and a SwiftUI test app deployed to an iPhone 15 (A16 Bionic). After ~270 runs across the quantization ladder, plus a debugging saga that took thirty iterations to crack, the results overturned most of my assumptions about where on-device AI time actually goes.
 
 Live site: [xpressabhi.github.io/ordo](https://xpressabhi.github.io/ordo/) · Source: [github.com/xpressabhi/ordo](https://github.com/xpressabhi/ordo)
 
@@ -96,7 +96,7 @@ One methodology trap surfaced here: token-containment Answer Recall punished ter
 
 ## Fine-tuning beats climbing the precision ladder
 
-The assignment's final question: does fine-tuning recover what quantization costs? On this task, yes — decisively. A LoRA (rank 8, alpha 16, 300 iters, MLX, language-only adapters — unfreezing the vision tower OOM'd a 16GB Mac) took base fp16 from 38% → **65%** AR (+27 points).
+One last question: does fine-tuning recover what quantization costs? On this task, yes — decisively. A LoRA (rank 8, alpha 16, 300 iters, MLX, language-only adapters — unfreezing the vision tower OOM'd a 16GB Mac) took base fp16 from 38% → **65%** AR (+27 points).
 
 The honest caveat: this is in-distribution — training rows are paraphrases of eval-style items, so it proves a ceiling, not generalization. But the engineering conclusion stands: **fine-tune the Q4 build rather than stepping up precision**. You keep the memory win and buy back more accuracy than the ladder ever sold you.
 

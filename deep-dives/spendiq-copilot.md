@@ -1,6 +1,6 @@
 # SpendIQ Copilot: Guardrails, Evals, and Honesty for an Agent Over Enterprise Data
 
-Most agent demos are theater: a model, a vector database, and a happy path. I wanted to build the opposite: an agent that touches **financial data** (vendors, contracts, purchase orders, invoices) and has to earn trust before it answers. SpendIQ Copilot was my submission for a 2-hour AI & Data Engineer take-home, and it became a good vehicle for the decisions that actually matter when an LLM sits between a user's question and a company's data.
+Most agent demos are theater: a model, a vector database, and a happy path. I wanted to build the opposite: an agent that touches **financial data** (vendors, contracts, purchase orders, invoices) and has to earn trust before it answers. SpendIQ Copilot is that agent — and a good vehicle for the decisions that actually matter when an LLM sits between a user's question and a company's data.
 
 Source: [github.com/xpressabhi/SpendIQ_Candidate](https://github.com/xpressabhi/SpendIQ_Candidate)
 
@@ -78,13 +78,13 @@ A golden set where pass/fail depends on how chatty the model feels that day isn'
 
 Then, because single runs flip on phrasing luck, every case runs **N times with majority voting**. The committed report: 14 cases across four difficulty tiers, all passing over 3 runs. And because graders have bugs too, the grader logic itself is unit-tested — including false-positive checks (an answer containing "190" must not satisfy `count_near(47)`).
 
-This was also the piece built after the clock stopped. The 2-hour version answered questions; the eval harness made claims about them.
+This was also the piece built last. The first version answered questions; the eval harness made claims about them.
 
 ---
 
 ## Honesty as a feature
 
-The system prompt forbids invented numbers, requires citations for document claims, and instructs the agent to ask a clarifying question when a vendor name is ambiguous rather than guess. The design notes carry a limitations section — no auth, in-memory checkpointer, FX rates not normalized — because a reviewer scoring "honesty higher than over-claiming" should find the warts listed, not hidden.
+The system prompt forbids invented numbers, requires citations for document claims, and instructs the agent to ask a clarifying question when a vendor name is ambiguous rather than guess. The design notes carry a limitations section — no auth, in-memory checkpointer, FX rates not normalized — because honesty beats over-claiming: the warts are listed, not hidden.
 
 That turned out to be my favorite property of the whole build: an agent over enterprise data earns trust the same way engineers do — by being precise about what it knows, showing its work (tool calls and sources render as chips in the UI), and stating its limits up front.
 

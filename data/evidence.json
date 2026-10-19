@@ -76,7 +76,7 @@
         "source": "repo+site",
         "ref": "github.com/xpressabhi/ordo",
         "date": "2026-08",
-        "note": "On-device VLM take-home: Qwen2-VL-2B on llama.cpp, 270-run quantization ladder, iPhone deploy"
+        "note": "On-device VLM: Qwen2-VL-2B on llama.cpp, 270-run quantization ladder, iPhone deploy"
       },
       {
         "source": "repo+session",
