@@ -143,9 +143,22 @@ function buildWorkPage() {
   return render(tpl, [repo]);
 }
 
+function cvSkills(skills) {
+  const group = (...names) => names.flatMap((name) => {
+    if (!Array.isArray(skills[name])) console.warn(`⚠ CV skills group not found: ${name}`);
+    return skills[name] || [];
+  });
+  return {
+    "AI & Agentic Engineering": group("AI & Agentic Engineering"),
+    "Frontend & Platform": group("Frontend & Platform"),
+    "Backend & Architecture": group("Backend & Data", "Architecture"),
+    "Quality, Observability & Ops": group("Reliability & Quality", "CI/CD & Tooling", "Observability"),
+  };
+}
+
 function buildCvPage(repo = REPO) {
   const tpl = readFileSync(P("templates/cv.html"), "utf8");
-  const cv = { ...repo };
+  const cv = { ...repo, skills: cvSkills(repo.skills) };
   const discontinued = repo.projects.filter((p) => p.status === "discontinued");
   const live = repo.projects.filter((p) => p.status !== "discontinued" && p.showOnCv !== false);
   cv.projects = live.concat(

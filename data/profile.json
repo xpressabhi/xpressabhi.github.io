@@ -29,7 +29,7 @@
       "url": "https://patents.google.com/patent/US20150046358"
     }
   },
-  "summary": "Staff Software Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), led a 9-person engineering team there, and designs agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.",
+  "summary": "Staff Software Engineer with 16+ years across AI agent platforms, frontend, and backend. Founded ServiceNow's Agentic Developer Platform, led a 9-person team, and ships agent systems end-to-end: tool orchestration, eval-gated rollout, governance, and full-stack React/Java ownership.",
   "capabilityCards": [
     {
       "wide": true,
@@ -228,6 +228,7 @@
       "title": "Agentic Developer Platform (ADP)",
       "org": "ServiceNow",
       "role": "Creator",
+      "cvLine": "−90% case resolution time · 20+ teams · 20+ skills and agents",
       "summary": "Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks on a multi-agent orchestration pattern, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.",
       "dive": "servicenow-project-portfolio.md",
       "metrics": [
@@ -243,6 +244,7 @@
       "title": "MCP-driven engineering workflows",
       "org": "ServiceNow",
       "role": "20+ teams",
+      "cvLine": "−95% research and debugging · 20+ teams · higher accuracy",
       "summary": "Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.",
       "dive": "sn-claude-skills.md",
       "metrics": [
@@ -256,6 +258,7 @@
       "title": "Build Agent, ServiceNow Studio",
       "org": "ServiceNow",
       "role": "App Engine",
+      "cvLine": "35+ metadata types · 11 domains · multi-model · self-healing",
       "summary": "Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern (think first, then execute) with a metadata-aware, multi-model (Claude default; Now LLM + Claude on Bedrock), self-healing agentic architecture.",
       "dive": "build-agent.md",
       "metrics": [
@@ -271,6 +274,7 @@
       "title": "Release lifecycle & app summary agents",
       "org": "ServiceNow",
       "role": "Now Assist for Creator",
+      "cvLine": "hours → one click · CAB-ready manifests · delta analysis",
       "summary": "Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests: documentation time from hours to a single click. Built on the REAct agentic framework (reason → act → observe). Ships as the Release lifecycle documentation agent in Now Assist for Creator.",
       "dive": "ala-app-summary-agent.md",
       "metrics": [
@@ -298,12 +302,12 @@
         "Java"
       ],
       "highlights": [
-        "Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.",
-        "Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.",
-        "Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.",
-        "Stabilized inherited Table Builder and Workspace Builder (UI/API fixes); grew Table Builder entry points 1→4 (standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio); owned front-end performance for builder surfaces — production regressions, render and bundle hotspots, performance budgets.",
-        "Instrumented agent quality in production (reasoning traces, tool-selection and hallucination error tracking, rollback paths, cost/latency dashboards feeding failures into evals) and shipped human-gated autonomy: chat → plan → explicit approval → execution → verification, with per-action approvals and rollback/hand-back paths — checkpoints structural, not advisory.",
-        "Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation."
+        "Designed ALA's agent architecture (tool contracts, delta-analysis flow); owned requirements → EA Mar 2026 → GA Apr 2026.",
+        "Set the App Summary consolidation architecture: Now Assist skills → AI Agent Studio; one generic flow replaces 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic).",
+        "Drove ADP adoption: legacy test coverage <20% → 95% in 4 weeks across update sets, source control, and team dev; 7 pilot squads.",
+        "Stabilized Table Builder and Workspace Builder; grew Table Builder entry points 1→4, owned Studio support, UI/API fixes, and frontend performance.",
+        "Instrumented agent quality in production — reasoning traces, tool-selection/hallucination tracking, cost/latency dashboards feeding evals — and shipped human-gated plan → approve → execute → verify with rollback.",
+        "Tech-lead 9 engineers: ~60% hands-on coding, PR/architecture reviews, mentoring, cross-team coordination; Java/Glide full-stack ownership."
       ]
     },
     {
@@ -323,7 +327,7 @@
         "LogRocket"
       ],
       "highlights": [
-        "Contributed to frontend infrastructure and global engineering initiatives; identified codebase problem areas, drove improvement proposals, interviewed candidates, and mentored junior engineers."
+        "Contributed to frontend infrastructure and global engineering initiatives; drove codebase improvements, interviewed candidates, and mentored junior engineers."
       ]
     },
     {
@@ -341,9 +345,8 @@
         "Sumo Logic"
       ],
       "highlights": [
-        "Led the Actions Team frontend, migrating the application from Angular to React and cutting page load time in half.",
-        "Delivered the Actions feature and management dashboard; raised accessibility compliance from 80% to 95% for a broad user base.",
-        "Built maintainable, scalable, and testable features; mentored junior developers and reviewed code."
+        "Led the Actions Team frontend, migrating Angular → React and cutting page load time in half.",
+        "Delivered the Actions feature and management dashboard; raised accessibility compliance from 80% → 95%."
       ]
     },
     {
@@ -360,9 +363,8 @@
         "REST APIs"
       ],
       "highlights": [
-        "Built products and services using JavaScript, Node.js, MongoDB, Meteor, and REST APIs.",
-        "flexzone.in (2018-2020): aggregator of cafés into coworking spaces.",
-        "hospeto.in (2017-2018): video consultation platform for doctors, with health record and billing management."
+        "Built products and services with JavaScript, Node.js, MongoDB, Meteor, and REST APIs.",
+        "flexzone.in (2018–2020): café aggregator for coworking spaces; hospeto.in (2017–2018): doctor video consultations with records and billing."
       ]
     },
     {
@@ -376,8 +378,7 @@
         "MS SQL"
       ],
       "highlights": [
-        "Developed and improved an order-management system for real-time trading related to short selling.",
-        "Maintained EzeLocate and DataFeed for locating short inventory and real-time stock-data processing."
+        "Built an order-management system for real-time short-selling, plus EzeLocate and DataFeed for short inventory and real-time stock data (REST APIs, MS SQL)."
       ]
     },
     {
@@ -393,8 +394,7 @@
         "SQL/PLSQL"
       ],
       "highlights": [
-        "Developed and improved Plan Copy and Benefits Relationships systems using Java, Oracle Database, Oracle ODI, and SQL/PLSQL.",
-        "Completed the Benefit Plan Copy project, reducing test-to-production HRMS data setup time by 80%."
+        "Built Plan Copy and Benefits Relationships systems (Java, Oracle Database, SQL/PLSQL); cut HRMS test-to-production data setup by 80%."
       ]
     }
   ],
@@ -406,6 +406,7 @@
       "outcome": "14-case golden-set eval harness passes with majority voting — agent answers enterprise data questions without inventing numbers",
       "kind": "Agent",
       "description": "Conversational spend-analysis agent: LangGraph ReAct over SQLite + FTS5 with SQL guardrails (SELECT-only, read-only connections), an AST-whitelisted calculator instead of eval, and a 14-case golden-set eval harness with majority voting, all passing",
+      "cvDescription": "LangGraph ReAct over SQLite/FTS5 with SELECT-only SQL guardrails and a 14-case golden-set eval (majority voting).",
       "status": "live"
     },
     {
@@ -415,6 +416,7 @@
       "outcome": "Time-to-first-token cut from 30s to 805ms on an iPhone A16 by changing architecture and resolution, not hardware",
       "kind": "iOS app",
       "description": "On-device vision-language model built on Qwen2-VL-2B with llama.cpp across a GGUF quantization ladder, deployed to iPhone (A16), with a private photo eval set, per-stage TTFT decomposition, and LoRA accuracy recovery",
+      "cvDescription": "On-device Qwen2-VL-2B on iPhone via llama.cpp; TTFT 30s → 805ms through architecture and resolution.",
       "status": "live"
     },
     {
@@ -427,6 +429,7 @@
       "outcome": "Principal-level interview prep that works fully offline from a single SQLite file — no account, no sync, no network",
       "kind": "Desktop app",
       "description": "Local-first Tauri desktop app for principal-level interview prep: FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
+      "cvDescription": "Local-first Tauri + FSRS-5 interview prep; fully offline from a single SQLite file.",
       "status": "live"
     },
     {

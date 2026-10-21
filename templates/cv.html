@@ -43,7 +43,7 @@
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 10pt;
-    line-height: 1.36;
+    line-height: 1.4;
     -webkit-font-smoothing: antialiased;
   }
   a { color: var(--ink); text-decoration: none; }
@@ -89,16 +89,17 @@
   .cv-contact .mono { font-size: 8.5pt; }
   .cv-avail { margin-top: 5px; font-size: 9pt; color: var(--ink); font-weight: 600; }
 
-  .cv-section { margin-top: 9px; }
+  .cv-section { margin-top: 11px; }
   .cv-section-title {
     font-family: var(--font-mono); font-size: 9pt; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--ink); border-bottom: 1px solid var(--line);
     padding-bottom: 4px; margin-bottom: 7px;
+    break-after: avoid; page-break-after: avoid;
   }
-  .cv-summary { color: var(--muted); font-size: 9.5pt; }
+  .cv-summary { color: var(--muted); font-size: 9.8pt; }
 
-  .job { margin-bottom: 6px; page-break-inside: auto; break-inside: auto; }
+  .job { margin-bottom: 8px; page-break-inside: avoid; break-inside: avoid; }
   .job:last-child { margin-bottom: 0; }
   .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; break-after: avoid; page-break-after: avoid; }
   .job-title { font-size: 10.5pt; font-weight: 700; }
@@ -108,7 +109,7 @@
   .job ul { list-style: none; }
   .job li {
     position: relative; padding-left: 15px; margin-bottom: 0;
-    color: var(--muted); font-size: 9.3pt;
+    color: var(--muted); font-size: 9.8pt;
     break-inside: avoid; page-break-inside: avoid;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
@@ -123,13 +124,12 @@
     font-family: var(--font-mono); font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--ink); margin-bottom: 2px;
   }
-  .skill-group p { font-size: 8.8pt; color: var(--muted); }
+  .skill-group p { font-size: 9.2pt; color: var(--muted); }
 
-  .proj-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 2px; }
+  .proj-line { font-size: 9.8pt; color: var(--muted); margin-bottom: 2px; }
   .proj-line .pname { font-weight: 700; color: var(--ink); }
-  .proj-line .pstatus { font-family: var(--font-mono); font-size: 7.5pt; color: var(--dim); }
 
-  .flag-line { font-size: 9.3pt; color: var(--muted); margin-bottom: 3px; }
+  .flag-line { font-size: 9.8pt; color: var(--muted); margin-bottom: 3px; }
   .flag-line .fname { font-weight: 700; color: var(--ink); }
   .flag-line .forg { font-family: var(--font-mono); font-size: 7.5pt; color: var(--dim); }
 
@@ -195,7 +195,7 @@
   <div class="cv-section">
     <div class="cv-section-title">Selected AI work</div>
     {{#each flagship}}
-    <div class="flag-line"><span class="fname">{{title}}</span> <span class="forg">{{org}} · {{role}}</span> — {{summary}}</div>
+    <div class="flag-line"><span class="fname">{{title}}</span> <span class="forg">{{org}} · {{role}}</span> — {{#if cvLine}}{{cvLine}}{{else}}{{summary}}{{/if}}</div>
     {{/each}}
   </div>
   {{/if}}
@@ -233,8 +233,7 @@
     {{#each projects}}
     {{#if url}}
     <div class="proj-line">
-      <a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a>
-      <span class="pstatus"> ({{status}})</span> — {{description}}
+      <a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a> — {{#if cvDescription}}{{cvDescription}}{{else}}{{description}}{{/if}}
     </div>
     {{/if}}
     {{/each}}
