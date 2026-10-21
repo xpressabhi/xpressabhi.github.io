@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{basics.name}} · CV</title>
-<meta name="description" content="Curriculum vitae of {{basics.name}} — {{basics.headline}}">
+<meta name="description" content="Curriculum vitae of {{basics.name}} | {{basics.headline}}">
 <link rel="canonical" href="https://xpressabhi.github.io/resume/">
 <meta property="og:type" content="profile">
 <meta property="og:site_name" content="{{basics.shortName}}">
@@ -112,7 +112,7 @@
     color: var(--muted); font-size: 9.8pt;
     break-inside: avoid; page-break-inside: avoid;
   }
-  .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
+  .job li::before { content: "•"; position: absolute; left: 0; color: var(--dim); }
 
   .skill-grid { column-count: 2; column-gap: 22px; }
   .skill-group {
@@ -195,7 +195,7 @@
   <div class="cv-section">
     <div class="cv-section-title">Selected AI work</div>
     {{#each flagship}}
-    <div class="flag-line"><span class="fname">{{title}}</span> <span class="forg">{{org}} · {{role}}</span> — {{#if cvLine}}{{cvLine}}{{else}}{{summary}}{{/if}}</div>
+    <div class="flag-line"><span class="fname">{{title}}</span> <span class="forg">{{org}} · {{role}}</span> | {{#if cvLine}}{{cvLine}}{{else}}{{summary}}{{/if}}</div>
     {{/each}}
   </div>
   {{/if}}
@@ -233,7 +233,7 @@
     {{#each projects}}
     {{#if url}}
     <div class="proj-line">
-      <a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a> — {{#if cvDescription}}{{cvDescription}}{{else}}{{description}}{{/if}}
+      <a class="pname" href="{{url}}" target="_blank" rel="noopener">{{name}}</a>: {{#if cvDescription}}{{cvDescription}}{{else}}{{description}}{{/if}}
     </div>
     {{/if}}
     {{/each}}
@@ -242,14 +242,14 @@
   <div class="cv-section">
     <div class="cv-section-title">Education</div>
     {{#each education}}
-    <div class="edu-line"><span class="ename">{{school}}</span> — {{degree}} · <span class="mono">{{period}}</span></div>
+    <div class="edu-line"><span class="ename">{{school}}</span>: {{degree}} · <span class="mono">{{period}}</span></div>
     {{/each}}
   </div>
 
   {{#if basics.patent.showOnCv}}
   <div class="cv-section">
     <div class="cv-section-title">Patent</div>
-    <p class="patent"><span class="pnum">{{basics.patent.number}}</span> — "{{basics.patent.title}}" · assigned to {{basics.patent.assignedTo}} · status: {{basics.patent.status}}</p>
+    <p class="patent"><span class="pnum">{{basics.patent.number}}</span>: "{{basics.patent.title}}" · assigned to {{basics.patent.assignedTo}} · status: {{basics.patent.status}}</p>
   </div>
   {{/if}}
 

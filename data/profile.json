@@ -4,7 +4,7 @@
     "name": "Abhishek Kumar Maurya",
     "shortName": "Abhishek Maurya",
     "shortTitle": "Staff Engineer, AI Agent Platforms & MCP",
-    "headline": "Staff Software Engineer — AI agent platforms, MCP and evals",
+    "headline": "Staff Software Engineer | AI agent platforms, MCP and evals",
     "tagline": "16+ years full-stack: AI agents and agentic platforms, React/TypeScript frontends, Python/Java backends",
     "shortSummary": "Staff Software Engineer. Agent platforms, evals, and MCP workflows adopted by 20+ teams; React/TypeScript surfaces with Java/Glide full-stack case ownership.",
     "yearsExperience": "16+",
@@ -306,7 +306,7 @@
         "Set the App Summary consolidation architecture: Now Assist skills → AI Agent Studio; one generic flow replaces 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic).",
         "Drove ADP adoption: legacy test coverage <20% → 95% in 4 weeks across update sets, source control, and team dev; 7 pilot squads.",
         "Stabilized Table Builder and Workspace Builder; grew Table Builder entry points 1→4, owned Studio support, UI/API fixes, and frontend performance.",
-        "Instrumented agent quality in production — reasoning traces, tool-selection/hallucination tracking, cost/latency dashboards feeding evals — and shipped human-gated plan → approve → execute → verify with rollback.",
+        "Instrumented agent quality in production (reasoning traces, tool-selection/hallucination tracking, cost/latency dashboards feeding evals) and shipped human-gated plan → approve → execute → verify with rollback.",
         "Tech-lead 9 engineers: ~60% hands-on coding, PR/architecture reviews, mentoring, cross-team coordination; Java/Glide full-stack ownership."
       ]
     },
@@ -403,7 +403,7 @@
       "name": "SpendIQ Copilot",
       "url": "https://github.com/xpressabhi/SpendIQ_Candidate",
       "homePick": true,
-      "outcome": "14-case golden-set eval harness passes with majority voting — agent answers enterprise data questions without inventing numbers",
+      "outcome": "14-case golden-set eval harness passes with majority voting: agent answers enterprise data questions without inventing numbers",
       "kind": "Agent",
       "description": "Conversational spend-analysis agent: LangGraph ReAct over SQLite + FTS5 with SQL guardrails (SELECT-only, read-only connections), an AST-whitelisted calculator instead of eval, and a 14-case golden-set eval harness with majority voting, all passing",
       "cvDescription": "LangGraph ReAct over SQLite/FTS5 with SELECT-only SQL guardrails and a 14-case golden-set eval (majority voting).",
@@ -426,7 +426,7 @@
       "image": "/assets/revision/analytics.webp",
       "imgw": 1280,
       "imgh": 800,
-      "outcome": "Principal-level interview prep that works fully offline from a single SQLite file — no account, no sync, no network",
+      "outcome": "Principal-level interview prep that works fully offline from a single SQLite file: no account, no sync, no network",
       "kind": "Desktop app",
       "description": "Local-first Tauri desktop app for principal-level interview prep: FSRS-5 spaced repetition, drag & air gestures, single SQLite file, fully offline. DSA / system design / AI / behavioral decks with glassmorphic review, cloze + KaTeX, and 53-week analytics",
       "cvDescription": "Local-first Tauri + FSRS-5 interview prep; fully offline from a single SQLite file.",
@@ -441,7 +441,7 @@
       "image": "/assets/switchyard-sim-card.webp",
       "imgw": 1200,
       "imgh": 692,
-      "outcome": "Every internal step of an agentic RAG loop — ingestion, retrieval, tool calls, memory — is watchable instead of imagined",
+      "outcome": "Every internal step of an agentic RAG loop (ingestion, retrieval, tool calls, memory) is watchable instead of imagined",
       "kind": "Simulator",
       "description": "Interactive simulator for an agentic AI + RAG pipeline: watch ingestion, retrieval, tool calls, memory, and a live trace of every internal step while the loop runs."
     },
@@ -457,7 +457,7 @@
     {
       "name": "job-search-skills",
       "url": "https://xpressabhi.github.io/job-search-skills/",
-      "outcome": "A whole job search — sweep, rank, autofill, submit — runs locally against the real eligibility rules",
+      "outcome": "A whole job search (sweep, rank, autofill, submit) runs locally against the real eligibility rules",
       "kind": "Agent skills",
       "description": "Two portable agent skills that run an entire job search locally: job-finder sweeps boards and ranks roles by real eligibility, apply-to-jobs autofills and submits ATS applications in your own browser, and a Jev decision layer keeps uncertain answers uncertain",
       "status": "live",
@@ -586,7 +586,7 @@
     }
   ],
   "blog": {
-    "$comment": "Canonical blog metadata. `order` (newest first) drives the index, `featured` is pinned for the homepage, and `dates` pins each post's date. When adding a post: append the .md source to deep-dives/, add its slug to `order`, and pin its date below — buildBlog fails with the exact line to add if a date is missing, and warns if a post is unordered. Dates are pinned rather than derived because a commit that edits a post changes the git timestamp the build would read, so output regenerated inside that commit could never match what CI computes for it.",
+    "$comment": "Canonical blog metadata. `order` (newest first) drives the index, `featured` is pinned for the homepage, and `dates` pins each post's date. When adding a post: append the .md source to deep-dives/, add its slug to `order`, and pin its date below; buildBlog fails with the exact line to add if a date is missing, and warns if a post is unordered. Dates are pinned rather than derived because a commit that edits a post changes the git timestamp the build would read, so output regenerated inside that commit could never match what CI computes for it.",
     "featured": "adp-claude-code-rollout",
     "dates": {
       "tutor": "2026-10-09",

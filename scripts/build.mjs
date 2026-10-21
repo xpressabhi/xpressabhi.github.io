@@ -33,10 +33,40 @@ function getVariantName() {
 }
 const VARIANT = getVariantName();
 const REPO = JSON.parse(readFileSync(join(ROOT, "data/profile.json"), "utf8"));
+
+/** Merge a variant override over the main profile. Objects merge one level;
+ *  experience merges by company and flagship by id/title; arrays replace. */
+function mergeVariant(base, overrides) {
+  const out = structuredClone(base);
+  for (const [key, value] of Object.entries(overrides || {})) {
+    if (key.startsWith("$")) continue;
+    if (key === "experience" && Array.isArray(value)) {
+      out.experience = (out.experience || []).map((job) => {
+        const ov = value.find((v) => v.company === job.company);
+        return ov ? { ...job, ...ov } : job;
+      });
+      continue;
+    }
+    if (key === "flagship" && Array.isArray(value)) {
+      out.flagship = (out.flagship || []).map((item) => {
+        const ov = value.find((v) => (v.id && v.id === item.id) || (v.title && v.title === item.title));
+        return ov ? { ...item, ...ov } : item;
+      });
+      continue;
+    }
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      out[key] = { ...(out[key] || {}), ...value };
+      continue;
+    }
+    out[key] = value;
+  }
+  return out;
+}
+
 const VARIANT_REPO = (() => {
   if (!VARIANT) return null;
   const cand = join(ROOT, `data/variants/${VARIANT}.json`);
-  try { return JSON.parse(readFileSync(cand, "utf8")); } catch (e) {
+  try { return mergeVariant(REPO, JSON.parse(readFileSync(cand, "utf8"))); } catch (e) {
     console.error(`✗ variant "${VARIANT}" not found at ${cand}: ${e.message}`);
     process.exit(1);
   }
@@ -143,22 +173,26 @@ function buildWorkPage() {
   return render(tpl, [repo]);
 }
 
-function cvSkills(skills) {
+function cvSkills(skills, order = []) {
   const group = (...names) => names.flatMap((name) => {
     if (!Array.isArray(skills[name])) console.warn(`⚠ CV skills group not found: ${name}`);
     return skills[name] || [];
   });
-  return {
+  const groups = {
     "AI & Agentic Engineering": group("AI & Agentic Engineering"),
     "Frontend & Platform": group("Frontend & Platform"),
     "Backend & Architecture": group("Backend & Data", "Architecture"),
     "Quality, Observability & Ops": group("Reliability & Quality", "CI/CD & Tooling", "Observability"),
   };
+  const ordered = {};
+  for (const name of order) if (groups[name]) ordered[name] = groups[name];
+  for (const [name, items] of Object.entries(groups)) if (!ordered[name]) ordered[name] = items;
+  return ordered;
 }
 
 function buildCvPage(repo = REPO) {
   const tpl = readFileSync(P("templates/cv.html"), "utf8");
-  const cv = { ...repo, skills: cvSkills(repo.skills) };
+  const cv = { ...repo, skills: cvSkills(repo.skills, repo.cvSkillsOrder) };
   const discontinued = repo.projects.filter((p) => p.status === "discontinued");
   const live = repo.projects.filter((p) => p.status !== "discontinued" && p.showOnCv !== false);
   cv.projects = live.concat(
