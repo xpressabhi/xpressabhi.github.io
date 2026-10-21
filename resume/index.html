@@ -98,17 +98,18 @@
   }
   .cv-summary { color: var(--muted); font-size: 9.5pt; }
 
-  .job { margin-bottom: 6px; page-break-inside: avoid; }
+  .job { margin-bottom: 6px; page-break-inside: auto; break-inside: auto; }
   .job:last-child { margin-bottom: 0; }
-  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; break-after: avoid; page-break-after: avoid; }
   .job-title { font-size: 10.5pt; font-weight: 700; }
   .job-title .org { color: var(--muted); font-weight: 600; }
   .job-period { font-family: var(--font-mono); font-size: 8pt; color: var(--dim); white-space: nowrap; }
-  .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
+  .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; break-after: avoid; page-break-after: avoid; }
   .job ul { list-style: none; }
   .job li {
     position: relative; padding-left: 15px; margin-bottom: 0;
     color: var(--muted); font-size: 9.3pt;
+    break-inside: avoid; page-break-inside: avoid;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
 
@@ -190,6 +191,21 @@
     <p class="cv-summary">Staff Software Engineer with 16+ years across the stack: agent architectures, tool orchestration, and evals first, backed by deep React/TypeScript frontend craft and hands-on Python/Java backend ownership. Founded ServiceNow's Agentic Developer Platform (adopted by 20+ teams via hands-on onboarding), led a 9-person engineering team there, and designs agent systems end-to-end — tool contracts and orchestration, eval-gated rollout (golden sets, LLM-as-judge), governance via AI Agent Studio, shipped ALA from requirements to GA. Ex-co-founder with direct client delivery experience; enterprise-grade UI with testing and accessibility.</p>
   </div>
 
+  
+  <div class="cv-section">
+    <div class="cv-section-title">Selected AI work</div>
+    
+    <div class="flag-line"><span class="fname">Agentic Developer Platform (ADP)</span> <span class="forg">ServiceNow · Creator</span> — Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks on a multi-agent orchestration pattern, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</div>
+    
+    <div class="flag-line"><span class="fname">MCP-driven engineering workflows</span> <span class="forg">ServiceNow · 20+ teams</span> — Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</div>
+    
+    <div class="flag-line"><span class="fname">Build Agent, ServiceNow Studio</span> <span class="forg">ServiceNow · App Engine</span> — Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern (think first, then execute) with a metadata-aware, multi-model (Claude default; Now LLM + Claude on Bedrock), self-healing agentic architecture.</div>
+    
+    <div class="flag-line"><span class="fname">Release lifecycle & app summary agents</span> <span class="forg">ServiceNow · Now Assist for Creator</span> — Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests: documentation time from hours to a single click. Built on the REAct agentic framework (reason → act → observe). Ships as the Release lifecycle documentation agent in Now Assist for Creator.</div>
+    
+  </div>
+  
+
   <div class="cv-section">
     <div class="cv-section-title">Skills</div>
     <div class="skill-grid">
@@ -242,7 +258,7 @@
       </div>
       <div class="job-stack">AI Agents, MCP, Python, TypeScript, React, Node.js, Java</div>
       <ul>
-        <li>Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.</li><li>Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.</li><li>Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.</li><li>Stabilized inherited Table Builder (UI/API fixes); grew entry points 1→4: standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio.</li><li>Same for Workspace Builder: inherited, mostly built; owned Studio support and UI/API fixes.</li><li>Owned front-end performance for the builder surfaces: profiled and diagnosed production regressions, fixed render and bundle hotspots, held performance budgets.</li><li>Instrumented agent quality in production: reasoning traces, tool-selection and hallucination error tracking, rollback paths, cost/latency dashboards feeding failures back into evals.</li><li>Human-gated autonomy: chat → plan → explicit approval → execution → verification, with per-action approvals (script, intent, target scope) and rollback/hand-back paths — checkpoints structural, not advisory.</li><li>On-call and incident command for enterprise customer-facing surfaces.</li><li>Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation.</li>
+        <li>Designed ALA's agent architecture (tool contracts, delta-analysis flow, eval checks); built requirements to delivery; EA Mar 2026, GA Apr 2026; one-click release notes and update-set descriptions, CAB-ready.</li><li>Set the consolidation architecture: App Summary from Now Assist skills to AI Agent Studio; one generic flow replacing 4-provider settings (Now LLM, Gemini, OpenAI, Anthropic) — less maintenance, smaller monthly model-change test surface.</li><li>Legacy test coverage for update sets + source control + team dev: <20% to 95%, Feb–Mar 2026 in 4 weeks, using ADP; demoed to 7 teams, 20+ teams adopted.</li><li>Stabilized inherited Table Builder and Workspace Builder (UI/API fixes); grew Table Builder entry points 1→4 (standalone homepage, legacy table/form-builder entry, App Engine, ServiceNow Studio); owned front-end performance for builder surfaces — production regressions, render and bundle hotspots, performance budgets.</li><li>Instrumented agent quality in production (reasoning traces, tool-selection and hallucination error tracking, rollback paths, cost/latency dashboards feeding failures into evals) and shipped human-gated autonomy: chat → plan → explicit approval → execution → verification, with per-action approvals and rollback/hand-back paths — checkpoints structural, not advisory.</li><li>Tech-lead 9-dev team on 2-week sprints (~8 team-wide customer cases/sprint); day-to-day ~60% hands-on coding, PR and architecture reviews, 10% mentoring, 30% cross-team coordination; full-stack case ownership across React surfaces and Java/Glide backend (update sets, source control, team dev, ATF); shadowed juniors on rotation.</li>
       </ul>
     </div>
     
@@ -302,21 +318,6 @@
     </div>
     
   </div>
-
-  
-  <div class="cv-section">
-    <div class="cv-section-title">Selected AI work</div>
-    
-    <div class="flag-line"><span class="fname">Agentic Developer Platform (ADP)</span> <span class="forg">ServiceNow · Creator</span> — Multi-team bootstrap and governance infrastructure for Claude Code, MCP servers, agents, and skills. Built in four weeks on a multi-agent orchestration pattern, rolled out to 7 pilot squads across 20+ teams with 20+ skills and 20+ agents.</div>
-    
-    <div class="flag-line"><span class="fname">MCP-driven engineering workflows</span> <span class="forg">ServiceNow · 20+ teams</span> — Integrated MCP-driven agentic workflows into the engineering lifecycle organization-wide. Reduced research and debugging effort by approximately 95% while improving accuracy.</div>
-    
-    <div class="flag-line"><span class="fname">Build Agent, ServiceNow Studio</span> <span class="forg">ServiceNow · App Engine</span> — Elevated App Engine with agentic workflows for AI-assisted application creation, flow generation, and tool orchestration across 35+ metadata types and 11 domains. Built on the planning pattern (think first, then execute) with a metadata-aware, multi-model (Claude default; Now LLM + Claude on Bedrock), self-healing agentic architecture.</div>
-    
-    <div class="flag-line"><span class="fname">Release lifecycle & app summary agents</span> <span class="forg">ServiceNow · Now Assist for Creator</span> — Automated delta analysis, human-readable release notes, and CAB-ready deployment manifests: documentation time from hours to a single click. Built on the REAct agentic framework (reason → act → observe). Ships as the Release lifecycle documentation agent in Now Assist for Creator.</div>
-    
-  </div>
-  
 
   <div class="cv-section">
     <div class="cv-section-title">Projects</div>

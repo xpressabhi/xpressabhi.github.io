@@ -98,17 +98,18 @@
   }
   .cv-summary { color: var(--muted); font-size: 9.5pt; }
 
-  .job { margin-bottom: 6px; page-break-inside: avoid; }
+  .job { margin-bottom: 6px; page-break-inside: auto; break-inside: auto; }
   .job:last-child { margin-bottom: 0; }
-  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .job-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; break-after: avoid; page-break-after: avoid; }
   .job-title { font-size: 10.5pt; font-weight: 700; }
   .job-title .org { color: var(--muted); font-weight: 600; }
   .job-period { font-family: var(--font-mono); font-size: 8pt; color: var(--dim); white-space: nowrap; }
-  .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; }
+  .job-stack { font-size: 8pt; color: var(--dim); margin: 1px 0 3px; break-after: avoid; page-break-after: avoid; }
   .job ul { list-style: none; }
   .job li {
     position: relative; padding-left: 15px; margin-bottom: 0;
     color: var(--muted); font-size: 9.3pt;
+    break-inside: avoid; page-break-inside: avoid;
   }
   .job li::before { content: "—"; position: absolute; left: 0; color: var(--dim); }
 
@@ -190,6 +191,15 @@
     <p class="cv-summary">{{summary}}</p>
   </div>
 
+  {{#if flagship}}
+  <div class="cv-section">
+    <div class="cv-section-title">Selected AI work</div>
+    {{#each flagship}}
+    <div class="flag-line"><span class="fname">{{title}}</span> <span class="forg">{{org}} · {{role}}</span> — {{summary}}</div>
+    {{/each}}
+  </div>
+  {{/if}}
+
   <div class="cv-section">
     <div class="cv-section-title">Skills</div>
     <div class="skill-grid">
@@ -217,15 +227,6 @@
     </div>
     {{/each}}
   </div>
-
-  {{#if flagship}}
-  <div class="cv-section">
-    <div class="cv-section-title">Selected AI work</div>
-    {{#each flagship}}
-    <div class="flag-line"><span class="fname">{{title}}</span> <span class="forg">{{org}} · {{role}}</span> — {{summary}}</div>
-    {{/each}}
-  </div>
-  {{/if}}
 
   <div class="cv-section">
     <div class="cv-section-title">Projects</div>
