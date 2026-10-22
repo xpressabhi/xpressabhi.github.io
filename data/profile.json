@@ -151,14 +151,15 @@
       "Python",
       "FastAPI",
       "SQLite",
+      "MySQL",
       "Java",
-      "REST APIs",
+      "REST / GraphQL APIs",
       "MongoDB"
     ],
     "Architecture": [
       "System design",
       "Scalable frontend architecture",
-      "Design patterns",
+      "Design systems & component libraries",
       "Developer productivity",
       "Metadata-driven development"
     ],

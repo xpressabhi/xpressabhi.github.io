@@ -226,6 +226,30 @@
         "date": "2026-09",
         "note": "Blog post on the ALA Release Lifecycle Documentation + App Summary agents: tool-loop pipeline story from the agentic-RAG session; ReAct agentic framework framing (system-prompt-driven query → reason → act → observe) confirmed by the user 2026-09-24"
       }
+    ],
+    "skills:MySQL": [
+      {
+        "source": "session",
+        "ref": "ses_2026-10-22 cv skills review",
+        "date": "2026-10",
+        "note": "User confirmed 2026-10-22 that MySQL is hands-on and should be named on the CV. It was previously implicit: the CV already lists Oracle DB, MS SQL, SQL/PLSQL and SQLite, so this names the engine rather than adding a new capability. Loopio's Staff Software Developer posting names MySQL as a requirement and the sweep gate flagged it as a gap."
+      }
+    ],
+    "skills:REST / GraphQL APIs": [
+      {
+        "source": "session",
+        "ref": "ses_2026-10-22 cv skills review",
+        "date": "2026-10",
+        "note": "User confirmed 2026-10-22 that GraphQL client integration is hands-on alongside REST. Replaces the previous 'REST APIs' item so the CV names both without adding a line."
+      }
+    ],
+    "skills:Design systems & component libraries": [
+      {
+        "source": "session",
+        "ref": "ses_2026-10-22 cv skills review",
+        "date": "2026-10",
+        "note": "User confirmed 2026-10-22 that design systems / component libraries are hands-on. Replaces the generic 'Design patterns' filler with the specific discipline; the underlying work is the Table Builder / Workspace Builder component surfaces and the Reputation Angular→React migration already described in experience."
+      }
     ]
   }
 }
