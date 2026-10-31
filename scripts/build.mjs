@@ -139,6 +139,12 @@ function buildPortfolio(latest) {
   repo.homeBuilds = homeBuilds;
   repo.otherBuildsCount = live.length - homeBuilds.length;
   repo.homeExperience = repo.experience.slice(0, 3);
+  // The homepage numbers its capability list; six keeps the numeral rhythm without
+  // turning the section into a wall of digits. Full set lives on work/.
+  repo.homeCapabilities = repo.capabilityCards.slice(0, 6).map((c, i) => ({
+    ...c,
+    num: String(i + 1).padStart(2, "0"),
+  }));
   repo.latest = latest || null;
   // Prose counts come from the data so the copy cannot drift from it.
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
