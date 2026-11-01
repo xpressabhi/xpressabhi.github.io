@@ -1,7 +1,14 @@
 # Portfolio redesign — dark "living portrait" landing
 
-**Date:** 2026-10-31
-**Status:** approved, building
+**Date:** 2026-10-31 (superseded 2026-11-01)
+**Status:** superseded — the dark living-portrait build was replaced after review
+
+> **Superseded.** The dark, gradient-led version read as generic. It was rebuilt in the
+> `quiet-instrument` direction dealt by the design-taste skill (seed 1618184809): off-white
+> ground, bottle-green ink, one yellow field, Albert Sans, no gradients, no index numbering,
+> no micro-caps, no marquee. The living-portrait engine is no longer on the page; its frame
+> brief is kept at `docs/portrait-frame-brief.md` if it is ever revived. The sections below
+> describe the superseded build and are retained as history.
 **Scope:** `templates/portfolio.html` (rewritten), `assets/marquee/`, `assets/portrait/`,
 `scripts/build.mjs` (one slice), `docs/portrait-frame-brief.md`
 

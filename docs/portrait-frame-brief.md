@@ -1,4 +1,7 @@
-# Portrait frame brief — living portrait
+# Portrait frame brief — living portrait (not in use)
+
+> **Not currently used.** The 2026-11-01 redesign dropped the portrait from the homepage.
+> This brief is kept so the engine can be revived without rediscovering the format.
 
 The hero portrait is not animated in code. It is **59 separately generated pictures of the
 same face**, swapped on a WebGL sheet that also stretches the skin. The code only chooses
