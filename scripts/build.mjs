@@ -350,7 +350,7 @@ function buildProfileReadme() {
     .join("\n");
   return `# ${(b.shortName || b.name)} 👋
 
-Staff Software Engineer at **ServiceNow** — founded the **MCP-driven Agentic Developer Platform** used by **20+ teams** (Claude Code · MCP servers · agents · skills). AI Agents, MCP & agentic platform engineering. Ex-Rippling | Ex-Reputation | Ex-Oracle. NIT Trichy (MCA), ${b.yearsExperience} years of software development from ${b.location}.
+Head of AI Engineering at **Bay6.ai** — leading all engineering globally for four enterprise AI products (Connect6 · Model6 · Agent6 · Forge6) in regulated industries. Previously founded the **MCP-driven Agentic Developer Platform** at ServiceNow, used by **20+ teams**. Ex-Rippling | Ex-Reputation | Ex-Oracle. NIT Trichy (MCA), ${b.yearsExperience} years of software development from ${b.location}.
 
 - 🔌 Founded the **Agentic Developer Platform (ADP)** — multi-team bootstrap and governance for Claude Code, MCP servers, agents & skills: built in **4 weeks**, 20+ skills, 20+ agents, 20+ teams.
 - 🤖 Led the architecture of the **Build Agent in ServiceNow Studio** — metadata-aware, multi-model (Claude + Now LLM + Bedrock), self-healing agentic workflows across 35+ metadata types & 11 domains.
@@ -360,9 +360,9 @@ Staff Software Engineer at **ServiceNow** — founded the **MCP-driven Agentic D
 
 <br>
 
-## 🔎 What I'm looking for
+## 🎯 Focus
 
-Staff/Principal roles building **AI agents, MCP tooling, or agentic platforms** — AI startups, dev tools, or mission-driven orgs. Remote (IST, US/EU overlap) or Hyderabad/Bengaluru. DMs open: agent platform work, MCP deep dives.
+Building **agent platforms, evals and governance** for regulated industries at Bay6.ai. Always up for conversations on agent platform architecture, MCP tooling and AI governance — DMs open.
 
 <br>
 
