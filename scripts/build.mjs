@@ -126,7 +126,7 @@ function cookRepo() {
   return repo;
 }
 
-function buildPortfolio(latest) {
+function buildPortfolio(latest, recent) {
   const tpl = readFileSync(P("templates/portfolio.html"), "utf8");
   const repo = cookRepo();
   // Home is a glanceable landing for a hiring-manager scan: outcome bullets,
@@ -146,6 +146,13 @@ function buildPortfolio(latest) {
     num: String(i + 1).padStart(2, "0"),
   }));
   repo.latest = latest || null;
+  // newest first: the homepage list is read as a timeline, so editorial order
+  // (which deliberately leads with the strongest post) would show dates out of sequence.
+  const dates = (REPO.blog && REPO.blog.dates) || {};
+  repo.recentPosts = (recent || [])
+    .map((p) => ({ ...p, iso: dates[p.slug] || "" }))
+    .sort((a, b) => (a.iso < b.iso ? 1 : a.iso > b.iso ? -1 : 0))
+    .slice(0, 3);
   // Prose counts come from the data so the copy cannot drift from it.
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   repo.metricsCount = repo.impactMetrics.length;
@@ -581,7 +588,7 @@ const featuredSlug = REPO.blog && REPO.blog.featured;
 const { post: featuredPost, pinned: featuredPinned } = pickFeatured(blog.posts, featuredSlug);
 if (!featuredPinned) console.warn(`⚠ blog.featured "${featuredSlug}" not found, featuring newest post instead`);
 const jobs = [
-  ["index.html", buildPortfolio(featuredPost)],
+  ["index.html", buildPortfolio(featuredPost, blog.posts)],
   ["work/index.html", buildWorkPage()],
   ["resume/index.html", buildCvPage()],
   ["blog/index.html", blog.index],
