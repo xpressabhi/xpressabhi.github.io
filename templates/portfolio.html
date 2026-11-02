@@ -84,39 +84,33 @@
     letter-spacing:-.02em;line-height:.95;font-size:var(--s-head);margin-bottom:clamp(20px,3vw,36px)}
 
   /* ---------- names as a paragraph ---------- */
-  .index{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(24px,4vw,64px)}
-  .index li{border-top:0}
-  .index a{display:block;padding:clamp(10px,1.4vw,16px) 0;transition:color .18s ease}
-  .index .n{font-family:'Barlow Condensed',sans-serif;font-weight:700;
-    font-size:clamp(1.375rem,2.2vw,2.25rem);line-height:1.02;letter-spacing:-.01em;color:var(--ink)}
-  .index a:hover .n{color:var(--muted)}
-  .shots{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,24px);
-    margin-top:clamp(36px,5vw,64px)}
+  .work{padding:clamp(64px,8vw,110px) var(--margin)}
+  .work-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,26vw);
+    gap:clamp(24px,5vw,80px);align-items:start}
+  .names{margin-top:clamp(20px,3vw,36px)}
+  .names li{list-style:none}
+  .names a{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;
+    font-size:clamp(2.75rem,5.4vw,5rem);line-height:.98;letter-spacing:-.025em;
+    color:rgba(239,240,241,.34);transition:color .22s ease;padding:.06em 0}
+  .names a:hover,.names a.on{color:var(--ink)}
+  .preview{position:sticky;top:15vh;min-width:0}
+  .square{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;background:var(--surface)}
+  .square img,.square .plate{position:absolute;inset:0;width:100%;height:100%;display:none}
+  .square img{object-fit:cover;object-position:top left}
+  .square img.on{display:block;animation:fade .22s ease}
+  .square .plate.on{display:flex;animation:fade .22s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .plate{display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--bg);
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;
+    font-size:clamp(3.4rem,7.6vw,7.5rem);letter-spacing:-.04em;line-height:1}
+  .facts{display:flex;justify-content:space-between;gap:14px;margin-top:12px;
+    font-size:.9375rem;color:var(--muted)}
+  .facts b{font-weight:500;color:var(--ink)}
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px);
+    margin-top:clamp(40px,6vw,72px)}
   .shots figure{margin:0}
   .shots img{width:100%;aspect-ratio:14/9;object-fit:cover;object-position:top left;background:var(--surface)}
   .shots figcaption{margin-top:8px;font-size:var(--s-small);color:var(--muted)}
-  .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  .name-run .frame{display:inline-block;width:1.15em;height:.78em;vertical-align:baseline;
-    margin:0 .1em 0 .06em;overflow:hidden;background:var(--surface);
-    transform:scale(1);transform-origin:left center;transition:transform .25s ease}
-  .name-run a:hover .frame{transform:scale(1.5)}
-  .name-run .frame img{width:100%;height:100%;object-fit:cover;object-position:top left}
-  .run-note{margin-top:clamp(22px,3vw,34px);font-size:var(--s-small);color:var(--muted)}
-  .write-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 28px;
-    align-items:baseline;padding:14px 0}
-  .write-row .t{font-size:1.125rem;font-weight:500;line-height:1.35}
-  .write-row:hover .t{color:var(--muted)}
-  .write-row .d{font-size:var(--s-small);color:var(--muted);white-space:nowrap}
-
-  /* ---------- numbers ---------- */
-  .rows{}
-  .row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:clamp(16px,3vw,48px);
-    align-items:baseline;padding:clamp(20px,2.6vw,34px) var(--margin);
-    margin:0 calc(-1 * var(--margin))}
-  .row:nth-child(even){background:var(--surface)}
-  .row .v{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:var(--s-head);
-    line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-  .row .l{font-size:var(--s-body);color:var(--muted);max-width:52ch}
 
   /* ---------- about ---------- */
   .about-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
@@ -126,6 +120,19 @@
   .about-copy p:last-of-type{margin-bottom:0}
   .sign{margin-top:26px;font-size:var(--s-body);font-weight:500}
   .sign span{display:block;font-weight:400;color:#5c635a;font-size:var(--s-small);margin-top:2px}
+
+  /* ---------- writing ---------- */
+  .write-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+    gap:clamp(24px,4vw,64px);align-items:start}
+  .write-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 28px;
+    align-items:baseline;padding:14px 0}
+  .write-row .t{font-size:1.125rem;font-weight:500;line-height:1.35}
+  .write-row .d{font-size:var(--s-small);color:var(--muted);white-space:nowrap}
+  .write-row:hover .t{color:var(--muted)}
+  .write-aside{font-size:1rem;line-height:1.55;color:var(--muted);max-width:34ch}
+  .write-aside a{display:inline-block;margin-top:12px;color:var(--ink);
+    text-decoration:underline;text-underline-offset:4px}
+  @media(max-width:860px){.write-grid{grid-template-columns:1fr}.shots{grid-template-columns:1fr 1fr}}
 
   /* ---------- contact ---------- */
   .contact{padding:clamp(48px,6vw,88px) 0 0}
@@ -162,7 +169,9 @@
     .hero-side{padding:24px 0 0}
     .lede{max-width:none}
     .monument{font-size:clamp(3.4rem,17.5vw,7rem);margin-top:18px}
-    .row{grid-template-columns:1fr;gap:8px}
+    .work-grid{grid-template-columns:1fr}
+    .preview{display:none}
+    .names a{color:var(--ink);font-size:12vw}
     .about-grid{grid-template-columns:1fr}
   }
 </style>
@@ -195,52 +204,51 @@
 
 <main id="main">
 
-  <section class="sec" id="work">
-    <h2 class="sec-head rise">Work</h2>
-    <ul class="index rise">
-      {{#each flagship}}<li><a href="blog/{{dive}}"><span class="n">{{title}}</span></a></li>{{/each}}
-      {{#each homeBuilds}}<li><a href="{{url}}"><span class="n">{{name}}</span></a></li>{{/each}}
-    </ul>
-    <p class="run-note rise">Eight systems, four of them mine end to end. Agent platforms, evaluation harnesses, and tools I run every day.</p>
+  <section class="work" id="work">
+    <h2 class="sec-head rise">Selected work</h2>
+    <div class="work-grid">
+      <ol class="names rise" id="names">
+        <li><a href="blog/servicenow-project-portfolio.html" data-k="0" data-l="Agent platform" data-r="ServiceNow">Agentic Developer Platform</a></li>
+        <li><a href="blog/servicenow-project-portfolio.html" data-k="1" data-l="Engineering workflows" data-r="ServiceNow">MCP workflows</a></li>
+        <li><a href="blog/build-agent.html" data-k="2" data-l="Agent architecture" data-r="ServiceNow">Build Agent</a></li>
+        <li><a href="blog/ala-app-summary-agent.html" data-k="3" data-l="Agent architecture" data-r="ServiceNow">Release agents</a></li>
+        <li><a href="https://github.com/xpressabhi/revision" data-k="4" data-l="Desktop app" data-r="Personal">Revision</a></li>
+        <li><a href="https://xpressabhi.github.io/sims/agentic-rag.html" data-k="5" data-l="Simulator" data-r="Personal">Switchyard</a></li>
+      </ol>
+
+      <div class="preview rise" aria-hidden="true">
+        <div class="square" id="square">
+          <span class="plate on" data-k="0">−90%</span>
+          <span class="plate" data-k="1">95%</span>
+          <span class="plate" data-k="2">35+</span>
+          <span class="plate" data-k="3">1 click</span>
+          <img data-k="4" src="assets/marquee/revision-dashboard.webp" width="840" height="540"
+               decoding="async" alt="">
+          <img data-k="5" src="assets/marquee/switchyard-card.webp" width="840" height="540"
+               decoding="async" alt="">
+        </div>
+        <div class="facts">
+          <span id="factL"><b>Agent platform</b></span>
+          <span id="factR">ServiceNow</span>
+        </div>
+      </div>
+    </div>
     <div class="shots rise">
       <figure>
-        <img src="assets/marquee/revision-dashboard.webp" width="840" height="540" loading="lazy" decoding="async"
-             alt="Revision: a dashboard of study progress, retention and upcoming cards">
-        <figcaption>Revision — local-first interview prep, offline from one SQLite file.</figcaption>
+        <img src="assets/marquee/revision-browse.webp" width="840" height="540" decoding="async"
+             alt="Revision: browsing a deck of interview questions with filters">
+        <figcaption>Revision, offline from one SQLite file.</figcaption>
       </figure>
       <figure>
-        <img src="assets/marquee/switchyard-card.webp" width="840" height="540" loading="lazy" decoding="async"
-             alt="Switchyard: an answer with the sources it retrieved and the guard that passed it">
-        <figcaption>Switchyard — the agentic RAG loop, with the trace visible.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/marquee/revision-browse.webp" width="840" height="540" loading="lazy" decoding="async"
-             alt="Revision: browsing a deck of questions with filters">
-        <figcaption>Revision — browsing a deck, no account, no sync.</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/marquee/revision-review-shown.webp" width="840" height="540" loading="lazy" decoding="async"
+        <img src="assets/marquee/revision-review-shown.webp" width="840" height="540" decoding="async"
              alt="Revision: a flashcard with its answer revealed">
-        <figcaption>Revision — FSRS-5 scheduling behind a two-key review flow.</figcaption>
+        <figcaption>Revision, FSRS-5 behind a two-key review.</figcaption>
       </figure>
-    </div>
-  </section>
-
-  <section class="sec" id="impact">
-    <h2 class="sec-head rise">What that produced</h2>
-    <div class="rows">
-      <div class="row rise">
-        <span class="v">95%</span>
-        <span class="l">less research and debugging effort across 20+ teams on MCP workflows, measured over 7 pilot squads in a four-week rollout.</span>
-      </div>
-      <div class="row rise">
-        <span class="v">−90%</span>
-        <span class="l">case task resolution time on the Agentic Developer Platform I founded at ServiceNow.</span>
-      </div>
-      <div class="row rise">
-        <span class="v">20% → 90%</span>
-        <span class="l">legacy test coverage lift across the pilot squads, in four weeks, without freezing delivery.</span>
-      </div>
+      <figure>
+        <img src="assets/marquee/switchyard-sim.webp" width="840" height="540" decoding="async"
+             alt="Switchyard: the full agentic RAG pipeline on one screen">
+        <figcaption>Switchyard, every step of the loop visible.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -259,11 +267,16 @@
   {{#if latest}}
   <section class="sec" id="writing">
     <h2 class="sec-head rise">Writing</h2>
-    <a class="write-row rise" href="blog/{{latest.slug}}.html">
-      <span class="t">{{latest.title}}</span>
-      <span class="d">{{latest.updated}}</span>
-    </a>
-    <p class="run-note rise"><a href="blog/">All writing</a></p>
+    <div class="write-grid">
+      <a class="write-row rise" href="blog/{{latest.slug}}.html">
+        <span class="t">{{latest.title}}</span>
+        <span class="d">{{latest.updated}}</span>
+      </a>
+      <div class="write-aside rise">
+        <p>Notes on agent platforms, evaluation, and getting AI systems through the last mile into production.</p>
+        <a href="blog/">All writing</a>
+      </div>
+    </div>
   </section>
   {{/if}}
 
@@ -292,6 +305,7 @@
   "use strict";
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  var ticking = false;
   var rise = [].slice.call(document.querySelectorAll(".rise"));
   if (reduce || !("IntersectionObserver" in window)) {
     rise.forEach(function (el) { el.classList.add("in"); });
@@ -336,9 +350,40 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); else fit();
   window.addEventListener("resize", fit, { passive: true });
 
+  /* the work names pass a held square: whichever crosses the middle owns it */
+  var names = [].slice.call(document.querySelectorAll("#names a"));
+  var square = document.getElementById("square");
+  var factL = document.getElementById("factL");
+  var factR = document.getElementById("factR");
+  var active = -1;
+  function setActive(i) {
+    if (i === active || !names[i]) return;
+    active = i;
+    var a = names[i], k = a.getAttribute("data-k");
+    names.forEach(function (n) { n.classList.toggle("on", n === a); });
+    [].slice.call(square.children).forEach(function (el) {
+      el.classList.toggle("on", el.getAttribute("data-k") === k);
+    });
+    factL.innerHTML = "<b>" + a.getAttribute("data-l") + "</b>";
+    factR.textContent = a.getAttribute("data-r");
+  }
+  function trackNames() {
+    if (!names.length) return;
+    var mid = window.innerHeight * 0.5, best = 0, bestD = Infinity;
+    for (var i = 0; i < names.length; i++) {
+      var r = names[i].getBoundingClientRect();
+      var d = Math.abs((r.top + r.bottom) / 2 - mid);
+      if (d < bestD) { bestD = d; best = i; }
+    }
+    setActive(best);
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; trackNames(); }); }
+  }, { passive: true });
+  trackNames();
+
   /* the signature move: the monument settles as you scroll away from it */
   if (!reduce && monument) {
-    var ticking = false;
     function paint() {
       ticking = false;
       var y = window.scrollY, h = window.innerHeight;
