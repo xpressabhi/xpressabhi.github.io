@@ -3,10 +3,10 @@
   "basics": {
     "name": "Abhishek Kumar Maurya",
     "shortName": "Abhishek Maurya",
-    "shortTitle": "Staff Engineer, AI Agent Platforms & MCP",
-    "headline": "Staff Software Engineer | AI agent platforms, MCP and evals",
+    "shortTitle": "Head of AI Engineering",
+    "headline": "Head of AI Engineering | AI-native SDLC, agent platforms, MCP and evals",
     "tagline": "16+ years full-stack: AI agents and agentic platforms, React/TypeScript frontends, Python/Java backends",
-    "shortSummary": "Staff Software Engineer. Agent platforms, evals, and MCP workflows adopted by 20+ teams; React/TypeScript surfaces with Java/Glide full-stack case ownership.",
+    "shortSummary": "Head of AI Engineering at Bay6.ai, leading all engineering globally. Previously founded ServiceNow's Agentic Developer Platform and led a 9-person team; 16+ years across agent platforms, frontend and backend.",
     "yearsExperience": "16+",
     "location": "Hyderabad, India",
     "timezone": "IST",
@@ -14,7 +14,7 @@
     "email": "akm.nitt@gmail.com",
     "linkedin": "https://www.linkedin.com/in/akm85/",
     "github": "https://github.com/xpressabhi",
-    "availability": "Immediately available; open to in-office, hybrid, or remote roles from Hyderabad",
+    "availability": "Leading AI engineering at Bay6.ai from Hyderabad",
     "ctaText": "Download CV (PDF)",
     "ctaHref": "resume/abhishek-maurya-cv.pdf",
     "authorizedIn": [
@@ -29,7 +29,7 @@
       "url": "https://patents.google.com/patent/US20150046358"
     }
   },
-  "summary": "Staff Software Engineer with 16+ years across AI agent platforms, frontend, and backend. Founded ServiceNow's Agentic Developer Platform, led a 9-person team, and ships agent systems end-to-end: tool orchestration, eval-gated rollout, governance, and full-stack React/Java ownership.",
+  "summary": "Head of AI Engineering at Bay6.ai, leading all engineering globally across India, the US and remote, and rebuilding the SDLC to be AI-native: agents in the delivery path, security tightened, and process designed for faster delivery without giving up quality. Previously founded ServiceNow's Agentic Developer Platform, led a 9-person team, and shipped agent systems end-to-end: tool orchestration, eval-gated rollout, governance, and full-stack React/Java ownership. 16+ years across agent platforms, frontend and backend.",
   "capabilityCards": [
     {
       "wide": true,
@@ -287,6 +287,27 @@
     }
   ],
   "experience": [
+    {
+      "company": "Bay6.ai",
+      "location": "Hyderabad · Global",
+      "role": "Head of AI Engineering",
+      "start": "Nov 2026",
+      "end": "Present",
+      "stack": [
+        "AI-native SDLC",
+        "AI Agents",
+        "MCP",
+        "Evals",
+        "Python",
+        "TypeScript"
+      ],
+      "highlights": [
+        "Rebuilding Bay6's SDLC to be AI-native: agents across spec, build, review, test and release, security tightened, and process installed so quality gates hold as throughput rises.",
+        "Lead all engineering, reporting to the CEO: hiring, performance, architecture and delivery across India, the US and remote.",
+        "Own four enterprise AI products — Connect6, Model6, Agent6 and Forge6 — for regulated industries: insurance, financial services, higher education, healthcare and legal.",
+        "Scaling the org from ~10 to ~20: hiring bar, levels and architecture review."
+      ]
+    },
     {
       "company": "ServiceNow",
       "location": "Hyderabad",

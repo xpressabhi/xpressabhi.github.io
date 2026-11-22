@@ -4,7 +4,8 @@
  *
  * 1. PII lint — flags emails/phones outside the intentional-public allowlist.
  * 2. Link check — verifies every URL claimed in profile.json responds OK.
- *    (linkedin.com bot-blocks clients; a 999 there is reported, not fatal.)
+ *    (linkedin.com bot-blocks clients; a 429 is a rate limit, not a dead page.
+ *    Both are reported, not fatal.)
  *
  * Usage: npm run check
  */
@@ -34,9 +35,11 @@ for (const { where, url } of urls) {
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(15000), redirect: "follow" });
     const ok = res.status >= 200 && res.status < 400;
-    const soft = !ok && BOT_BLOCKED(url);
+    // A 429 is "too many requests", not a dead page — the site is rate-limiting the
+    // checker, so failing the build would report a broken link that is not broken.
+    const soft = !ok && (BOT_BLOCKED(url) || res.status === 429);
     if (ok) console.log(`  ✓ ${res.status} ${where} → ${url}`);
-    else if (soft) console.log(`  ⚠ ${res.status} (bot-blocked?) ${where} → ${url}`);
+    else if (soft) console.log(`  ⚠ ${res.status} (bot-blocked or rate-limited) ${where} → ${url}`);
     else { console.log(`  ✗ ${res.status} ${where} → ${url}`); failures++; }
   } catch (e) {
     console.log(`  ✗ ${e.name === "TimeoutError" ? "timeout" : e.cause?.code || e.message} ${where} → ${url}`);

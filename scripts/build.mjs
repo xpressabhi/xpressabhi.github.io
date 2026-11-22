@@ -126,7 +126,7 @@ function cookRepo() {
   return repo;
 }
 
-function buildPortfolio(latest) {
+function buildPortfolio(latest, recent) {
   const tpl = readFileSync(P("templates/portfolio.html"), "utf8");
   const repo = cookRepo();
   // Home is a glanceable landing for a hiring-manager scan: outcome bullets,
@@ -139,7 +139,20 @@ function buildPortfolio(latest) {
   repo.homeBuilds = homeBuilds;
   repo.otherBuildsCount = live.length - homeBuilds.length;
   repo.homeExperience = repo.experience.slice(0, 3);
+  // The homepage numbers its capability list; six keeps the numeral rhythm without
+  // turning the section into a wall of digits. Full set lives on work/.
+  repo.homeCapabilities = repo.capabilityCards.slice(0, 6).map((c, i) => ({
+    ...c,
+    num: String(i + 1).padStart(2, "0"),
+  }));
   repo.latest = latest || null;
+  // newest first: the homepage list is read as a timeline, so editorial order
+  // (which deliberately leads with the strongest post) would show dates out of sequence.
+  const dates = (REPO.blog && REPO.blog.dates) || {};
+  repo.recentPosts = (recent || [])
+    .map((p) => ({ ...p, iso: dates[p.slug] || "" }))
+    .sort((a, b) => (a.iso < b.iso ? 1 : a.iso > b.iso ? -1 : 0))
+    .slice(0, 3);
   // Prose counts come from the data so the copy cannot drift from it.
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   repo.metricsCount = repo.impactMetrics.length;
@@ -344,7 +357,7 @@ function buildProfileReadme() {
     .join("\n");
   return `# ${(b.shortName || b.name)} 👋
 
-Staff Software Engineer at **ServiceNow** — founded the **MCP-driven Agentic Developer Platform** used by **20+ teams** (Claude Code · MCP servers · agents · skills). AI Agents, MCP & agentic platform engineering. Ex-Rippling | Ex-Reputation | Ex-Oracle. NIT Trichy (MCA), ${b.yearsExperience} years of software development from ${b.location}.
+Head of AI Engineering at **Bay6.ai** — leading all engineering globally for four enterprise AI products (Connect6 · Model6 · Agent6 · Forge6) in regulated industries. Previously founded the **MCP-driven Agentic Developer Platform** at ServiceNow, used by **20+ teams**. Ex-Rippling | Ex-Reputation | Ex-Oracle. NIT Trichy (MCA), ${b.yearsExperience} years of software development from ${b.location}.
 
 - 🔌 Founded the **Agentic Developer Platform (ADP)** — multi-team bootstrap and governance for Claude Code, MCP servers, agents & skills: built in **4 weeks**, 20+ skills, 20+ agents, 20+ teams.
 - 🤖 Led the architecture of the **Build Agent in ServiceNow Studio** — metadata-aware, multi-model (Claude + Now LLM + Bedrock), self-healing agentic workflows across 35+ metadata types & 11 domains.
@@ -354,9 +367,9 @@ Staff Software Engineer at **ServiceNow** — founded the **MCP-driven Agentic D
 
 <br>
 
-## 🔎 What I'm looking for
+## 🎯 Focus
 
-Staff/Principal roles building **AI agents, MCP tooling, or agentic platforms** — AI startups, dev tools, or mission-driven orgs. Remote (IST, US/EU overlap) or Hyderabad/Bengaluru. DMs open: agent platform work, MCP deep dives.
+Building **agent platforms, evals and governance** for regulated industries at Bay6.ai. Always up for conversations on agent platform architecture, MCP tooling and AI governance — DMs open.
 
 <br>
 
@@ -575,7 +588,7 @@ const featuredSlug = REPO.blog && REPO.blog.featured;
 const { post: featuredPost, pinned: featuredPinned } = pickFeatured(blog.posts, featuredSlug);
 if (!featuredPinned) console.warn(`⚠ blog.featured "${featuredSlug}" not found, featuring newest post instead`);
 const jobs = [
-  ["index.html", buildPortfolio(featuredPost)],
+  ["index.html", buildPortfolio(featuredPost, blog.posts)],
   ["work/index.html", buildWorkPage()],
   ["resume/index.html", buildCvPage()],
   ["blog/index.html", blog.index],
